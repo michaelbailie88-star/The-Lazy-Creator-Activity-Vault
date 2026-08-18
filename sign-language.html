@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASL Sign Language Communication Board — The Activity Vault</title>
+<style>
+:root{--paper:#faf6ee;--ink:#0f1d2e;--ink2:#3b4659;--line:#e3dccb;--accent:#0891b2}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,sans-serif;padding-bottom:120px}
+header{background:var(--accent);color:#fff;padding:16px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header a{color:#fff;text-decoration:none;font-weight:700;font-size:14px;background:rgba(255,255,255,0.18);padding:8px 14px;border-radius:8px}
+header h1{font-size:19px;flex:1;min-width:200px}
+.sub{padding:14px 20px;color:var(--ink2);font-size:14px;max-width:760px}
+.tabs{display:flex;gap:8px;padding:0 20px 6px;overflow-x:auto}
+.tab{padding:9px 16px;border-radius:20px;border:1.5px solid var(--line);background:#fff;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
+.tab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding:16px 20px}
+.card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:transform .12s}
+.card:active{transform:scale(0.95)}
+.card .em{font-size:38px}
+.card .w{font-weight:800;font-size:16px;margin:6px 0 4px}
+.card .how{font-size:11.5px;color:var(--ink2);line-height:1.4}
+.strip{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--line);padding:12px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.strip .words{flex:1;min-height:34px;font-weight:800;font-size:17px;color:var(--accent)}
+.strip button{padding:10px 18px;border-radius:10px;border:none;font-weight:800;font-size:14px;cursor:pointer}
+#speakBtn{background:var(--accent);color:#fff}
+#clearBtn{background:#eee}
+.alpha{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;padding:16px 20px}
+.al{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:pointer}
+.al .l{font-size:30px;font-weight:900;color:var(--accent)}
+.al .d{font-size:10.5px;color:var(--ink2);line-height:1.35;margin-top:4px}
+@media print{header a,.tabs,.strip{display:none}body{padding-bottom:0}}
+</style>
+</head>
+<body>
+<header><a href="app.html">← Back to Vault</a><h1>🤟 ASL Communication Board</h1><span style="font-size:12px;opacity:.85">Tatianna Bailie · AdaptED</span></header>
+<p class="sub">Tap any card to hear the word spoken aloud. Tap cards in order to build a sentence, then press <b>Speak Sentence</b>. Descriptions show how to make each sign. Designed for toddlers, preverbal children, and early-childhood classrooms.</p>
+<div class="tabs" id="tabs"></div>
+<div id="content"></div>
+<div class="strip"><div class="words" id="sentence"></div><button id="speakBtn" onclick="speakSentence()">🔊 Speak Sentence</button><button id="clearBtn" onclick="clearSentence()">Clear</button></div>
+<script>
+const CATS={
+ 'Basic Needs':[
+  ['🍽️','Eat','Fingertips tap the mouth'],['🥤','Drink','C-shaped hand tips toward mouth'],['💧','Water','W-hand taps the chin'],
+  ['🥛','Milk','Open and squeeze your fist'],['➕','More','Fingertips of both hands tap together'],['🆘','Help','Fist rests on flat palm, both lift up'],
+  ['🚻','Bathroom','Make a T-hand and shake it side to side'],['😴','Sleep','Open hand draws down over your face'],['✅','All Done','Both hands twist outward'],
+  ['🤕','Hurt','Two index fingers tap together at the spot'],['🔥','Hot','Claw hand at mouth turns away fast'],['🧊','Cold','Both fists shiver at your sides']],
+ 'Actions':[
+  ['🏃','Go','Both index fingers point and move forward'],['✋','Stop','Side of hand chops onto flat palm'],['🎲','Play','Y-hands twist side to side'],
+  ['👋','Come','Index fingers curl toward you'],['🪑','Sit','Two fingers sit on two fingers'],['🧍','Stand','Two fingers stand on flat palm'],
+  ['🧼','Wash Hands','Rub palms together'],['📂','Open','Flat hands together, then open apart'],['📕','Close','Open hands come together'],
+  ['🤝','Share','Hand sweeps back and forth over the other'],['⏳','Wait','Wiggle fingers with palms up'],['👀','Look','V-fingers point from eyes outward']],
+ 'Feelings':[
+  ['😊','Happy','Flat hand circles up on your chest'],['😢','Sad','Open hands slide down your face'],['😠','Angry','Claw hand pulls up in front of face'],
+  ['😨','Scared','Fists open suddenly in front of chest'],['🥱','Tired','Fingertips at shoulders drop down'],['🤩','Excited','Middle fingers brush chest alternately'],
+  ['🤒','Sick','Middle finger touches forehead'],['❤️','Love','Cross both arms over your chest']],
+ 'People':[
+  ['👩','Mom','Thumb of open hand taps chin'],['👨','Dad','Thumb of open hand taps forehead'],['🧒','Baby','Rock your arms like holding a baby'],
+  ['🤗','Friend','Hook index fingers together, then switch'],['🍎','Teacher','Hands at forehead move out, then down sides'],['🙋','Me','Point to your chest'],['👉','You','Point to the other person']],
+ 'Social':[
+  ['🙏','Please','Flat hand circles on your chest'],['💖','Thank You','Fingertips at chin move outward'],['😔','Sorry','Fist circles on your chest'],
+  ['👍','Yes','Fist nods up and down like a head'],['👎','No','First two fingers snap closed on thumb'],['👋','Hello','Salute, then wave out'],
+  ['🫡','Goodbye','Open hand waves'],['🤟','I Love You','Thumb, index, and pinky up together']],
+ 'A–Z Alphabet':'ALPHA'
+};
+const ALPHABET=[
+['A','Fist, thumb at the side'],['B','Flat hand, thumb across palm'],['C','Curve hand like a C'],['D','Index up, other fingers touch thumb'],
+['E','Fingertips curl to thumb'],['F','Index and thumb circle, others up'],['G','Index and thumb point sideways'],['H','Index and middle point sideways'],
+['I','Pinky up, fist closed'],['J','Pinky draws a J'],['K','Index and middle up, thumb between'],['L','Index up, thumb out — an L'],
+['M','Thumb under three fingers'],['N','Thumb under two fingers'],['O','Fingertips meet thumb — an O'],['P','K-hand pointing down'],
+['Q','G-hand pointing down'],['R','Cross index over middle'],['S','Fist, thumb across the front'],['T','Thumb between index and middle'],
+['U','Index and middle up together'],['V','Index and middle up, spread — a V'],['W','Three fingers up, spread'],['X','Index bent like a hook'],
+['Y','Thumb and pinky out'],['Z','Index draws a Z']];
+let sentence=[];
+function speak(t){try{const u=new SpeechSynthesisUtterance(t);u.rate=0.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function tap(w){sentence.push(w);document.getElementById('sentence').textContent=sentence.join(' ');speak(w)}
+function speakSentence(){if(sentence.length)speak(sentence.join(' '))}
+function clearSentence(){sentence=[];document.getElementById('sentence').textContent=''}
+function render(cat){
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.c===cat));
+ const c=document.getElementById('content');
+ if(CATS[cat]==='ALPHA'){
+  c.innerHTML='<div class="alpha">'+ALPHABET.map(([l,d])=>`<div class="al" onclick="speak('${l}')"><div class="l">${l}</div><div class="d">${d}</div></div>`).join('')+'</div>';
+ }else{
+  c.innerHTML='<div class="grid">'+CATS[cat].map(([em,w,how])=>`<div class="card" onclick="tap('${w.replace(/'/g,"\\'")}')"><div class="em">${em}</div><div class="w">${w}</div><div class="how">${how}</div></div>`).join('')+'</div>';
+ }
+}
+const tabs=document.getElementById('tabs');
+Object.keys(CATS).forEach((cat,i)=>{const b=document.createElement('button');b.className='tab'+(i===0?' on':'');b.dataset.c=cat;b.textContent=cat;b.onclick=()=>render(cat);tabs.appendChild(b)});
+render('Basic Needs');
+</script>
+</body>
+</html>
