@@ -922,6 +922,7 @@ body{top:0!important}
    ═══════════════════════════════════════════════════════ */
 .filter-dd-row{display:flex;gap:10px;padding:14px 12px;flex-wrap:wrap;position:relative;z-index:40}
 #ageRow{display:none !important}
+#matFilterRow{display:none !important}
 #catChips{display:none !important}
 .filter-dd{position:relative}
 .filter-dd-btn{display:flex;align-items:center;gap:8px;padding:11px 16px;border-radius:12px;
@@ -3645,6 +3646,12 @@ function togglePerfMode(){
       <span class="dd-em">🎂</span><span id="ddAgeLbl">All Ages</span><span class="dd-chev">▾</span>
     </button>
     <div class="filter-dd-panel" id="ddAgePanel"></div>
+  </div>
+  <div class="filter-dd" id="ddMaterial">
+    <button class="filter-dd-btn" onclick="toggleFilterDd('ddMaterial')">
+      <span class="dd-em">🔍</span><span id="ddMaterialLbl">All Materials</span><span class="dd-chev">▾</span>
+    </button>
+    <div class="filter-dd-panel" id="ddMaterialPanel"></div>
   </div>
 </div>
 <div id="catChips" style="display:none"></div>
@@ -12473,6 +12480,7 @@ function setBrand(b){
   initFilters();
   render();
   if(typeof renderMatChips === 'function') renderMatChips();
+  if(typeof populateMaterialDd === 'function') populateMaterialDd();
   forceCardColors();
 }
 
@@ -12627,6 +12635,53 @@ function selectAgeDd(ageId, displayLabel){
   document.getElementById('ddAgeLbl').textContent = ageId==='all' ? 'All Ages' : displayLabel;
   populateAgeDd();
   toggleFilterDd('ddAge');
+}
+
+// Materials dropdown -- reuses the same per-module match-checking logic
+// already used by the flat mat-chip row (renderMatChips), so which
+// materials show for a given module is unchanged; only where they're
+// displayed has moved.
+const MAT_KEYWORD_MAP = {
+  paper:['paper','newspaper','cardstock','sheet of','origami'],
+  paint:['paint','watercolor','watercolour','acrylic','brush','palette'],
+  chalk:['chalk','sidewalk'],
+  ball:['ball','catch','toss','bounce','soccer','basketball','tennis','dodge'],
+  block:['block','lego','duplo','tower','stack','build a','wooden bricks','build with'],
+  sand:['sand','water','bucket','sandbox','splash','pour','water table','sensory bin'],
+  dough:['dough','play-doh','playdough','clay','plasticine','knead','squish','mold'],
+  rope:['rope','string','yarn','twine','jump rope','cord','ribbon','lace']
+};
+const MAT_NO_PREP_HINTS = ['open space','body','voice','hands','feet','none','nothing','no materials','just','only need','your child','yourselves','no supplies','no equipment','your kid'];
+function materialHasMatch(chipId){
+  if(chipId==='all') return true;
+  const brandActs = (typeof ALL_ACTIVITIES!=='undefined' ? ALL_ACTIVITIES : []).filter(a=>a.brand===S.brand);
+  if(chipId==='zero-prep'){
+    return brandActs.some(a=>{
+      const mats=(a.materials||[]).map(m=>(m||'').toLowerCase());
+      if(mats.length===0) return true;
+      return mats.every(m=>MAT_NO_PREP_HINTS.some(kw=>m.indexOf(kw)>=0));
+    });
+  }
+  const keywords = MAT_KEYWORD_MAP[chipId] || [chipId];
+  return brandActs.some(a=>{
+    const hay=((a.title||'')+' '+(a.desc||'')+' '+((a.steps||[]).join(' '))+' '+((a.materials||[]).join(' '))).toLowerCase();
+    return keywords.some(kw=>hay.indexOf(kw)>=0);
+  });
+}
+function populateMaterialDd(){
+  const panel = document.getElementById('ddMaterialPanel');
+  if(!panel) return;
+  const available = MATERIAL_CHIPS.filter(m=>materialHasMatch(m.id));
+  panel.innerHTML = available.map(m=>
+    '<div class="filter-dd-item'+(S.material===m.id?' active':'')+'" onclick="selectMaterialDd(\''+m.id+'\',\''+m.em+' '+m.label+'\')">'+
+      '<span>'+m.em+' '+m.label+'</span></div>'
+  ).join('');
+}
+function selectMaterialDd(matId, displayLabel){
+  setMaterial(matId); // existing function, unchanged
+  document.getElementById('ddMaterialLbl').textContent = matId==='all' ? 'All Materials' : displayLabel;
+  populateMaterialDd();
+  toggleFilterDd('ddMaterial');
 }
 
 function initFilters(){
@@ -12920,6 +12975,7 @@ function renderSeasonalBanner(){
 
 function render(){
   renderMatChips();
+  if(typeof populateMaterialDd==='function') populateMaterialDd();
   renderSeasonalBanner();
   renderPicks();
   renderStreak();
