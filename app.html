@@ -112,9 +112,19 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;background-im
 .lang-opt .lang-native{font-size:11px;color:rgba(255,255,255,0.45)}
 .goog-te-banner-frame{display:none!important}
 body{top:0!important}
+html{top:0!important}
 .goog-te-gadget{font-size:0!important}
 .goog-te-gadget select{display:none}
 .skiptranslate{display:none!important}
+/* Additional Google Translate auto-injected UI -- the floating icon/gadget
+   badge and its popup menu are separate from the banner frame and gadget
+   text above, and weren't being caught by the existing rules. */
+.goog-te-gadget-icon{display:none!important}
+.goog-te-menu-frame,iframe.goog-te-menu-frame{display:none!important;visibility:hidden!important}
+.goog-tooltip,.goog-tooltip:hover{display:none!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
+#google_translate_element,#google_translate_element *{display:none!important}
+body>.skiptranslate{display:none!important}
 /* ─── DEMO BLUR — blur everything beyond 5 cards ─── */
 #demoBlurMsg{display:none!important}
 
@@ -16752,6 +16762,26 @@ let _demoExpired = false; /* timer disabled — re-enable July */
 function googleTranslateElementInit(){
   new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
 }
+// Defense-in-depth: Google's translate widget can re-inject or re-show its
+// own floating icon/menu dynamically (observed appearing on module switches,
+// not just page load), sometimes via inline styles set with !important that
+// plain CSS can't reliably out-prioritize. This watches for and force-hides
+// any such element the instant it appears, independent of CSS specificity.
+(function(){
+  function nukeGoogleWidgetUI(){
+    document.querySelectorAll(
+      '.goog-te-gadget-icon,.goog-te-menu-frame,.goog-tooltip,.goog-te-banner-frame,body>.skiptranslate,iframe.goog-te-menu-frame'
+    ).forEach(function(el){
+      el.style.setProperty('display','none','important');
+      el.style.setProperty('visibility','hidden','important');
+    });
+  }
+  nukeGoogleWidgetUI();
+  const mo = new MutationObserver(nukeGoogleWidgetUI);
+  mo.observe(document.body, {childList:true, subtree:true});
+})();
+</script>
+<script>
 function setLang(code){
   // Use Google Translate's own combo select — most reliable method
   const sel = document.querySelector('select.goog-te-combo');
