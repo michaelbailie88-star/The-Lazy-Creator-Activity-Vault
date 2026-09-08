@@ -125,6 +125,13 @@ html{top:0!important}
 .goog-text-highlight{background:none!important;box-shadow:none!important}
 #google_translate_element,#google_translate_element *{display:none!important}
 body>.skiptranslate{display:none!important}
+/* Google's widget often generates its actual floating container/banner
+   using a dynamically-assigned ID starting with a literal colon (e.g.
+   ":1.container") rather than a stable class name -- confirmed via
+   real-world reports of this exact widget. Nothing in this app's own
+   code uses colon-prefixed IDs (verified), so this is safe to target
+   broadly without risk of hiding legitimate app UI. */
+[id^=":"]{display:none!important;visibility:hidden!important}
 /* ─── DEMO BLUR — blur everything beyond 5 cards ─── */
 #demoBlurMsg{display:none!important}
 
@@ -16770,7 +16777,7 @@ function googleTranslateElementInit(){
 (function(){
   function nukeGoogleWidgetUI(){
     document.querySelectorAll(
-      '.goog-te-gadget-icon,.goog-te-menu-frame,.goog-tooltip,.goog-te-banner-frame,body>.skiptranslate,iframe.goog-te-menu-frame'
+      '.goog-te-gadget-icon,.goog-te-menu-frame,.goog-tooltip,.goog-te-banner-frame,body>.skiptranslate,iframe.goog-te-menu-frame,[id^=":"]'
     ).forEach(function(el){
       el.style.setProperty('display','none','important');
       el.style.setProperty('visibility','hidden','important');
