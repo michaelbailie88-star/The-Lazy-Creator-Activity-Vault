@@ -3519,38 +3519,6 @@ function togglePerfMode(){
  </div>
 </div>
 
-<!-- Language bar — always visible -->
-<div id="langBar">
- <span id="langBarLabel">🌐 Language</span>
- <select id="langSelect" onchange="setLang(this.value)">
- <option value="en">🇬🇧 English</option>
- <option value="zh-CN">🇨🇳 Chinese — 中文</option>
- <option value="hi">🇮🇳 Hindi — हिन्दी</option>
- <option value="es">🇪🇸 Spanish — Español</option>
- <option value="fr">🇫🇷 French — Français</option>
- <option value="ar">🇸🇦 Arabic — العربية</option>
- <option value="bn">🇧🇩 Bengali — বাংলা</option>
- <option value="pt">🇧🇷 Portuguese — Português</option>
- <option value="ru">🇷🇺 Russian — Русский</option>
- <option value="ur">🇵🇰 Urdu — اردو</option>
- <option value="id">🇮🇩 Indonesian — Bahasa</option>
- <option value="de">🇩🇪 German — Deutsch</option>
- <option value="ja">🇯🇵 Japanese — 日本語</option>
- <option value="sw">🇰🇪 Swahili — Kiswahili</option>
- <option value="te">🇮🇳 Telugu — తెలుగు</option>
- <option value="mr">🇮🇳 Marathi — मराठी</option>
- <option value="ta">🇮🇳 Tamil — தமிழ்</option>
- <option value="tr">🇹🇷 Turkish — Türkçe</option>
- <option value="ko">🇰🇷 Korean — 한국어</option>
- <option value="vi">🇻🇳 Vietnamese — Tiếng Việt</option>
- <option value="it">🇮🇹 Italian — Italiano</option>
- <option value="fa">🇮🇷 Persian — فارسی</option>
- <option value="pl">🇵🇱 Polish — Polski</option>
- <option value="uk">🇺🇦 Ukrainian — Українська</option>
- <option value="nl">🇳🇱 Dutch — Nederlands</option>
- </select>
-</div>
-
 <!-- ─────────────── APP ─────────────── -->
 <canvas id="lcConfettiCanvas"></canvas>
 <div id="app">
@@ -3629,7 +3597,39 @@ function togglePerfMode(){
  <span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--accent)">Build plan →</span>
  </div>
 
- <div class="filter-dd-row" id="filterDdRow">
+ <!-- Language bar — always visible -->
+<div id="langBar">
+ <span id="langBarLabel">🌐 Language</span>
+ <select id="langSelect" onchange="setLang(this.value)">
+ <option value="en">🇬🇧 English</option>
+ <option value="zh-CN">🇨🇳 Chinese — 中文</option>
+ <option value="hi">🇮🇳 Hindi — हिन्दी</option>
+ <option value="es">🇪🇸 Spanish — Español</option>
+ <option value="fr">🇫🇷 French — Français</option>
+ <option value="ar">🇸🇦 Arabic — العربية</option>
+ <option value="bn">🇧🇩 Bengali — বাংলা</option>
+ <option value="pt">🇧🇷 Portuguese — Português</option>
+ <option value="ru">🇷🇺 Russian — Русский</option>
+ <option value="ur">🇵🇰 Urdu — اردو</option>
+ <option value="id">🇮🇩 Indonesian — Bahasa</option>
+ <option value="de">🇩🇪 German — Deutsch</option>
+ <option value="ja">🇯🇵 Japanese — 日本語</option>
+ <option value="sw">🇰🇪 Swahili — Kiswahili</option>
+ <option value="te">🇮🇳 Telugu — తెలుగు</option>
+ <option value="mr">🇮🇳 Marathi — मराठी</option>
+ <option value="ta">🇮🇳 Tamil — தமிழ்</option>
+ <option value="tr">🇹🇷 Turkish — Türkçe</option>
+ <option value="ko">🇰🇷 Korean — 한국어</option>
+ <option value="vi">🇻🇳 Vietnamese — Tiếng Việt</option>
+ <option value="it">🇮🇹 Italian — Italiano</option>
+ <option value="fa">🇮🇷 Persian — فارسی</option>
+ <option value="pl">🇵🇱 Polish — Polski</option>
+ <option value="uk">🇺🇦 Ukrainian — Українська</option>
+ <option value="nl">🇳🇱 Dutch — Nederlands</option>
+ </select>
+</div>
+
+<div class="filter-dd-row" id="filterDdRow">
   <div class="filter-dd" id="ddModule">
     <button class="filter-dd-btn" onclick="toggleFilterDd('ddModule')">
       <span class="dd-em" id="ddModuleEm">📘</span><span id="ddModuleLbl">AdaptED</span><span class="dd-chev">▾</span>
@@ -14126,8 +14126,6 @@ function renderStats(){
   document.getElementById('statsRow').innerHTML=`
     <div class="stat"><span class="stat-n">${totalUnlocked.toLocaleString()}</span><span class="stat-l">Total unlocked</span></div>
     <div class="stat"><span class="stat-n">${unlockedInBrand.toLocaleString()}</span><span class="stat-l">In ${S.brand==='a'?'AdaptED':S.brand==='c'?'CampED':S.brand==='t'?'TeenagED':'RegulatED'}</span></div>
-    <div class="stat"><span class="stat-n">${(cap===99999?'∞':cap.toLocaleString())}</span><span class="stat-l">${TIERS[S.tier].name} cap</span></div>
-    <div class="stat"><span class="stat-n">∞</span><span class="stat-l">All visible</span></div>
   `;
 }
 
