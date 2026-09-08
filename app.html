@@ -914,6 +914,40 @@ body{top:0!important}
 /* BRAND TOGGLE (3-position segmented control) ─────────────── */
 /* MODULE TOGGLE — chrome rail + sliding gradient pill + grayscale-to-color icons */
 .toggle-bar{padding:16px 12px 14px;display:flex;justify-content:center;background:transparent}
+/* ═══════════════════════════════════════════════════════
+   FILTER DROPDOWNS — Module / Category / Age Range
+   Each panel is position:absolute against ITS OWN trigger
+   wrapper (position:relative), so alignment can never drift
+   to the wrong button regardless of content length.
+   ═══════════════════════════════════════════════════════ */
+.filter-dd-row{display:flex;gap:10px;padding:14px 12px;flex-wrap:wrap;position:relative;z-index:40}
+#ageRow{display:none !important}
+#catChips{display:none !important}
+.filter-dd{position:relative}
+.filter-dd-btn{display:flex;align-items:center;gap:8px;padding:11px 16px;border-radius:12px;
+  border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font-weight:700;
+  font-size:12.5px;cursor:pointer;white-space:nowrap;transition:border-color .15s,background .15s}
+.filter-dd-btn:hover{border-color:var(--accent)}
+.filter-dd.open .filter-dd-btn{border-color:var(--accent);background:rgba(255,255,255,0.06)}
+.filter-dd-btn .dd-em{font-size:14px}
+.filter-dd-btn .dd-chev{font-size:9px;color:var(--ink-3);margin-left:2px;transition:transform .15s}
+.filter-dd.open .filter-dd-btn .dd-chev{transform:rotate(180deg)}
+.filter-dd-panel{position:absolute;top:calc(100% + 8px);left:0;min-width:220px;max-width:300px;
+  max-height:340px;overflow-y:auto;background:#0e1a35;border:1.5px solid rgba(255,255,255,0.14);
+  border-radius:14px;padding:8px;box-shadow:0 16px 40px rgba(0,0,0,0.55);z-index:50;
+  display:none;flex-direction:column;gap:1px}
+.filter-dd.open .filter-dd-panel{display:flex}
+.filter-dd-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:9px;
+  font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:background .12s,color .12s;
+  justify-content:space-between}
+.filter-dd-item:hover{background:rgba(255,255,255,0.05);color:var(--ink)}
+.filter-dd-item.active{background:var(--accent);color:#fff}
+.filter-dd-item .dd-cnt{font-size:10.5px;opacity:.7;font-weight:700}
+@media(max-width:640px){
+  .filter-dd-panel{left:0;right:auto}
+  .filter-dd:nth-child(3) .filter-dd-panel{left:auto;right:0}
+}
+
 .toggle{
   display:flex;width:100%;max-width:440px;
   background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(0,0,0,0.2)),rgba(0,0,0,0.4);
@@ -3593,14 +3627,33 @@ function togglePerfMode(){
  <span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--accent)">Build plan →</span>
  </div>
 
- <div class="toggle-bar">
- <div class="toggle" id="brandToggle">
- <button class="active" onclick="setBrand('adapted')"><span class="em">📘</span>AdaptED</button>
- <button onclick="setBrand('camped')"><span class="em">⛺</span>CampED</button>
- <button onclick="setBrand('teenaged')"><span class="em">🎒</span>TeenagED</button>
- <button onclick="setBrand('regulated')"><span class="em">🧘</span>RegulatED</button>
- </div>
- </div>
+ <div class="filter-dd-row" id="filterDdRow">
+  <div class="filter-dd" id="ddModule">
+    <button class="filter-dd-btn" onclick="toggleFilterDd('ddModule')">
+      <span class="dd-em" id="ddModuleEm">📘</span><span id="ddModuleLbl">AdaptED</span><span class="dd-chev">▾</span>
+    </button>
+    <div class="filter-dd-panel" id="ddModulePanel"></div>
+  </div>
+  <div class="filter-dd" id="ddCategory">
+    <button class="filter-dd-btn" onclick="toggleFilterDd('ddCategory')">
+      <span class="dd-em">🗂️</span><span id="ddCategoryLbl">All Categories</span><span class="dd-chev">▾</span>
+    </button>
+    <div class="filter-dd-panel" id="ddCategoryPanel"></div>
+  </div>
+  <div class="filter-dd" id="ddAge">
+    <button class="filter-dd-btn" onclick="toggleFilterDd('ddAge')">
+      <span class="dd-em">🎂</span><span id="ddAgeLbl">All Ages</span><span class="dd-chev">▾</span>
+    </button>
+    <div class="filter-dd-panel" id="ddAgePanel"></div>
+  </div>
+</div>
+<div id="catChips" style="display:none"></div>
+<div class="toggle" id="brandToggle" style="display:none">
+  <button class="active" onclick="setBrand('adapted')">AdaptED</button>
+  <button onclick="setBrand('camped')">CampED</button>
+  <button onclick="setBrand('teenaged')">TeenagED</button>
+  <button onclick="setBrand('regulated')">RegulatED</button>
+</div>
 
 
 
@@ -8966,6 +9019,56 @@ const A_REGULATED = [
 
 const A_FULL4 = A_FULL3.concat(A_REGULATED);
 
+// ══════════════════════════════════════════════════════════
+// TOPIC SEARCH SYNONYMS — same pattern as the material KEYWORD_MAP below,
+// but for concept/theme searches. Lets "community helpers" surface a
+// "Fire Truck Pretend Play" or "Doctor Check-Up" card even when neither
+// literal word "community" nor "helper" appears anywhere on that card.
+// Search checks the FULL typed phrase first (multi-word topics), then
+// falls back to per-word matches so partial phrasing still works.
+// ══════════════════════════════════════════════════════════
+const TOPIC_SYNONYMS = {
+  'community helpers': ['firefighter','fire fighter','fire truck','police','police officer','doctor','nurse','mail carrier','mailman','postal worker','dentist','veterinarian','vet','construction worker','chef','librarian','paramedic','ambulance','mechanic','farmer helper','helper','helpers','community'],
+  'transportation':    ['car','truck','train','airplane','plane','boat','bicycle','bike','bus','helicopter','vehicle','traffic','subway','ship'],
+  'dinosaurs':         ['dinosaur','t-rex','trex','triceratops','fossil','prehistoric','extinct','stegosaurus','raptor'],
+  'ocean':             ['ocean','sea','fish','shark','whale','octopus','coral','beach','waves','dolphin','starfish','crab','under the sea','marine'],
+  'space':             ['space','planet','rocket','astronaut','moon','stars','galaxy','solar system','alien','outer space'],
+  'farm animals':      ['farm','cow','pig','chicken','horse','barn','tractor','sheep','goat','rooster','duck'],
+  'zoo animals':       ['zoo','lion','elephant','giraffe','monkey','tiger','zebra','bear','gorilla','safari'],
+  'weather':           ['rain','sun','sunny','snow','wind','windy','storm','cloud','cloudy','thunder','lightning','rainbow','weather'],
+  'seasons':           ['fall','autumn','winter','spring','summer','leaves','season','seasons'],
+  'emotions':          ['happy','sad','angry','mad','scared','excited','calm','frustrated','worried','feelings','emotion','emotions'],
+  'family':            ['mom','mother','dad','father','parent','sibling','grandma','grandpa','grandparent','brother','sister','family'],
+  'five senses':       ['touch','taste','smell','hear','hearing','see','sight','texture','senses','sensory'],
+  'colors':            ['red','blue','yellow','green','purple','orange','rainbow','color','colors','colours'],
+  'shapes':            ['circle','square','triangle','rectangle','oval','diamond','shape','shapes','geometry'],
+  'counting':          ['count','counting','math','number','numbers','addition','subtraction'],
+  'alphabet':          ['abc','alphabet','phonics','letters','letter recognition','spelling'],
+  'body parts':        ['head','shoulders','arms','legs','hands','feet','body','anatomy'],
+  'insects':           ['bug','bugs','insect','insects','butterfly','bee','ant','spider','ladybug','caterpillar'],
+  'gardening':         ['flower','flowers','seed','seeds','grow','soil','sprout','roots','plant','plants','garden'],
+  'hygiene':           ['handwashing','wash hands','brushing teeth','germs','healthy habits','hygiene'],
+  'nutrition':         ['fruit','fruits','vegetable','vegetables','healthy eating','food group','nutrition'],
+  'holidays':          ['halloween','christmas','easter','valentine','valentines','thanksgiving','hanukkah','birthday','holiday','holidays'],
+  'sports':            ['soccer','basketball','baseball','swimming','running','sport','sports','teamwork'],
+  'friendship':        ['sharing','kindness','cooperation','friendship','conflict resolution','making friends'],
+  'pets':              ['dog','cat','hamster','pet fish','bird','pet','pets','responsibility']
+};
+function expandSearchTerms(rawTerms, fullPhrase){
+  const expanded = new Set(rawTerms);
+  const phraseLower = (fullPhrase||'').toLowerCase();
+  Object.keys(TOPIC_SYNONYMS).forEach(topicKey=>{
+    // Whole-phrase match (e.g. typed exactly "community helpers")
+    const topicMatches = phraseLower.includes(topicKey)
+      // Or every individual word of the topic key was typed somewhere (any order)
+      || topicKey.split(' ').every(w=>rawTerms.some(t=>t===w || w.includes(t) || t.includes(w)));
+    if(topicMatches){
+      TOPIC_SYNONYMS[topicKey].forEach(syn=>expanded.add(syn));
+    }
+  });
+  return Array.from(expanded);
+}
+
 // Enrich activities with goal + group adaptations.
 // Generates intelligent defaults based on category + brand so we don't
 // have to write goal/groupSmall/groupLarge for all 80+ seeds manually. ═══
@@ -12408,6 +12511,95 @@ function forceCardColors(scopeEls){
 }
 
 // FILTERS
+// ═══════════════════════════════════════════════════════
+// FILTER DROPDOWNS — Module / Category / Age Range
+// Wraps the existing setBrand/setCat/setAge (unchanged) so all
+// current state-management, rendering, and side effects stay
+// exactly as they were. This layer only handles: opening/closing
+// panels, populating them from real data, and updating labels.
+// ═══════════════════════════════════════════════════════
+const MODULE_LIST = [
+  {key:'adapted',  short:'a', em:'📘', label:'AdaptED'},
+  {key:'camped',   short:'c', em:'⛺', label:'CampED'},
+  {key:'teenaged', short:'t', em:'🎒', label:'TeenagED'},
+  {key:'regulated',short:'r', em:'🧘', label:'RegulatED'}
+];
+// Single source of truth for age tiers per module -- setAge() previously
+// had its OWN hardcoded copy of this that only matched 2 of 4 modules
+// correctly (TeenagED and RegulatED were comparing against the wrong
+// list). Fixed by having everything read from this one object.
+const AGE_TIERS_BY_BRAND = {
+  a: [{id:'all',em:'👶',lbl:'All ages'},{id:'0-3',em:'🍼',lbl:'0–3'},{id:'3-5',em:'🧸',lbl:'3–5'},{id:'5-8',em:'🎒',lbl:'5–8'},{id:'8-12',em:'📐',lbl:'8–12'}],
+  c: [{id:'all',em:'⛺',lbl:'All ages'},{id:'6-8',em:'🐻',lbl:'Cubs 6–8'},{id:'9-11',em:'🧭',lbl:'Explorers 9–11'},{id:'12-14',em:'🏔️',lbl:'Adventurers 12–14'},{id:'15-18',em:'🌟',lbl:'Leaders 15–18'}],
+  t: [{id:'all',em:'🎒',lbl:'All teens'},{id:'11-13',em:'📱',lbl:'Early 11–13'},{id:'13-15',em:'🎯',lbl:'Mid 13–15'},{id:'11-15',em:'🌟',lbl:'Mixed 11–15'}],
+  r: [{id:'all',em:'🧘',lbl:'All ages'},{id:'2-5',em:'🧸',lbl:'Toddlers 2–5'},{id:'3-8',em:'🌱',lbl:'Early 3–8'},{id:'5-8',em:'🎨',lbl:'School 5–8'},{id:'8-12',em:'📐',lbl:'Tweens 8–12'}]
+};
+
+function toggleFilterDd(id){
+  const dd = document.getElementById(id);
+  if(!dd) return;
+  const wasOpen = dd.classList.contains('open');
+  document.querySelectorAll('.filter-dd.open').forEach(d=>d.classList.remove('open'));
+  if(!wasOpen) dd.classList.add('open');
+}
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.filter-dd')){
+    document.querySelectorAll('.filter-dd.open').forEach(d=>d.classList.remove('open'));
+  }
+});
+
+function populateModuleDd(){
+  const panel = document.getElementById('ddModulePanel');
+  if(!panel) return;
+  panel.innerHTML = MODULE_LIST.map(m=>
+    '<div class="filter-dd-item'+(S.brand===m.short?' active':'')+'" onclick="selectModuleDd(\''+m.key+'\',\''+m.short+'\',\''+m.em+'\',\''+m.label+'\')">'+
+      '<span>'+m.em+' '+m.label+'</span></div>'
+  ).join('');
+}
+function selectModuleDd(fullKey, shortKey, em, label){
+  setBrand(fullKey); // existing function, unchanged -- handles all real state + render
+  document.getElementById('ddModuleEm').textContent = em;
+  document.getElementById('ddModuleLbl').textContent = label;
+  populateModuleDd();
+  populateCategoryDd();
+  populateAgeDd();
+  toggleFilterDd('ddModule');
+}
+
+function populateCategoryDd(){
+  const panel = document.getElementById('ddCategoryPanel');
+  if(!panel) return;
+  const cats = CATS.filter(c=>c.brand===S.brand);
+  let html = '<div class="filter-dd-item'+(S.cat==='all'?' active':'')+'" onclick="selectCategoryDd(\'all\',\'All Categories\')"><span>⭐ All Categories</span></div>';
+  html += cats.map(c=>
+    '<div class="filter-dd-item'+(S.cat===c.id?' active':'')+'" onclick="selectCategoryDd(\''+c.id+'\',\''+c.em+' '+c.label+'\')">'+
+      '<span>'+c.em+' '+c.label+'</span></div>'
+  ).join('');
+  panel.innerHTML = html;
+}
+function selectCategoryDd(catId, displayLabel){
+  setCat(catId); // existing function, unchanged
+  document.getElementById('ddCategoryLbl').textContent = catId==='all' ? 'All Categories' : displayLabel;
+  populateCategoryDd();
+  toggleFilterDd('ddCategory');
+}
+
+function populateAgeDd(){
+  const panel = document.getElementById('ddAgePanel');
+  if(!panel) return;
+  const ages = AGE_TIERS_BY_BRAND[S.brand] || AGE_TIERS_BY_BRAND.a;
+  panel.innerHTML = ages.map(a=>
+    '<div class="filter-dd-item'+(S.age===a.id?' active':'')+'" onclick="selectAgeDd(\''+a.id+'\',\''+a.em+' '+a.lbl+'\')">'+
+      '<span>'+a.em+' '+a.lbl+'</span></div>'
+  ).join('');
+}
+function selectAgeDd(ageId, displayLabel){
+  setAge(ageId); // existing function, unchanged
+  document.getElementById('ddAgeLbl').textContent = ageId==='all' ? 'All Ages' : displayLabel;
+  populateAgeDd();
+  toggleFilterDd('ddAge');
+}
+
 function initFilters(){
   // Categories for current brand
   const cats=CATS.filter(c=>c.brand===S.brand);
@@ -12436,6 +12628,10 @@ function initFilters(){
       <span class="em">${a.em}</span><span class="lbl">${a.lbl}</span>
     </button>
   `).join('');
+  // Populate the new dropdown panels (module/category/age) from the same data
+  populateModuleDd();
+  populateCategoryDd();
+  populateAgeDd();
   if(typeof forceCardColors==='function') forceCardColors();
 }
 
@@ -12446,8 +12642,11 @@ function setCat(c){
 }
 function setAge(a){
   S.age=a;
+  // Fixed: previously compared against a hardcoded 2-branch list that only
+  // matched AdaptED correctly; TeenagED/RegulatED were checked against the
+  // wrong array. Now reads from the same AGE_TIERS_BY_BRAND used by the dropdown.
+  const ages = (AGE_TIERS_BY_BRAND[S.brand] || AGE_TIERS_BY_BRAND.a).map(t=>t.id);
   document.querySelectorAll('#ageRow .tier-card').forEach((b,i)=>{
-    const ages = S.brand==='a' ? ['all','0-3','3-5','5-8','8-12'] : ['all','6-8','9-11','12-14','15-18'];
     b.classList.toggle('active', ages[i]===a);
   });
   render();
@@ -12584,7 +12783,9 @@ function getVisibleActivities(){
   if(S.search){
     // Split by commas, spaces, "and", "or" — match ANY term (OR logic)
     const rawTerms = S.search.split(/[,\s]+/).map(t=>t.replace(/^(and|or|with|using)$/i,'').trim()).filter(t=>t.length>=2);
-    const terms = rawTerms.length ? rawTerms : [S.search];
+    const baseTerms = rawTerms.length ? rawTerms : [S.search];
+    // Expand with topic synonyms (e.g. "community helpers" -> firefighter, doctor, etc.)
+    const terms = expandSearchTerms(baseTerms, S.search);
     // Score and filter — must match at least one term
     const scored = arr.map(a=>{
       const haystack = [
