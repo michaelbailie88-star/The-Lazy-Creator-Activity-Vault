@@ -943,10 +943,10 @@ body{top:0!important}
 .filter-dd-item:hover{background:rgba(255,255,255,0.05);color:var(--ink)}
 .filter-dd-item.active{background:var(--accent);color:#fff}
 .filter-dd-item .dd-cnt{font-size:10.5px;opacity:.7;font-weight:700}
-@media(max-width:640px){
-  .filter-dd-panel{left:0;right:auto}
-  .filter-dd:nth-child(3) .filter-dd-panel{left:auto;right:0}
-}
+/* Mobile overflow handling is done in JS (positionFilterDd) since flex-wrap
+   means dropdown position on screen doesn't correspond to DOM order --
+   a CSS nth-child guess here previously pushed the Age dropdown off-screen
+   whenever it wrapped onto its own row on a narrow phone. */
 
 .toggle{
   display:flex;width:100%;max-width:440px;
@@ -12535,12 +12535,41 @@ const AGE_TIERS_BY_BRAND = {
   r: [{id:'all',em:'🧘',lbl:'All ages'},{id:'2-5',em:'🧸',lbl:'Toddlers 2–5'},{id:'3-8',em:'🌱',lbl:'Early 3–8'},{id:'5-8',em:'🎨',lbl:'School 5–8'},{id:'8-12',em:'📐',lbl:'Tweens 8–12'}]
 };
 
+function positionFilterDd(dd){
+  const panel = dd.querySelector('.filter-dd-panel');
+  if(!panel) return;
+  // Reset to default (left-aligned to trigger) before measuring, so a stale
+  // flip from a previous open/resize doesn't affect this measurement.
+  panel.style.left = '0';
+  panel.style.right = 'auto';
+  const rect = panel.getBoundingClientRect();
+  const overflowsRight = rect.right > window.innerWidth - 8;
+  if(overflowsRight){
+    // Check the OTHER direction actually has room before flipping --
+    // prevents flipping into an overflow on the left instead.
+    const wouldOverflowLeft = (rect.right - rect.width) < 8 - (rect.right - window.innerWidth);
+    panel.style.left = 'auto';
+    panel.style.right = '0';
+    // If flipping to the right would now push it off the LEFT edge (panel
+    // wider than available space either direction), clamp it fully on-screen
+    // instead of letting either edge run off the viewport.
+    const flippedRect = panel.getBoundingClientRect();
+    if(flippedRect.left < 8){
+      panel.style.right = 'auto';
+      panel.style.left = (8 - dd.getBoundingClientRect().left) + 'px';
+    }
+  }
+}
 function toggleFilterDd(id){
   const dd = document.getElementById(id);
   if(!dd) return;
   const wasOpen = dd.classList.contains('open');
   document.querySelectorAll('.filter-dd.open').forEach(d=>d.classList.remove('open'));
-  if(!wasOpen) dd.classList.add('open');
+  if(!wasOpen){
+    dd.classList.add('open');
+    // Position after the panel is actually visible/measurable (next frame).
+    requestAnimationFrame(()=>positionFilterDd(dd));
+  }
 }
 document.addEventListener('click', function(e){
   if(!e.target.closest('.filter-dd')){
