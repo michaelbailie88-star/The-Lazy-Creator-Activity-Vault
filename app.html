@@ -3444,7 +3444,7 @@ function togglePerfMode(){
  <span class="lock-tier-em">🗝️</span>
  <div class="lock-tier-info">
  <div class="lock-tier-name">Vault</div>
- <div class="lock-tier-desc">All 5,330 activities · all 5 modules incl. ParentED</div>
+ <div class="lock-tier-desc">All 5,330 activities · all 6 modules incl. ParentED</div>
  </div>
  </div>
  <div class="lock-tier-right">
@@ -3544,7 +3544,7 @@ body,button,input,select,textarea{font-family:'Plus Jakarta Sans',system-ui,sans
  <span class="gate-brand-pill lc-metal lc-metal-cyan">Regulat<b style="color:#fde68a">ED</b></span>
  </div>
  <h1 class="gate-h">One vault.<br><em>Every activity.</em></h1>
- <p class="gate-sub">5,330 ready-to-use activities across 5 modules. Purchase below — your license key arrives by email and unlocks everything in seconds.</p>
+ <p class="gate-sub">5,330 ready-to-use activities across 6 modules. Purchase below — your license key arrives by email and unlocks everything in seconds.</p>
  <label class="gate-key-label" for="keyInput">Already purchased? Enter your license key here</label>
  <div class="gate-err" id="keyErr"></div>
  <div class="gate-key-row">
@@ -3562,7 +3562,7 @@ body,button,input,select,textarea{font-family:'Plus Jakarta Sans',system-ui,sans
  <span class="gate-tier-em">🗝️</span>
  <div class="gate-tier-name">Vault</div>
  <span class="gate-tier-price">$67</span>
- <div class="gate-tier-c">All 5,330 activities<br>All 5 modules incl. ParentED</div>
+ <div class="gate-tier-c">All 5,330 activities<br>All 6 modules incl. ParentED</div>
  <div class="gate-tier-cta">Buy Vault →</div>
  </a>
  <a class="gate-tier gt4 lc-metal lc-metal-blue" href="https://thelazycreator.gumroad.com/l/muyuj" target="_blank" style="grid-column:span 1">
@@ -4113,7 +4113,7 @@ function navToTab(tab){
  <div class="modal-section">
  <h4>Pricing</h4>
  <ul>
- <li><strong>Vault ($67):</strong> Everything — all 5,330 activities, all 5 modules incl. ParentED, Mrs. Bailie, lifetime updates. For individuals and families.</li>
+ <li><strong>Vault ($67):</strong> Everything — all 5,330 activities, all 6 modules incl. ParentED, Mrs. Bailie, lifetime updates. For individuals and families.</li>
  <li><strong>School ($397):</strong> Everything in Vault + multi-user license — 10 staff keys for your team (need more? email us) + printable educator quick-start PDF + direct email support within 24h. For daycares, camps, programs.</li>
  </ul>
         One-time purchase. No subscription. Lifetime access. Free updates forever.
@@ -12850,7 +12850,7 @@ function updateSearchBadge(){
       badge = document.createElement('div');
       badge.id = 'searchGlobalBadge';
       badge.style.cssText = 'font-size:11px;font-weight:700;color:#60a5fa;padding:4px 16px 6px;display:flex;align-items:center;gap:6px;animation:fadeIn 0.2s ease';
-      badge.innerHTML = '🌐 Searching all 5 modules — <span style="color:rgba(255,255,255,0.4);font-weight:600">tap a module to narrow results</span>';
+      badge.innerHTML = '🌐 Searching all 6 modules — <span style="color:rgba(255,255,255,0.4);font-weight:600">tap a module to narrow results</span>';
       const searchWrap = document.getElementById('searchInput').closest('.search-row')||document.getElementById('searchInput').parentElement;
       if(searchWrap && searchWrap.parentElement) searchWrap.parentElement.insertBefore(badge, searchWrap.nextSibling);
     }
@@ -18592,5 +18592,67 @@ if('serviceWorker' in navigator){
 </script>
 
 <script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="b6ecb9d9-09ee-4995-a78a-3250bb480b5b" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiYjZlY2I5ZDktMDllZS00OTk1LWE3OGEtMzI1MGJiNDgwYjViIiwiYWNjb3VudF9pZCI6IjZhMDhhZmI5YTg0ZDkzMDhiMTc4NDIwNyIsImRlcGxveV9pZCI6IjZhNTc5YTlkNWVkZWJkYTY0NzM4MTkzOSIsImlzc3VlciI6Im5mc2VydmVyIn0.wvAW_o79-lzqGpsWI2ZMjjC8XCF3T8h8yczEcfOcIfo"></script>
+<style id="fx-live">
+.fx-fab{position:fixed;right:16px;bottom:82px;z-index:9998;display:none;flex-direction:column;gap:10px;align-items:flex-end}
+.fx-fab button{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;border:none;cursor:pointer;border-radius:100px;box-shadow:0 12px 30px -8px rgba(0,0,0,.55);display:inline-flex;align-items:center;gap:8px;transition:transform .16s cubic-bezier(.4,0,.2,1),filter .2s}
+.fx-fab button:hover{transform:translateY(-3px);filter:brightness(1.07)}
+.fx-fab button:focus-visible{outline:none;box-shadow:0 0 0 3px #0b1220,0 0 0 5px #0284c7}
+.fx-plan{background:linear-gradient(135deg,#e85d04,#f97316);color:#fff;padding:15px 22px;font-size:15px}
+.fx-surprise{background:linear-gradient(135deg,#3b7a57,#0284c7);color:#fff;padding:12px 18px;font-size:13px}
+@media(max-width:720px){.fx-fab{bottom:74px}.fx-plan{padding:13px 18px;font-size:14px}}
+.fx-ov{position:fixed;inset:0;z-index:10000;background:rgba(6,10,20,.74);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px;animation:fxfade .25s ease}
+.fx-ov.on{display:flex}
+@keyframes fxfade{from{opacity:0}to{opacity:1}}
+.fx-ov-card{width:100%;max-width:1000px;height:92vh;background:#f9f6f0;border-radius:22px;overflow:hidden;position:relative;box-shadow:0 40px 100px -30px rgba(0,0,0,.8)}
+.fx-ov-card iframe{width:100%;height:100%;border:0;display:block}
+.fx-close{position:absolute;top:12px;right:12px;z-index:2;width:42px;height:42px;border-radius:50%;border:none;background:#121b28;color:#fff;font-size:18px;cursor:pointer;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.fx-welcome{position:fixed;left:50%;bottom:150px;transform:translateX(-50%) translateY(20px);z-index:9997;background:rgba(17,24,39,.97);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px);color:#eaf0f7;border-radius:18px;padding:16px 18px;max-width:calc(100% - 32px);width:420px;box-shadow:0 20px 50px -16px rgba(0,0,0,.7);opacity:0;pointer-events:none;transition:opacity .4s cubic-bezier(.4,0,.2,1),transform .4s cubic-bezier(.4,0,.2,1)}
+.fx-welcome.on{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.fx-welcome h4{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;margin:0 0 4px;letter-spacing:-.02em}
+.fx-welcome p{font-size:13px;color:#aeb9c7;margin:0 0 12px;line-height:1.5}
+.fx-welcome .row{display:flex;gap:8px;align-items:center}
+.fx-welcome .go{flex:1;background:linear-gradient(135deg,#e85d04,#f97316);color:#fff;border:none;border-radius:100px;padding:11px;font-weight:800;font-size:13px;cursor:pointer}
+.fx-welcome .no{background:none;border:none;color:#8593a3;font-size:12px;cursor:pointer;padding:0 10px}
+.card-cat{border:1.5px solid currentColor;border-radius:100px;padding:3px 10px!important;font-weight:800!important;display:inline-flex!important;align-items:center;gap:5px;font-size:10.5px!important;letter-spacing:.04em}
+@media(prefers-reduced-motion:reduce){.fx-fab button,.fx-welcome{transition-duration:.001ms!important}}
+</style>
+<div class="fx-fab" id="fxFab">
+  <button class="fx-plan" id="fxPlan" data-testid="app-plan-session">✨ Plan a Session</button>
+  <button class="fx-surprise" id="fxSurprise" data-testid="app-surprise">🎲 Surprise me</button>
+</div>
+<div class="fx-welcome" id="fxWelcome">
+  <h4 id="fxGreet">Hello</h4>
+  <p>What does your room need today? Let Mrs. Bailie build you a whole session.</p>
+  <div class="row"><button class="go" id="fxWelcomeGo">Plan my day</button><button class="no" id="fxWelcomeNo">Maybe later</button></div>
+</div>
+<div class="fx-ov" id="fxOverlay"><div class="fx-ov-card"><button class="fx-close" id="fxOvClose" aria-label="Close planner">✕</button><iframe id="fxFrame" title="Mrs. Bailie planner" data-src="mrs-bailie.html"></iframe></div></div>
+<script>
+(function(){
+  function gateGone(){var g=document.getElementById('gate');return !g||getComputedStyle(g).display==='none'||g.offsetParent===null;}
+  var ov=document.getElementById('fxOverlay'),frame=document.getElementById('fxFrame'),fab=document.getElementById('fxFab'),w=document.getElementById('fxWelcome');
+  function openPlan(){if(!frame.src)frame.src=frame.getAttribute('data-src');ov.classList.add('on');document.body.style.overflow='hidden';}
+  function closePlan(){ov.classList.remove('on');document.body.style.overflow='';}
+  document.getElementById('fxPlan').addEventListener('click',openPlan);
+  document.getElementById('fxOvClose').addEventListener('click',closePlan);
+  ov.addEventListener('click',function(e){if(e.target===ov)closePlan();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.classList.contains('on'))closePlan();});
+  document.getElementById('fxSurprise').addEventListener('click',function(){
+    var cards=[].slice.call(document.querySelectorAll('.card')).filter(function(c){return c.offsetParent!==null;});
+    if(!cards.length)return;var pick=cards[Math.floor(Math.random()*cards.length)];
+    pick.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){pick.click();},250);
+  });
+  var h=new Date().getHours();var g=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
+  document.getElementById('fxGreet').textContent=g+' \uD83D\uDC4B';
+  document.getElementById('fxWelcomeGo').addEventListener('click',function(){w.classList.remove('on');openPlan();});
+  document.getElementById('fxWelcomeNo').addEventListener('click',function(){w.classList.remove('on');});
+  var iv=setInterval(function(){
+    if(gateGone()){
+      fab.style.display='flex';
+      if(!sessionStorage.getItem('fx_welcome')){sessionStorage.setItem('fx_welcome','1');setTimeout(function(){w.classList.add('on');setTimeout(function(){w.classList.remove('on');},9000);},1200);}
+      clearInterval(iv);
+    }
+  },700);
+})();
+</script>
 </body>
 </html>
