@@ -34,7 +34,7 @@
   --bg:#fffaf3; --paper:#fff; --ink:#0f1d2e; --ink-2:#3b4a5e; --ink-3:#6b7a8e;
   --line:#e8dfce; --line-2:#d4c8af;
   /* AdaptED palette — multi-color */
-  --a-primary:#061320; --a-accent:#b83a08; --a-tint:#fcdec8;
+  --a-primary:#4c0519; --a-accent:#be123c; --a-tint:#ffe4e6;
   /* AdaptED per-category color palette (rainbow) */
   --c-movement:#b83a08; --c-art:#be185d; --c-music:#5b21b6; --c-sensory:#0369a1;
   --c-finemotor:#166534; --c-science:#0284c7; --c-literacy:#b91c1c; --c-math:#7e22ce;
@@ -45,13 +45,13 @@
   --c-family:#c2410c; --c-holiday:#b91c1c; --c-language:#1d4ed8; --c-spelling:#6b2112;
   --c-logic:#3b0764; --c-money:#14532d; --c-time:#1e3a8a; --c-patterns:#6b21a8;
   /* CampED palette — deep forest */
-  --c-primary:#0d1f12; --c-accent:#92400e; --c-tint:#fde9b0;
+  --c-primary:#052e22; --c-accent:#047857; --c-tint:#d1fae5;
   --c-bg-camp:#c8e0ae;
   /* TeenagED palette — deep indigo / steel blue */
-  --t-primary:#1e0a5e; --t-accent:#0369a1; --t-tint:#bae6fd;
+  --t-primary:#2e1065; --t-accent:#7c3aed; --t-tint:#ede9fe;
   --t-bg-teen:#d4ccf8;
   /* RegulatED palette — deep rust / dark amber */
-  --r-primary:#7c1d06; --r-accent:#b45309; --r-tint:#fde9c0;
+  --r-primary:#083344; --r-accent:#0e7490; --r-tint:#cffafe;
   --r-bg:#fcd9a0;
   /* tier colors */
   --t1:#1d40b0; --t2:#166534; --t3:#92400e; --t4:#5b21b6;
@@ -3520,10 +3520,15 @@ body,button,input,select,textarea{font-family:'Plus Jakarta Sans',system-ui,sans
 .dt-buy{background:linear-gradient(135deg,var(--fx-terra),#f97316)!important}
 
 /* ACTIVITY CARDS */
-.card{border-radius:18px!important;transition:transform .22s var(--fx-ease),box-shadow .22s var(--fx-ease)!important;will-change:transform}
-.card:hover{transform:translateY(-4px)!important;box-shadow:0 22px 48px -18px rgba(0,0,0,.6)!important}
-.card-title{font-family:'Bricolage Grotesque',sans-serif!important;letter-spacing:-.01em}
+.card{border-radius:20px!important;border-top:4px solid var(--accent)!important;transition:transform .22s var(--fx-ease),box-shadow .22s var(--fx-ease)!important;will-change:transform;padding-top:4px}
+.card:hover{transform:translateY(-5px)!important;box-shadow:0 26px 54px -18px rgba(0,0,0,.55)!important}
+.card-title{font-family:'Bricolage Grotesque',sans-serif!important;letter-spacing:-.02em}
 .tag{border-radius:100px!important}
+/* layout — neater, centred, calmer rhythm */
+#app{max-width:1200px;margin-left:auto!important;margin-right:auto!important}
+.section-hdr{margin-top:10px!important}
+.search input{border-radius:100px!important}
+.stat{border-radius:14px!important}
 
 /* CHIPS / FILTERS */
 .filter-dd-btn,.chip{border-radius:100px!important;transition:transform .16s var(--fx-ease),background .16s,border-color .16s!important}
@@ -3538,7 +3543,7 @@ body,button,input,select,textarea{font-family:'Plus Jakarta Sans',system-ui,sans
 <div id="gate">
  <div class="gate-card">
  <div class="gate-brand">
- <span class="gate-brand-pill lc-metal lc-metal-blue">Adapt<b style="color:#fde68a">ED</b></span>
+ <span class="gate-brand-pill lc-metal lc-metal-pink">Adapt<b style="color:#fde68a">ED</b></span>
  <span class="gate-brand-pill lc-metal lc-metal-green">Camp<b style="color:#fde68a">ED</b></span>
  <span class="gate-brand-pill lc-metal lc-metal-purple">Teenag<b style="color:#fde68a">ED</b></span>
  <span class="gate-brand-pill lc-metal lc-metal-cyan">Regulat<b style="color:#fde68a">ED</b></span>
@@ -18613,7 +18618,7 @@ if('serviceWorker' in navigator){
 .fx-welcome .row{display:flex;gap:8px;align-items:center}
 .fx-welcome .go{flex:1;background:linear-gradient(135deg,#e85d04,#f97316);color:#fff;border:none;border-radius:100px;padding:11px;font-weight:800;font-size:13px;cursor:pointer}
 .fx-welcome .no{background:none;border:none;color:#8593a3;font-size:12px;cursor:pointer;padding:0 10px}
-.card-cat{border:1.5px solid currentColor;border-radius:100px;padding:3px 10px!important;font-weight:800!important;display:inline-flex!important;align-items:center;gap:5px;font-size:10.5px!important;letter-spacing:.04em}
+.card-cat{background:var(--tint)!important;color:var(--accent)!important;border:none!important;border-radius:100px;padding:4px 12px!important;font-weight:800!important;display:inline-flex!important;align-items:center;gap:5px;font-size:10px!important;letter-spacing:.06em}
 @media(prefers-reduced-motion:reduce){.fx-fab button,.fx-welcome{transition-duration:.001ms!important}}
 </style>
 <div class="fx-fab" id="fxFab">
