@@ -164,6 +164,21 @@ footer{position:relative;z-index:1;text-align:center;padding:40px 20px 60px;colo
   .detail{max-height:none!important}
   .phase,.box{break-inside:avoid;box-shadow:none;border-color:#ccc}
 }
+.intake{position:relative;z-index:1;background:var(--paper);border:1.5px dashed var(--ocean);border-radius:var(--radius);padding:16px 18px;margin-top:24px}
+.intake label{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--ocean);margin-bottom:10px}
+.note{width:100%;border:1.5px solid var(--line);border-radius:var(--r-sm);background:var(--bg);color:var(--ink);font-family:inherit;font-size:15px;padding:12px 14px;resize:vertical;min-height:58px}
+.note:focus-visible{outline:none;border-color:var(--focus);box-shadow:0 0 0 3px var(--ocean-t)}
+.btn-ghost.sm{margin-top:10px;padding:10px 16px;min-height:44px;font-size:14px;border-radius:var(--pill);border:1.5px solid var(--line);color:var(--ink);display:inline-flex;align-items:center;gap:8px;font-weight:700;background:transparent}
+.btn-ghost.sm:hover{border-color:var(--ocean);color:var(--ocean)}
+.btn-ghost.sm:focus-visible{outline:none;box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--focus)}
+.tlbar{display:flex;height:12px;border-radius:var(--pill);overflow:hidden;border:1px solid var(--line);margin:8px 0 16px;box-shadow:var(--shadow)}
+.tlbar span{display:block;min-width:6px}
+.why{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.why span{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--sage);background:var(--sage-t);border-radius:var(--pill);padding:3px 9px}
+.ph-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:2px 10px}
+.swap{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:800;color:var(--ink-3);padding:8px 12px;border-radius:8px}
+.swap:hover{color:var(--terra)}
+.swap:focus-visible{outline:none;box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--focus)}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 </style>
 </head>
@@ -192,6 +207,11 @@ footer{position:relative;z-index:1;text-align:center;padding:40px 20px 60px;colo
 </section>
 
 <section class="wrap">
+  <div class="intake">
+    <label for="note"><i data-lucide="message-circle-heart" style="width:16px"></i> Or just tell me in your own words</label>
+    <textarea id="note" class="note" rows="2" placeholder="e.g. Rowdy group of eight 7‑year‑olds, indoors, about 20 minutes, nothing prepped — I need to bring the energy down"></textarea>
+    <button class="btn-ghost sm" id="readNote"><i data-lucide="wand-2" style="width:16px"></i> Read my note &amp; build</button>
+  </div>
   <div class="panel" id="planner"></div>
   <div class="build-row">
     <button class="btn btn-primary" id="buildBtn"><i data-lucide="wand-sparkles" style="width:18px"></i> Build my session</button>
@@ -203,6 +223,7 @@ footer{position:relative;z-index:1;text-align:center;padding:40px 20px 60px;colo
     <div class="res-head">
       <div><div class="summary" id="summary"></div><h2 class="serif" id="resTitle">Your session</h2></div>
     </div>
+    <div class="tlbar" id="tlbar" aria-hidden="true"></div>
     <div class="timeline" id="timeline"></div>
     <div class="aux">
       <div class="box"><h3><span class="ic" style="background:var(--mustard)"><i data-lucide="clipboard-list" style="width:18px"></i></span> Materials & swaps</h3><ul class="mat" id="matList"></ul></div>
@@ -298,6 +319,25 @@ const A=[
    d:'Lie back, watch the sky, and share one quiet noticing — a gentle close to an active session.',steps:['Lie or sit facing the sky.','One slow minute of just watching.','Each person shares one quiet thing they noticed.'],easier:'Keep it to 30 seconds.',harder:'Add a gratitude sentence each.'},
  {id:'k5',ph:'calm',mod:'unboxed',em:'🧦',t:'Heavy‑Work Bin Pack‑Down',en:'calm',ages:['2-5','6-10'],grp:['small','large'],env:['indoor','home'],mats:['sensory','zero'],goals:['reg','fine'],sn:['any','seek','neuro'],
    d:'Carrying and packing the bin gives calming "heavy work" input while it doubles as clean‑up.',steps:['Fill a bin so it is nicely heavy but safe.','Children carry it slowly to its home.','Press hands flat on the lid, three slow breaths.'],easier:'Two children carry together.',harder:'Add a slow squat to place it down.'},
+ // ── added pool for variety + swaps ──
+ {id:'w5',ph:'warm',mod:'unboxed',em:'🧺',t:'Mystery Bag Feel',en:'focus',ages:['2-5','6-10'],grp:['solo','small','large'],env:['indoor','home'],mats:['sensory','zero'],goals:['fine','social'],sn:['any','neuro','seek','quiet'],
+   d:'One object hidden in a soft bag; children feel and guess before looking — a focused sensory hook.',steps:['Hide one safe object in a soft bag.','Each child feels and describes before guessing.','Reveal and celebrate the describing, not the right answer.'],easier:'Offer two choices to pick between.',harder:'Describe with three words before guessing.'},
+ {id:'w6',ph:'warm',mod:'parented',em:'☀️',t:'Good‑Morning Roll Call',en:'focus',ages:['2-5','family'],grp:['small','large'],env:['home','indoor'],mats:['zero'],goals:['social','reg'],sn:['any','quiet'],
+   d:'A gentle name‑and‑wave greeting that signals "we are starting" and builds belonging.',steps:['Say each name with a wave.','Child waves back or picks a gesture.','End with one group wave together.'],easier:'Adult waves for a shy child.',harder:'Each child adds a feeling word to their wave.'},
+ {id:'c9',ph:'core',mod:'teenaged',em:'💬',t:'Perspective Swap Talk',en:'focus',ages:['11-17'],grp:['small','large'],env:['indoor'],mats:['zero','paper'],goals:['social','exec','reg'],sn:['any','quiet'],
+   d:'Teens argue a viewpoint, then swap sides — building empathy and flexible thinking.',steps:['Pose a low‑stakes debate topic.','Two sides prepare for one minute.','Halfway, swap sides and continue.'],easier:'Give sentence starters.',harder:'Add a neutral judge who names the strongest point on each side.'},
+ {id:'c10',ph:'core',mod:'regulated',em:'🎨',t:'Zones Colour Map',en:'focus',ages:['6-10','11-17'],grp:['solo','small'],env:['indoor','home'],mats:['art','paper'],goals:['reg','fine'],sn:['any','neuro','quiet'],
+   d:'Children colour a simple body outline to show where and how big a feeling sits — naming to tame it.',steps:['Give a blank body outline.','Colour where a feeling lives and how big it is.','Talk about one colour they chose.'],easier:'Use two colours: calm and big.',harder:'Add what helps shrink the big colour.'},
+ {id:'c11',ph:'core',mod:'adapted',em:'🔢',t:'Counting Nature Sort',en:'focus',ages:['2-5','6-10'],grp:['small','large'],env:['outdoor','indoor'],mats:['outdoor'],goals:['fine','exec'],sn:['any','seek'],
+   d:'Collect natural loose parts and sort, count and pattern them — early maths through play.',steps:['Collect a small handful of natural items each.','Sort by one rule (size, type, colour).','Count each group and make a simple pattern.'],easier:'Sort into just two groups.',harder:'Create an AB or ABC repeating pattern.'},
+ {id:'t5',ph:'trans',mod:'unboxed',em:'📦',t:'Pass‑the‑Box Tidy',en:'move',ages:['2-5','6-10'],grp:['small','large'],env:['indoor','home'],mats:['zero'],goals:['gross','social'],sn:['any','seek'],
+   d:'One box travels the circle collecting stray items — turning clean‑up into a shared moving game.',steps:['Start a box at one child.','Pass it round; each adds one stray item.','Land it at its home shelf together.'],easier:'Adult helps carry.',harder:'Pass to a slow beat without dropping.'},
+ {id:'t6',ph:'trans',mod:'regulated',em:'🌉',t:'Breathing Bridge Walk',en:'calm',ages:['2-5','6-10','11-17','family'],grp:['solo','small','large'],env:['indoor','home','outdoor'],mats:['zero'],goals:['reg','gross'],sn:['any','neuro','quiet'],
+   d:'Walk slowly heel‑to‑toe to the next space, one breath per step — a calm bridge between activities.',steps:['Line up facing the next space.','Heel‑to‑toe steps, one slow breath each.','Arrive and shake hands out gently.'],easier:'Hold a partner or the wall.',harder:'Balance a beanbag on the head while walking.'},
+ {id:'k6',ph:'calm',mod:'teenaged',em:'📓',t:'One‑Line Close',en:'calm',ages:['11-17','family'],grp:['solo','small','large'],env:['indoor','home'],mats:['zero','paper'],goals:['reg','exec'],sn:['any','quiet'],
+   d:'A quiet one‑line reflection to close: one thing that went okay, one thing for next time.',steps:['30 seconds of quiet to think.','Write or say one line: something okay today.','Add one small thing for next time.'],easier:'Say it aloud instead of writing.',harder:'Name one thing you would tell a friend who struggled.'},
+ {id:'k7',ph:'calm',mod:'parented',em:'📖',t:'Warm‑Down Story Corner',en:'calm',ages:['2-5','family'],grp:['solo','small'],env:['home'],mats:['zero'],goals:['reg','social'],sn:['any','neuro','quiet'],
+   d:'A slow, close, predictable wind‑down: dim light, quiet voice, a short familiar story.',steps:['Dim the light and lower your voice.','Sit close with a short, familiar story.','End with the same calm phrase each time.'],easier:'Look at pictures instead of reading.',harder:'Let the child tell the ending back.'},
 ];
 
 /* ---------------- STATE ---------------- */
@@ -332,8 +372,9 @@ function renderPlanner(){
 }
 
 /* ---------------- ENGINE ---------------- */
-function pick(phase){
-  const pool=A.filter(a=>a.ph===phase);
+function pick(phase,exclude){
+  exclude=exclude||[];
+  const pool=A.filter(a=>a.ph===phase&&!exclude.includes(a.id));
   const scored=pool.map(a=>{
     let s=Math.random()*0.9; // variety tie-breaker
     if(sel.module&&a.mod===sel.module) s+=4;
@@ -352,7 +393,7 @@ function pick(phase){
     }
     return {a,s};
   }).sort((x,y)=>y.s-x.s);
-  return scored[0]?scored[0].a:pool[0];
+  return scored[0]?scored[0].a:(A.filter(a=>a.ph===phase)[0]||null);
 }
 function distribute(total){
   if(total===5) return null; // quick-reset handled separately
@@ -373,11 +414,16 @@ function generate(){
   if(!dist){ // 5-minute reset = single calming micro-session
     phases=[{key:'calm',mins:5,a:pick('calm')}];
   }else{
+    const used=[];
+    const w=pick('warm',used); if(w)used.push(w.id);
+    const c=pick('core',used); if(c)used.push(c.id);
+    const tr=pick('trans',used); if(tr)used.push(tr.id);
+    const k=pick('calm',used); if(k)used.push(k.id);
     phases=[
-      {key:'warm',mins:dist.warm,a:pick('warm')},
-      {key:'core',mins:dist.core,a:pick('core')},
-      {key:'trans',mins:dist.trans,a:pick('trans')},
-      {key:'calm',mins:dist.calm,a:pick('calm')},
+      {key:'warm',mins:dist.warm,a:w},
+      {key:'core',mins:dist.core,a:c},
+      {key:'trans',mins:dist.trans,a:tr},
+      {key:'calm',mins:dist.calm,a:k},
     ];
   }
   currentPlan={sel:JSON.parse(JSON.stringify(sel)),total,phases,ts:Date.now()};
@@ -407,6 +453,77 @@ function backupText(){
   return `Because ${t}, keep this in your back pocket: stop the current activity without a fuss, drop your own voice low and slow, and go straight to “Bubble Breathing” or a “Turtle Tuck”. Lower the lights or step outside if you can. Re‑enter the plan at the calm‑down — never push back into core play from an overload.`;
 }
 
+/* ---------------- WHY-IT-FITS + HELPERS ---------------- */
+function reasonsFor(a){
+  const r=[]; const s=(currentPlan&&currentPlan.sel)||sel;
+  const envW={indoor:'works indoors',outdoor:'made for outdoors',home:'fits a small space'};
+  if(s.env&&a.env.includes(s.env))r.push(envW[s.env]);
+  if(s.sn&&s.sn!=='any'&&a.sn.includes(s.sn))r.push({neuro:'neurodivergent‑friendly',seek:'good for sensory‑seekers',quiet:'low‑stimulus'}[s.sn]);
+  const gm={gross:'gross',fine:'fine',reg:'reg',exec:'exec',social:'social'};
+  const gw={gross:'builds gross motor',fine:'builds fine motor',reg:'supports regulation',exec:'builds focus',social:'builds social skills'};
+  if(s.goal&&a.goals.includes(gm[s.goal]))r.push(gw[s.goal]);
+  if(s.mats&&s.mats.length&&a.mats.some(m=>s.mats.includes(m)&&m!=='zero'))r.push('uses what you have');
+  else if(a.mats.includes('zero'))r.push('zero prep');
+  return r.slice(0,3);
+}
+function reflectChips(){
+  document.querySelectorAll('.chips').forEach(row=>{const qid=row.dataset.q;row.querySelectorAll('.chip').forEach(c=>{const on=Array.isArray(sel[qid])?sel[qid].includes(c.dataset.v):sel[qid]===c.dataset.v;c.setAttribute('aria-pressed',String(on));});});
+}
+function swapPhase(i){
+  const p=currentPlan.phases[i];
+  const used=currentPlan.phases.map(x=>x.a&&x.a.id);
+  const next=pick(p.key,used);
+  if(next){p.a=next;renderResults();setTimeout(()=>{const el=document.querySelectorAll('.phase')[i];if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},60);toast('Swapped the '+PHLABEL[p.key].toLowerCase());}
+  else toast('That is the best match I have for now');
+}
+function parseNote(){
+  const t=(document.getElementById('note').value||'').toLowerCase();
+  if(!t.trim()){toast('Type a quick note first');return;}
+  const has=(...w)=>w.some(x=>t.includes(x));
+  if(has('teen','adolescen','year 7','year 8','year 9','11','12','13','14','15','16','17'))sel.age='11-17';
+  else if(has('toddler','preschool','pre-school','early years','kinder','nursery','2 year','3 year','4 year','5 year','two year','three year','four year'))sel.age='2-5';
+  else if(has('school age','school-age','primary','elementary','6 year','7 year','8 year','9 year','10 year','six year','seven year','eight year','nine year'))sel.age='6-10';
+  if(has('whole family','family','parents','at home with','siblings'))sel.age='family';
+  if(has('1-on-1','one on one','one-on-one','single child','just one','1 child','one child'))sel.group='solo';
+  else if(has('whole class','large group','big group','lots of','class of','a dozen','loads of'))sel.group='large';
+  else if(has('small group','handful','a few','group of 3','group of 4','group of 5','group of 6','couple of kids'))sel.group='small';
+  if(has('outside','outdoor','yard','park','playground','field','garden'))sel.env='outdoor';
+  else if(has('at home','living room','house','lounge','bedroom','small room'))sel.env='home';
+  else if(has('classroom','indoor','inside','at the table'))sel.env='indoor';
+  if(has('5 min','five min','couple of minutes','quick reset','two minutes','2 min'))sel.time='5';
+  else if(has('15 min','fifteen','quarter hour','transition time'))sel.time='15';
+  else if(has('hour','60 min','sixty','full session','long session'))sel.time='60';
+  else if(has('30 min','thirty','half hour','half-hour','20 min','twenty','25 min','block'))sel.time='30';
+  const m=[];
+  if(has('no prep','nothing','zero prep','empty hand','no material','no supplies','nothing prepped','no time to prep'))m.push('zero');
+  if(has('paper','cardboard','recycl','box','boxes','junk mail'))m.push('paper');
+  if(has('sensory','rice','sensory bin','oats','beans','sand','water bin'))m.push('sensory');
+  if(has('paint','draw','craft','glue','marker','crayon','colour in','color in','art supplies'))m.push('art');
+  if(has('leaves','sticks','stones','rocks','natural object','nature','pinecone','shells'))m.push('outdoor');
+  if(m.length)sel.mats=m;
+  if(has('hyper','over-stimulated','overstimulated','wound up','wild','bouncing off','too much energy','bring the energy down','bring them down','settle them','calm them down','wired'))sel.mood='hyper';
+  else if(has('sluggish','tired','low energy','flat','sleepy','lethargic','no energy','lunch slump'))sel.mood='low';
+  else if(has('fidget','restless','antsy','wiggly','cant sit',"can't sit",'distracted','squirmy'))sel.mood='fidgety';
+  else if(has('calm','balanced','settled','doing fine','pretty good','regulated already'))sel.mood='balanced';
+  if(has('regulat','emotion','feelings','meltdown','calm down','anxious','upset','self-control','self control'))sel.goal='reg';
+  else if(has('gross motor','run around','physical','move their bodies','energy out','get moving','active'))sel.goal='gross';
+  else if(has('fine motor','cutting','writing','pincer','hand strength','handwriting'))sel.goal='fine';
+  else if(has('focus','attention','executive','planning','concentrat','follow instructions'))sel.goal='exec';
+  else if(has('social','sharing','turn taking','turn-taking','friends','cooperat','teamwork','getting along'))sel.goal='social';
+  if(has('neurodiver','autis','adhd','asd','on the spectrum'))sel.sn='neuro';
+  else if(has('sensory seeking','sensory-seeking','seeks movement','crave movement','loves to crash','proprioceptive'))sel.sn='seek';
+  else if(has('quiet','low stim','low-stim','low-stimulus','sensitive to noise','overwhelm easily','needs calm space'))sel.sn='quiet';
+  if(has('camp','outdoor program','summer program'))sel.module='camped';
+  else if(has('unbox','loose parts','sensory kit','one box'))sel.module='unboxed';
+  else if(sel.age==='11-17'||has('teen'))sel.module='teenaged';
+  else if(sel.age==='family'||has('parent'))sel.module='parented';
+  else if(sel.goal==='reg'||has('regulat'))sel.module='regulated';
+  else sel.module='adapted';
+  reflectChips();
+  generate();
+  toast('Read your note — here is a plan');
+}
+
 /* ---------------- RENDER RESULTS ---------------- */
 function labelFor(qid,v){const q=QUESTIONS.find(x=>x.id===qid);const o=q&&q.opts.find(x=>x.v===v);return o?o.l:v;}
 function renderResults(){
@@ -423,10 +540,12 @@ function renderResults(){
   document.getElementById('summary').innerHTML=pieces.map(p=>`<span class="tagpill">${p}</span>`).join('')+`<span class="tagpill total-time"><i data-lucide="clock" style="width:13px"></i> ${currentPlan.total} min total</span>`;
   document.getElementById('resTitle').textContent=currentPlan.total===5?'Your 5‑minute reset':'Your '+currentPlan.total+'‑minute session';
 
+  // session timeline bar
+  document.getElementById('tlbar').innerHTML=currentPlan.phases.map(p=>`<span style="flex:${p.mins};background:var(${PHCOLOR[p.key]})" title="${PHLABEL[p.key]} · ${p.mins} min"></span>`).join('');
   // timeline
   const modName={adapted:'AdaptED',camped:'CampED',teenaged:'TeenagED',regulated:'RegulatED',parented:'ParentED',unboxed:'UnboxED'};
   document.getElementById('timeline').innerHTML=currentPlan.phases.map((p,i)=>{
-    const a=p.a; const col=PHCOLOR[p.key];
+    const a=p.a; const col=PHCOLOR[p.key]; const reasons=reasonsFor(a);
     return `<div class="phase ${p.key==='core'?'core':''}" style="--pc:var(${col})">
       <div class="ph-top">
         <div class="ph-em">${a.em}</div>
@@ -434,9 +553,13 @@ function renderResults(){
           <div class="ph-meta"><span class="ph-label">${PHLABEL[p.key]}</span><span class="ph-time">${p.mins} min</span><span class="ph-mod" style="color:var(${MODS[a.mod]})">${modName[a.mod]}</span></div>
           <div class="ph-title">${a.t}</div>
           <div class="ph-desc">${a.d}</div>
+          ${reasons.length?`<div class="why">${reasons.map(x=>`<span><i data-lucide="check" style="width:11px"></i>${x}</span>`).join('')}</div>`:''}
         </div>
       </div>
-      <button class="inspect" aria-expanded="false" data-i="${i}"><i data-lucide="chevron-down" style="width:15px"></i> Inspect this activity</button>
+      <div class="ph-actions">
+        <button class="inspect" aria-expanded="false" data-i="${i}"><i data-lucide="chevron-down" style="width:15px"></i> Inspect this activity</button>
+        <button class="swap" data-swap="${i}" aria-label="Swap this activity for another match"><i data-lucide="refresh-cw" style="width:14px"></i> Swap</button>
+      </div>
       <div class="detail" id="det${i}">
         <div class="detail-in">
           <h5>Steps</h5>
@@ -462,6 +585,7 @@ function renderResults(){
     det.style.maxHeight=open?'0':det.scrollHeight+40+'px';
     btn.querySelector('i').style.transform=open?'':'rotate(180deg)';
   }));
+  r.querySelectorAll('.swap').forEach(btn=>btn.addEventListener('click',()=>swapPhase(parseInt(btn.dataset.swap,10))));
   r.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -472,11 +596,11 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 
 /* ---------------- ACTIONS ---------------- */
 document.getElementById('buildBtn').addEventListener('click',generate);
+document.getElementById('readNote').addEventListener('click',parseNote);
 document.getElementById('surpriseBtn').addEventListener('click',()=>{
   QUESTIONS.forEach(q=>{ if(q.multi){sel[q.id]=[q.opts[Math.floor(Math.random()*q.opts.length)].v];}
     else{sel[q.id]=q.opts[Math.floor(Math.random()*q.opts.length)].v;} });
-  // reflect in UI
-  document.querySelectorAll('.chips').forEach(row=>{const qid=row.dataset.q;row.querySelectorAll('.chip').forEach(c=>{const on=Array.isArray(sel[qid])?sel[qid].includes(c.dataset.v):sel[qid]===c.dataset.v;c.setAttribute('aria-pressed',String(on));});});
+  reflectChips();
   generate();
 });
 document.getElementById('restartBtn').addEventListener('click',()=>{
