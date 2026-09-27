@@ -12563,12 +12563,12 @@ function forceCardColors(scopeEls){
     : document.querySelectorAll('.card, div.pick-card, .modal');
   cardEls.forEach(el=>{
     el.style.setProperty('background', bg, 'important');
-    el.style.setProperty('border', el.classList.contains('modal') ? '3px solid #ffffff' : '2px solid #ffffff', 'important');
+    el.style.setProperty('border', el.classList.contains('modal') ? '1px solid rgba(255,255,255,0.16)' : '1px solid rgba(255,255,255,0.14)', 'important');
   });
   if(!scopeEls){
     document.querySelectorAll('.chip').forEach(el=>{
       el.style.setProperty('background', bg, 'important');
-      el.style.setProperty('border', '2px solid #ffffff', 'important');
+      el.style.setProperty('border', '1px solid rgba(255,255,255,0.16)', 'important');
     });
   }
   // Force energy pill colors directly via JS — guaranteed to win regardless of CSS cascade
@@ -18619,6 +18619,20 @@ if('serviceWorker' in navigator){
 .fx-welcome .go{flex:1;background:linear-gradient(135deg,#e85d04,#f97316);color:#fff;border:none;border-radius:100px;padding:11px;font-weight:800;font-size:13px;cursor:pointer}
 .fx-welcome .no{background:none;border:none;color:#8593a3;font-size:12px;cursor:pointer;padding:0 10px}
 .card-cat{background:var(--tint)!important;color:var(--accent)!important;border:none!important;border-radius:100px;padding:4px 12px!important;font-weight:800!important;display:inline-flex!important;align-items:center;gap:5px;font-size:10px!important;letter-spacing:.06em}
+/* ===== FULL RENOVATION — pills, borders, inputs, modals, chrome ===== */
+.tag,.mat-chip,.wxs-tag,.pe-tab,.tier-badge,.energy-pill,.sp-chip,.filter-dd-item,.done-btn{border-radius:100px!important}
+.tag{padding:4px 11px!important;font-weight:700!important}
+.chip{border-radius:100px!important;padding:9px 15px!important;font-weight:700!important}
+button,.btn,.demo-btn,.res-btn,.about-contact-btn,.plan-new-btn,.gate-unlock-btn,.gate-tier-cta,.coll-picker-close,.picks-refresh{border-radius:100px!important}
+input,select,textarea,.search input,.eg-input,.coll-new-input,.sp-textarea,.filter-dd-btn{border-radius:14px!important}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none!important;box-shadow:0 0 0 3px rgba(2,132,199,.28)!important}
+.modal,.modal-card,.sheet,.picker-card,.about-card,.plan-card,.res-card,.mat-card,.idea-card,.coll-item,.pick-card,.stat,.sp-card,.sp-mode-card,.wxs-card{border-radius:18px!important}
+.hdr,.bottom-nav,.tabbar,.tabs,.toggle-bar{backdrop-filter:blur(12px)}
+.section-hdr::before{width:5px!important;border-radius:3px!important;background:var(--accent)!important}
+[class*="mode-card"],.mood-tile,.energy-card{border-radius:20px!important}
+*::-webkit-scrollbar{width:11px;height:11px}
+*::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16);border-radius:100px;border:3px solid transparent;background-clip:padding-box}
+*::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.28);background-clip:padding-box}
 @media(prefers-reduced-motion:reduce){.fx-fab button,.fx-welcome{transition-duration:.001ms!important}}
 </style>
 <div class="fx-fab" id="fxFab">
