@@ -6,7 +6,7 @@
 <title>Mrs. Bailie — Smart Session Planner · The Activity Vault</title>
 <meta name="description" content="Mrs. Bailie plans a full, timed session — warm-up, core play, sensory transition and calm-down — matched to your room, your time and your materials.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
@@ -26,9 +26,10 @@ html[data-theme="dark"]{
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s var(--ease),color .3s var(--ease)}
-.serif{font-family:'Fraunces',Georgia,serif}
+.serif{font-family:'Bricolage Grotesque',system-ui,sans-serif}
+.ed{font-family:'Fraunces',Georgia,serif}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;letter-spacing:-.01em;line-height:1.1}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.02em;line-height:1.04}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 ::selection{background:var(--terra);color:#fff}
 
@@ -43,7 +44,7 @@ html[data-theme="dark"] .blob{opacity:.24}
 /* header */
 header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .hd{display:flex;align-items:center;gap:12px;height:62px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-family:'Fraunces';font-size:18px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:18px;letter-spacing:-.02em}
 .brand .orb{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--sage),var(--ocean));display:grid;place-items:center;color:#fff;box-shadow:0 4px 14px -4px var(--ocean)}
 .hd .sp{flex:1}
 .icon-btn{width:42px;height:42px;border-radius:var(--pill);display:grid;place-items:center;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);transition:border-color .2s,background .2s}
@@ -111,7 +112,7 @@ html[data-theme="dark"] .qnum{color:var(--sage)}
 .ph-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px}
 .ph-label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--pc,var(--sage))}
 .ph-time{font-size:11px;font-weight:800;color:var(--ink-3);background:var(--bg);border:1px solid var(--line);border-radius:var(--pill);padding:3px 9px}
-.ph-title{font-size:19px;font-weight:700;font-family:'Fraunces'}
+.ph-title{font-size:19px;font-weight:800;font-family:'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.02em}
 .ph-desc{font-size:14px;color:var(--ink-2);margin-top:3px}
 .ph-mod{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
 .inspect{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--ocean);padding:8px 18px 4px}
@@ -179,6 +180,34 @@ footer{position:relative;z-index:1;text-align:center;padding:40px 20px 60px;colo
 .swap{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:800;color:var(--ink-3);padding:8px 12px;border-radius:8px}
 .swap:hover{color:var(--terra)}
 .swap:focus-visible{outline:none;box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--focus)}
+/* motion — come alive */
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes grow{from{opacity:0}to{opacity:1}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.avatar{animation:pop .6s var(--ease) backwards,floaty 5s ease-in-out .6s infinite}
+.kicker{animation:pop .6s var(--ease) .05s backwards}
+.hero h1{animation:pop .7s var(--ease) .12s backwards}
+.hero p{animation:pop .7s var(--ease) .2s backwards}
+.speech{animation:pop .7s var(--ease) .3s backwards}
+.qgroup{animation:pop .5s var(--ease) backwards}
+.qgroup:nth-child(2){animation-delay:.04s}.qgroup:nth-child(3){animation-delay:.08s}.qgroup:nth-child(4){animation-delay:.12s}.qgroup:nth-child(5){animation-delay:.16s}.qgroup:nth-child(6){animation-delay:.2s}.qgroup:nth-child(7){animation-delay:.24s}.qgroup:nth-child(8){animation-delay:.28s}.qgroup:nth-child(9){animation-delay:.32s}
+.chip:hover{transform:translateY(-2px)}
+.chip[aria-pressed="true"]{animation:pop .28s var(--ease)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost:hover{transform:translateY(-1px)}
+.act:hover{transform:translateY(-2px)}
+.phase{transition:transform .28s var(--ease),box-shadow .28s var(--ease);animation:pop .55s var(--ease) backwards}
+.timeline .phase:nth-child(1){animation-delay:.04s}.timeline .phase:nth-child(2){animation-delay:.12s}.timeline .phase:nth-child(3){animation-delay:.2s}.timeline .phase:nth-child(4){animation-delay:.28s}
+.phase:hover{transform:translateY(-5px);box-shadow:0 22px 48px -14px rgba(18,27,40,.22)}
+.phase .ph-em{transition:transform .32s var(--ease);display:inline-block}
+.phase:hover .ph-em{transform:rotate(-8deg) scale(1.18)}
+.box{transition:transform .22s var(--ease),box-shadow .22s var(--ease)}
+.box:hover{transform:translateY(-3px)}
+.tlbar span{animation:grow .7s var(--ease) backwards}
+.tlbar span:nth-child(2){animation-delay:.1s}.tlbar span:nth-child(3){animation-delay:.2s}.tlbar span:nth-child(4){animation-delay:.3s}
+.why span{animation:pop .4s var(--ease) backwards}
+.orb,.mini{transition:transform .3s var(--ease)}
+.brand:hover .orb{transform:rotate(-10deg) scale(1.08)}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 </style>
 </head>
