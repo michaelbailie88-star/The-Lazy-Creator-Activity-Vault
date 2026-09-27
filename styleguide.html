@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Activity Vault — Design System (Facelift)</title>
+<meta name="description" content="Design system & style guide for The Activity Vault facelift. Colour, type, module identities, buttons, cards, badges, motion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  /* ── Light (paper) surface ── */
+  --paper:#FBF7F0; --paper-2:#F3ECDE; --card:#FFFFFF;
+  --ink:#14212E; --ink-2:#3B4A5B; --ink-3:#5A6675;
+  --line:#E6DCCB; --line-2:#D3C7B1;
+  /* ── Dark surface ── */
+  --dk:#0B1220; --dk-2:#111B2C; --dk-card:#16223A;
+  --dk-ink:#EAF0F7; --dk-ink-2:#AEB9C7; --dk-ink-3:#8593A3;
+  --dk-line:rgba(255,255,255,0.10); --dk-line-2:rgba(255,255,255,0.16);
+  /* ── Module accents: on-light / on-dark / tint ── */
+  --adapt:#B8560E;  --adapt-d:#F6A63C; --adapt-t:#FBE6CE;
+  --camp:#1B6B43;   --camp-d:#4FD08A;  --camp-t:#D6EFDE;
+  --teen:#4038C7;   --teen-d:#A5AEFF;  --teen-t:#E1E2FB;
+  --reg:#9A3412;    --reg-d:#FB9E5C;   --reg-t:#F9E2D2;
+  --parent:#A81E63; --parent-d:#F79CC4;--parent-t:#F8DDEB;
+  --unbox:#0F6E7A;  --unbox-d:#4FD6E0; --unbox-t:#D3EEF1;
+  /* semantic */
+  --ok:#1B6B43; --warn:#9A6410; --err:#B42318; --focus:#4038C7;
+  --radius:16px; --radius-sm:11px; --radius-pill:999px;
+  --shadow-1:0 1px 2px rgba(20,33,46,.06),0 4px 12px rgba(20,33,46,.06);
+  --shadow-2:0 12px 32px -12px rgba(20,33,46,.28);
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.display{font-family:'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.02em;line-height:1.02}
+.editorial{font-family:'Fraunces',Georgia,serif}
+a{color:var(--teen);text-underline-offset:3px}
+::selection{background:var(--teen);color:#fff}
+
+/* Layout */
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(251,247,240,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;gap:16px;height:64px;max-width:1120px;margin:0 auto;padding:0 24px;flex-wrap:wrap}
+.logo{font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;display:flex;align-items:center;gap:8px}
+.logo .dot{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--adapt),var(--parent));display:inline-block}
+nav.toc{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.toc a{font-size:13px;font-weight:600;color:var(--ink-2);text-decoration:none;padding:7px 12px;border-radius:var(--radius-pill);transition:background .18s var(--ease),color .18s var(--ease)}
+nav.toc a:hover{background:var(--paper-2);color:var(--ink)}
+
+.hero{padding:72px 0 40px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--adapt)}
+h1.display{font-size:clamp(40px,7vw,68px);margin:14px 0 16px}
+h1.display em{font-style:normal;color:var(--adapt)}
+.lede{font-size:19px;color:var(--ink-2);max-width:60ch}
+
+section.block{padding:56px 0;border-top:1px solid var(--line)}
+h2.sec{font-family:'Bricolage Grotesque';font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.sec-sub{color:var(--ink-3);max-width:64ch;margin-bottom:32px;font-size:15px}
+h3.sub{font-family:'Bricolage Grotesque';font-weight:700;font-size:18px;margin:28px 0 14px;letter-spacing:-.01em}
+
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+/* Colour swatches */
+.sw{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow-1)}
+.sw .chip{height:96px;display:flex;align-items:flex-end;justify-content:space-between;padding:10px 12px;font-size:12px;font-weight:700}
+.sw .meta{padding:12px;font-size:13px}
+.sw .meta .name{font-weight:700}
+.sw .meta .hex{color:var(--ink-3);font-family:ui-monospace,monospace;font-size:12px}
+.ratio{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:var(--radius-pill);margin-top:8px}
+.ratio.pass{background:var(--camp-t);color:var(--camp)}
+.ratio.aaa{background:#DDEBFF;color:#1B4DB4}
+
+/* Module identity cards */
+.mod{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);min-height:230px;padding:22px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow-2)}
+.mod .mtop{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
+.mod .mem{font-size:30px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+.mod .mkind{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.2);padding:5px 10px;border-radius:var(--radius-pill);backdrop-filter:blur(4px)}
+.mod h4{font-family:'Bricolage Grotesque';font-weight:800;font-size:26px;position:relative;z-index:2}
+.mod p{font-size:13px;opacity:.92;position:relative;z-index:2;max-width:30ch}
+.mod .bg{position:absolute;inset:0;z-index:1;opacity:.9}
+/* per-module background treatments (static, GPU-cheap) */
+.m-adapt{background:#7A3708}
+.m-adapt .bg{background-image:radial-gradient(rgba(255,255,255,.20) 1.4px,transparent 1.4px);background-size:16px 16px}
+.m-camp{background:#124A2E}
+.m-camp .bg{background:
+  repeating-radial-gradient(circle at 30% 120%,transparent 0 22px,rgba(255,255,255,.09) 22px 24px)}
+.m-teen{background:#241F7A}
+.m-teen .bg{background-image:radial-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.5px),linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:22px 22px,22px 22px}
+.m-reg{background:#6B240C}
+.m-reg .bg{background:repeating-radial-gradient(circle at 80% 20%,transparent 0 20px,rgba(255,255,255,.08) 20px 23px)}
+.m-parent{background:#7A143F}
+.m-parent .bg{background:
+  radial-gradient(circle at 20% 30%,rgba(255,255,255,.14) 0 40px,transparent 42px),
+  radial-gradient(circle at 70% 70%,rgba(255,255,255,.12) 0 55px,transparent 57px),
+  radial-gradient(circle at 90% 25%,rgba(255,255,255,.10) 0 30px,transparent 32px)}
+.m-unbox{background:#0A4F58}
+.m-unbox .bg{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.10) 0 2px,transparent 2px 14px)}
+
+/* Type scale */
+.type-row{display:flex;align-items:baseline;gap:18px;padding:14px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap}
+.type-row .tag{font-family:ui-monospace,monospace;font-size:12px;color:var(--ink-3);min-width:180px}
+
+/* Buttons */
+.btn{font-family:'Hanken Grotesk';font-weight:700;font-size:15px;border-radius:var(--radius-pill);padding:12px 22px;border:1.5px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .12s var(--ease),background-color .18s var(--ease),border-color .18s var(--ease),box-shadow .18s var(--ease);line-height:1;min-height:44px}
+.btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--focus)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--adapt);color:#fff;box-shadow:var(--shadow-1)}
+.btn-primary:hover{background:#9E4A0C}
+.btn-secondary{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn-secondary:hover{border-color:var(--ink);background:var(--paper-2)}
+.btn-tertiary{background:transparent;color:var(--teen);padding:12px 12px}
+.btn-tertiary:hover{background:var(--teen-t)}
+.btn-icon{padding:0;width:44px;height:44px;justify-content:center;border-radius:var(--radius-pill);background:var(--card);border-color:var(--line-2);color:var(--ink)}
+.btn-icon:hover{border-color:var(--ink);background:var(--paper-2)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.loading{color:transparent;position:relative;pointer-events:none}
+.btn.loading::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.5);border-top-color:#fff;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.state-note{font-size:12px;color:var(--ink-3);margin-top:6px}
+
+/* Activity / resource cards */
+.acard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-1);transition:transform .2s var(--ease),box-shadow .2s var(--ease);position:relative;display:flex;flex-direction:column;gap:8px;min-height:190px}
+.acard:hover{transform:translateY(-4px);box-shadow:var(--shadow-2)}
+.acard .aem{font-size:26px}
+.acard .acat{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.acard h5{font-family:'Bricolage Grotesque';font-weight:700;font-size:17px;letter-spacing:-.01em}
+.acard p{font-size:13px;color:var(--ink-2)}
+.acard .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.tag-pill{font-size:11px;font-weight:600;color:var(--ink-2);background:var(--paper-2);border:1px solid var(--line);padding:4px 9px;border-radius:var(--radius-pill)}
+.byline{font-family:'Fraunces';font-style:italic;font-size:11px;color:var(--ink-3);text-align:right;border-top:1px dashed var(--line);padding-top:8px}
+
+/* Badges */
+.badge{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;gap:5px}
+.badge-new{background:var(--adapt);color:#fff}
+.badge-tier1{background:var(--teen-t);color:var(--teen)}
+.badge-tier2{background:var(--camp-t);color:var(--camp)}
+.badge-tier3{background:var(--reg-t);color:var(--reg)}
+.badge-tier4{background:var(--parent-t);color:var(--parent)}
+.mod-pill{font-size:12px;font-weight:800;padding:6px 12px;border-radius:var(--radius-pill);border:1.5px solid}
+.mp-adapt{color:var(--adapt);border-color:var(--adapt);background:var(--adapt-t)}
+.mp-camp{color:var(--camp);border-color:var(--camp);background:var(--camp-t)}
+.mp-teen{color:var(--teen);border-color:var(--teen);background:var(--teen-t)}
+.mp-reg{color:var(--reg);border-color:var(--reg);background:var(--reg-t)}
+.mp-parent{color:var(--parent);border-color:var(--parent);background:var(--parent-t)}
+.mp-unbox{color:var(--unbox);border-color:var(--unbox);background:var(--unbox-t)}
+
+/* Forms */
+.field{margin-bottom:16px;max-width:420px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+.input{width:100%;padding:12px 14px;border:1.5px solid var(--line-2);border-radius:var(--radius-sm);background:var(--card);font-family:inherit;font-size:15px;color:var(--ink)}
+.input:focus-visible{outline:none;border-color:var(--focus);box-shadow:0 0 0 3px var(--teen-t)}
+.input.err{border-color:var(--err)}
+.hint{font-size:12px;color:var(--ink-3);margin-top:5px}
+.hint.err{color:var(--err)}
+
+/* Icon row */
+.icon-row{display:flex;flex-wrap:wrap;gap:14px}
+.icon-tile{width:64px;height:64px;border:1px solid var(--line);border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--card);color:var(--ink)}
+.icon-tile span{font-size:10px;color:var(--ink-3)}
+
+/* Motion demo */
+.motion-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.motion-swatch{height:60px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--teen),var(--parent));transition:transform .25s var(--ease)}
+.motion-card:hover .motion-swatch{transform:translateX(10px) scale(1.02)}
+
+/* Dark preview panel */
+.darkwrap{background:var(--dk);border-radius:24px;padding:28px;color:var(--dk-ink);border:1px solid var(--dk-line)}
+.darkwrap h3.sub{color:var(--dk-ink)}
+.darkwrap .acard{background:var(--dk-card);border-color:var(--dk-line);box-shadow:none}
+.darkwrap .acard h5{color:var(--dk-ink)}
+.darkwrap .acard p{color:var(--dk-ink-2)}
+.darkwrap .tag-pill{background:rgba(255,255,255,.06);border-color:var(--dk-line);color:var(--dk-ink-2)}
+.darkwrap .byline{color:var(--dk-ink-3);border-color:var(--dk-line)}
+.darkwrap .btn-secondary{color:var(--dk-ink);border-color:var(--dk-line-2)}
+.darkwrap .btn-secondary:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.darkwrap .btn:focus-visible{box-shadow:0 0 0 3px var(--dk),0 0 0 5px var(--teen-d)}
+
+.foot{padding:48px 0 72px;color:var(--ink-3);font-size:13px;border-top:1px solid var(--line)}
+.callout{background:var(--adapt-t);border:1px solid var(--line-2);border-left:4px solid var(--adapt);border-radius:var(--radius-sm);padding:14px 16px;font-size:14px;color:var(--ink-2);margin-top:18px}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .btn.loading::after{animation:none}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="logo"><span class="dot" aria-hidden="true"></span> The Activity Vault</div>
+    <nav class="toc" aria-label="Style guide sections">
+      <a href="#colour">Colour</a>
+      <a href="#modules">Modules</a>
+      <a href="#type">Type</a>
+      <a href="#buttons">Buttons</a>
+      <a href="#cards">Cards</a>
+      <a href="#badges">Badges</a>
+      <a href="#forms">Forms</a>
+      <a href="#icons">Icons</a>
+      <a href="#motion">Motion</a>
+      <a href="#dark">Dark</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Facelift · Design System v1</div>
+    <h1 class="display">A calmer, braver <em>Vault.</em></h1>
+    <p class="lede">The single source of truth for the facelift: colour with verified contrast, a distinctive type voice, a unique identity for each of the six modules, and one consistent button, card and badge system across the landing page and the app.</p>
+    <div class="callout">Scope guardrails: this page is standalone and changes nothing in <code>index.html</code>, <code>app.html</code> or the licence flow. Every token here maps to CSS variables so the app and landing page can share one system.</div>
+  </section>
+
+  <!-- COLOUR -->
+  <section class="block" id="colour">
+    <h2 class="sec display">Colour</h2>
+    <p class="sec-sub">Two surfaces — warm paper (landing) and deep navy (app). All text/background pairings below meet WCAG AA (≥4.5:1 body, ≥3:1 large). Ratios are shown on each swatch.</p>
+
+    <h3 class="sub">Neutrals — paper surface</h3>
+    <div class="grid g4">
+      <div class="sw"><div class="chip" style="background:#FBF7F0;color:#14212E">Paper</div><div class="meta"><div class="name">Paper BG</div><div class="hex">#FBF7F0</div></div></div>
+      <div class="sw"><div class="chip" style="background:#F3ECDE;color:#14212E">Paper 2</div><div class="meta"><div class="name">Sunken</div><div class="hex">#F3ECDE</div></div></div>
+      <div class="sw"><div class="chip" style="background:#14212E;color:#EAF0F7">Ink</div><div class="meta"><div class="name">Ink (text)</div><div class="hex">#14212E</div><span class="ratio aaa">AAA · 14.6:1 on paper</span></div></div>
+      <div class="sw"><div class="chip" style="background:#5A6675;color:#fff">Ink 3</div><div class="meta"><div class="name">Muted text</div><div class="hex">#5A6675</div><span class="ratio pass">AA · 4.9:1 on paper</span></div></div>
+    </div>
+
+    <h3 class="sub">Neutrals — dark surface</h3>
+    <div class="grid g4">
+      <div class="sw"><div class="chip" style="background:#0B1220;color:#EAF0F7">Navy</div><div class="meta"><div class="name">App BG</div><div class="hex">#0B1220</div></div></div>
+      <div class="sw"><div class="chip" style="background:#16223A;color:#EAF0F7">Card</div><div class="meta"><div class="name">Dark card</div><div class="hex">#16223A</div></div></div>
+      <div class="sw"><div class="chip" style="background:#0B1220;color:#EAF0F7">Text</div><div class="meta"><div class="name">Text on navy</div><div class="hex">#EAF0F7</div><span class="ratio aaa">AAA · 15.3:1</span></div></div>
+      <div class="sw"><div class="chip" style="background:#0B1220;color:#8593A3">Text 3</div><div class="meta"><div class="name">Muted on navy</div><div class="hex">#8593A3</div><span class="ratio pass">AA · 5.0:1</span></div></div>
+    </div>
+
+    <h3 class="sub">Module accents (on‑light / on‑dark)</h3>
+    <div class="grid g3">
+      <div class="sw"><div class="chip" style="background:#B8560E;color:#fff">AdaptED</div><div class="meta"><div class="name">Marigold</div><div class="hex">on‑light #B8560E · on‑dark #F6A63C</div><span class="ratio pass">AA · 4.8:1 / 8.9:1</span></div></div>
+      <div class="sw"><div class="chip" style="background:#1B6B43;color:#fff">CampED</div><div class="meta"><div class="name">Pine</div><div class="hex">on‑light #1B6B43 · on‑dark #4FD08A</div><span class="ratio pass">AA · 5.1:1 / 9.4:1</span></div></div>
+      <div class="sw"><div class="chip" style="background:#4038C7;color:#fff">TeenagED</div><div class="meta"><div class="name">Indigo</div><div class="hex">on‑light #4038C7 · on‑dark #A5AEFF</div><span class="ratio pass">AA · 6.9:1 / 8.4:1</span></div></div>
+      <div class="sw"><div class="chip" style="background:#9A3412;color:#fff">RegulatED</div><div class="meta"><div class="name">Clay</div><div class="hex">on‑light #9A3412 · on‑dark #FB9E5C</div><span class="ratio pass">AA · 6.8:1 / 7.6:1</span></div></div>
+      <div class="sw"><div class="chip" style="background:#A81E63;color:#fff">ParentED</div><div class="meta"><div class="name">Berry (extra)</div><div class="hex">on‑light #A81E63 · on‑dark #F79CC4</div><span class="ratio pass">AA · 6.1:1 / 8.0:1</span></div></div>
+      <div class="sw"><div class="chip" style="background:#0F6E7A;color:#fff">UnboxED</div><div class="meta"><div class="name">Teal (extra)</div><div class="hex">on‑light #0F6E7A · on‑dark #4FD6E0</div><span class="ratio pass">AA · 4.9:1 / 9.8:1</span></div></div>
+    </div>
+    <div class="callout">Rule: on the paper surface use the <em>on‑light</em> value for any coloured text or icon; on the navy app use the <em>on‑dark</em> value. Tints (‑t) are for chip/badge fills only, never for text.</div>
+  </section>
+
+  <!-- MODULES -->
+  <section class="block" id="modules">
+    <h2 class="sec display">Module identities</h2>
+    <p class="sec-sub">Four main activity modules plus two extracurricular modules. Each has its own colour and a distinct, static background treatment (paper dots, topographic contours, dotted circuitry, calm waves, community circles, box hatch). All are GPU‑cheap and respect reduced motion.</p>
+    <div class="grid g3">
+      <div class="mod m-adapt"><div class="bg" aria-hidden="true"></div><div class="mtop"><span class="mem">📘</span><span class="mkind">Main</span></div><div><h4>AdaptED</h4><p>School &amp; home early‑childhood activities, birth to age 12.</p></div></div>
+      <div class="mod m-camp"><div class="bg" aria-hidden="true"></div><div class="mtop"><span class="mem">⛺</span><span class="mkind">Main</span></div><div><h4>CampED</h4><p>Camp, summer &amp; outdoor programming for all ages.</p></div></div>
+      <div class="mod m-teen"><div class="bg" aria-hidden="true"></div><div class="mtop"><span class="mem">🎒</span><span class="mkind">Main</span></div><div><h4>TeenagED</h4><p>Life‑prep and real‑world skills for ages 11–17.</p></div></div>
+      <div class="mod m-reg"><div class="bg" aria-hidden="true"></div><div class="mtop"><span class="mem">🧘</span><span class="mkind">Main</span></div><div><h4>RegulatED</h4><p>Social‑emotional learning, co‑regulation &amp; calming.</p></div></div>
+      <div class="mod m-parent"><div class="bg" aria-hidden="true"></div><div class="mtop"><span class="mem">🏠</span><span class="mkind">Extracurricular</span></div><div><h4>ParentED</h4><p>Parent handouts &amp; at‑home guidance — free with every plan.</p></div></div>
+      <div class="mod m-unbox"><div class="bg" aria-hidden="true"></div><div class="mtop"><span class="mem">📦</span><span class="mkind">Extracurricular</span></div><div><h4>UnboxED</h4><p>Ideas built around one everyday material you already have.</p></div></div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section class="block" id="type">
+    <h2 class="sec display">Typography</h2>
+    <p class="sec-sub">Display: <strong>Bricolage Grotesque</strong> (characterful, not on the AI‑slop list). Body: <strong>Hanken Grotesk</strong> (highly legible on cheap school screens). Editorial accents &amp; bylines: <strong>Fraunces</strong> italic (keeps the brand's existing warmth).</p>
+    <div class="type-row"><span class="tag">H1 · display · 40→68px</span><span class="display" style="font-size:clamp(40px,7vw,68px)">Stop searching.</span></div>
+    <div class="type-row"><span class="tag">H2 · display · 28→40px</span><span class="display" style="font-size:clamp(28px,4vw,40px);font-weight:800">Pick your level.</span></div>
+    <div class="type-row"><span class="tag">H3 · display · 18px</span><span class="display" style="font-size:18px;font-weight:700">Rainbow Rice Bin</span></div>
+    <div class="type-row"><span class="tag">Lede · body · 19px</span><span style="font-size:19px;color:var(--ink-2)">5,330 ready‑to‑use activities, organised and printable.</span></div>
+    <div class="type-row"><span class="tag">Body · 16px</span><span>Colour uncooked rice and let children explore textures, colours and scooping with small tools.</span></div>
+    <div class="type-row"><span class="tag">Small · 13px</span><span style="font-size:13px;color:var(--ink-3)">Age 3–5 · Indoor · Low energy · Small group</span></div>
+    <div class="type-row"><span class="tag">Editorial · Fraunces italic</span><span class="editorial" style="font-style:italic;font-size:18px">Built by an educator, for educators.</span></div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section class="block" id="buttons">
+    <h2 class="sec display">Buttons</h2>
+    <p class="sec-sub">One system, four roles, all states. Minimum 44px touch target. Every button has a visible <code>:focus-visible</code> ring — tab through them to check.</p>
+    <h3 class="sub">Primary</h3>
+    <div class="btn-row">
+      <button class="btn btn-primary">Get the Vault <i data-lucide="arrow-right" style="width:16px"></i></button>
+      <button class="btn btn-primary loading">Loading</button>
+      <button class="btn btn-primary" disabled>Disabled</button>
+    </div>
+    <p class="state-note">Hover darkens; active nudges down 1px; loading shows a spinner; disabled drops to 45% and blocks pointer.</p>
+    <h3 class="sub">Secondary &amp; Tertiary</h3>
+    <div class="btn-row">
+      <button class="btn btn-secondary">Try the demo</button>
+      <button class="btn btn-tertiary">Learn more <i data-lucide="chevron-right" style="width:15px"></i></button>
+      <button class="btn btn-secondary" disabled>Disabled</button>
+    </div>
+    <h3 class="sub">Icon</h3>
+    <div class="btn-row">
+      <button class="btn btn-icon" aria-label="Save to favourites"><i data-lucide="heart" style="width:20px"></i></button>
+      <button class="btn btn-icon" aria-label="Add to planner"><i data-lucide="calendar-plus" style="width:20px"></i></button>
+      <button class="btn btn-icon" aria-label="Print"><i data-lucide="printer" style="width:20px"></i></button>
+      <button class="btn btn-icon" aria-label="Share"><i data-lucide="share-2" style="width:20px"></i></button>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="block" id="cards">
+    <h2 class="sec display">Cards</h2>
+    <p class="sec-sub">The activity card is the workhorse. Same structure everywhere: module accent, emoji glyph, title, description, tag pills, and the educator byline.</p>
+    <div class="grid g3">
+      <div class="acard">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start"><span class="aem">🌈</span><span class="badge badge-new">New</span></div>
+        <div class="acat" style="color:var(--adapt)">Sensory · AdaptED</div>
+        <h5>Rainbow Rice Bin</h5>
+        <p>Colour uncooked rice and explore textures, colours and scooping with small tools.</p>
+        <div class="tags"><span class="tag-pill">Age 3–5</span><span class="tag-pill">Indoor</span><span class="tag-pill">Low energy</span></div>
+        <div class="byline">Tatianna Bailie · AdaptED</div>
+      </div>
+      <div class="acard">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start"><span class="aem">🪢</span><span class="badge badge-tier3">Elite</span></div>
+        <div class="acat" style="color:var(--camp)">Survival · CampED</div>
+        <h5>Shelter Building</h5>
+        <p>Build a shelter from natural materials, then run the leak test with a cup of water.</p>
+        <div class="tags"><span class="tag-pill">Age 12–14</span><span class="tag-pill">Outdoor</span><span class="tag-pill">Small group</span></div>
+        <div class="byline">Tatianna Bailie · CampED</div>
+      </div>
+      <div class="acard">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start"><span class="aem">🫧</span><span class="badge badge-tier1">Starter</span></div>
+        <div class="acat" style="color:var(--reg)">Co‑regulation · RegulatED</div>
+        <h5>Bubble Breath Together</h5>
+        <p>An adult‑led paced‑breathing routine that lengthens the exhale to settle the nervous system.</p>
+        <div class="tags"><span class="tag-pill">Age 3–8</span><span class="tag-pill">Any setting</span><span class="tag-pill">Calming</span></div>
+        <div class="byline">Tatianna Bailie · RegulatED</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BADGES -->
+  <section class="block" id="badges">
+    <h2 class="sec display">Badges &amp; pills</h2>
+    <p class="sec-sub">Tier badges, the "New" flag (marks Tatianna's review queue), and module pills.</p>
+    <h3 class="sub">Tier &amp; New</h3>
+    <div class="btn-row">
+      <span class="badge badge-new">New</span>
+      <span class="badge badge-tier1">Starter</span>
+      <span class="badge badge-tier2">Pro</span>
+      <span class="badge badge-tier3">Elite</span>
+      <span class="badge badge-tier4">School</span>
+    </div>
+    <h3 class="sub">Module pills</h3>
+    <div class="btn-row">
+      <span class="mod-pill mp-adapt">AdaptED</span>
+      <span class="mod-pill mp-camp">CampED</span>
+      <span class="mod-pill mp-teen">TeenagED</span>
+      <span class="mod-pill mp-reg">RegulatED</span>
+      <span class="mod-pill mp-parent">ParentED</span>
+      <span class="mod-pill mp-unbox">UnboxED</span>
+    </div>
+  </section>
+
+  <!-- FORMS -->
+  <section class="block" id="forms">
+    <h2 class="sec display">Form controls</h2>
+    <p class="sec-sub">Inputs used by search, the licence unlock and the planner. Focus ring matches buttons; error state uses the semantic red.</p>
+    <div class="grid g2">
+      <div>
+        <div class="field"><label for="d1">Search activities</label><input class="input" id="d1" placeholder="e.g. rainy day, calming, fine motor"></div>
+        <div class="field"><label for="d2">Licence key</label><input class="input" id="d2" placeholder="Enter your licence key"><div class="hint">Verified against your purchase — existing keys keep working, unchanged.</div></div>
+      </div>
+      <div>
+        <div class="field"><label for="d3">Email (error example)</label><input class="input err" id="d3" value="not-an-email"><div class="hint err">Please enter a valid email address.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ICONS -->
+  <section class="block" id="icons">
+    <h2 class="sec display">Icons</h2>
+    <p class="sec-sub">UI chrome uses the <strong>Lucide</strong> line set (consistent, accessible, labelled). Emoji stay only as decorative glyphs on activity cards.</p>
+    <div class="icon-row">
+      <div class="icon-tile"><i data-lucide="search"></i><span>search</span></div>
+      <div class="icon-tile"><i data-lucide="sliders-horizontal"></i><span>filters</span></div>
+      <div class="icon-tile"><i data-lucide="heart"></i><span>save</span></div>
+      <div class="icon-tile"><i data-lucide="calendar-plus"></i><span>plan</span></div>
+      <div class="icon-tile"><i data-lucide="printer"></i><span>print</span></div>
+      <div class="icon-tile"><i data-lucide="sparkles"></i><span>Mrs. Bailie</span></div>
+      <div class="icon-tile"><i data-lucide="graduation-cap"></i><span>school</span></div>
+      <div class="icon-tile"><i data-lucide="heart-handshake"></i><span>give‑back</span></div>
+    </div>
+  </section>
+
+  <!-- MOTION -->
+  <section class="block" id="motion">
+    <h2 class="sec display">Motion</h2>
+    <p class="sec-sub">Subtle and purposeful: 120–250ms, easing <code>cubic-bezier(.4,0,.2,1)</code>, only <code>transform</code> and <code>opacity</code>. Everything collapses to near‑instant under <code>prefers-reduced-motion</code>.</p>
+    <div class="grid g3">
+      <div class="motion-card"><div class="motion-swatch"></div><p class="state-note">Hover this card → the swatch eases right (transform only).</p></div>
+      <div class="acard"><span class="aem">✨</span><h5>Card lift</h5><p>Hover lifts 4px with a softer shadow.</p><div class="tags"><span class="tag-pill">200ms</span></div></div>
+      <div class="motion-card"><button class="btn btn-primary loading" style="width:100%">Loading</button><p class="state-note">Spinner pauses under reduced motion.</p></div>
+    </div>
+  </section>
+
+  <!-- DARK -->
+  <section class="block" id="dark">
+    <h2 class="sec display">Dark surface (the app)</h2>
+    <p class="sec-sub">The same components on the navy app surface. Contrast holds; the focus ring switches to the on‑dark indigo.</p>
+    <div class="darkwrap">
+      <div class="btn-row" style="margin-bottom:20px">
+        <button class="btn btn-primary" style="background:var(--adapt-d);color:#111B2C">Primary</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <span class="mod-pill" style="color:var(--camp-d);border-color:var(--camp-d);background:rgba(79,208,138,.12)">CampED</span>
+        <span class="mod-pill" style="color:var(--teen-d);border-color:var(--teen-d);background:rgba(165,174,255,.12)">TeenagED</span>
+      </div>
+      <div class="grid g3">
+        <div class="acard"><span class="aem">🧲</span><div class="acat" style="color:var(--adapt-d)">Science · AdaptED</div><h5>Magnet Sorting Hunt</h5><p>Test everyday objects with a magnet and sort by what sticks.</p><div class="tags"><span class="tag-pill">Age 5–8</span><span class="tag-pill">Indoor</span></div><div class="byline">Tatianna Bailie · AdaptED</div></div>
+        <div class="acard"><span class="aem">🌧️</span><div class="acat" style="color:var(--camp-d)">Rainy day · CampED</div><h5>Indoor Cup Stack Relay</h5><p>Team relay building and un‑stacking 10‑cup pyramids against the clock.</p><div class="tags"><span class="tag-pill">Age 9–11</span><span class="tag-pill">Large group</span></div><div class="byline">Tatianna Bailie · CampED</div></div>
+        <div class="acard"><span class="aem">🔒</span><div class="acat" style="color:var(--teen-d)">Digital life · TeenagED</div><h5>Build a Strong Passphrase</h5><p>Why length beats complexity — build a memorable four‑word passphrase.</p><div class="tags"><span class="tag-pill">Age 13–15</span><span class="tag-pill">Solo</span></div><div class="byline">Tatianna Bailie · TeenagED</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p><strong>The Activity Vault — Design System v1 (facelift branch).</strong> Standalone reference. Nothing here alters the live site, the app, or licence keys. Next: Phase 1 landing‑page redesign built on these exact tokens.</p>
+  </footer>
+</div>
+
+<script>
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Mrs. Bailie — Smart Session Planner · The Activity Vault</title>
+<meta name="description" content="Mrs. Bailie plans a full, timed session — warm-up, core play, sensory transition and calm-down — matched to your room, your time and your materials.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --bg:#f9f6f0;--paper:#fff;--paper-2:#f2ebd9;--ink:#121b28;--ink-2:#3f4d5e;--ink-3:#6c7b8e;
+  --line:#e4dbcc;--rule:#d8ccba;--shadow:0 12px 32px -4px rgba(18,27,40,.08);
+  --sage:#3b7a57;--terra:#e85d04;--ocean:#0284c7;--coral:#f43f5e;--lav:#8b5cf6;--mustard:#d97706;
+  --sage-t:#e0efe6;--terra-t:#fde8d8;--ocean-t:#dcf0fb;
+  --adapt:#d97706;--camp:#15803d;--teen:#6d28d9;--reg:#0369a1;--parent:#be185d;--unbox:#b45309;
+  --radius:18px;--r-sm:12px;--pill:999px;--ease:cubic-bezier(.4,0,.2,1);
+  --focus:#0284c7;
+}
+html[data-theme="dark"]{
+  --bg:#090d16;--paper:#111827;--paper-2:#1b2436;--ink:#f8fafc;--ink-2:#cbd5e1;--ink-3:#94a3b8;
+  --line:#27354a;--rule:#1e293b;--shadow:0 16px 40px -8px rgba(0,0,0,.6);
+  --sage-t:rgba(59,122,87,.18);--terra-t:rgba(232,93,4,.16);--ocean-t:rgba(2,132,199,.16);
+  --paper:#111827;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s var(--ease),color .3s var(--ease)}
+.serif{font-family:'Fraunces',Georgia,serif}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;letter-spacing:-.01em;line-height:1.1}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+::selection{background:var(--terra);color:#fff}
+
+/* soft ambient blobs for sensory feel */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.32}
+.b1{width:420px;height:420px;background:var(--sage);top:-120px;left:-100px}
+.b2{width:380px;height:380px;background:var(--ocean);top:20%;right:-140px;opacity:.22}
+.b3{width:360px;height:360px;background:var(--terra);bottom:-120px;left:30%;opacity:.16}
+html[data-theme="dark"] .blob{opacity:.24}
+
+/* header */
+header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:12px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-family:'Fraunces';font-size:18px}
+.brand .orb{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--sage),var(--ocean));display:grid;place-items:center;color:#fff;box-shadow:0 4px 14px -4px var(--ocean)}
+.hd .sp{flex:1}
+.icon-btn{width:42px;height:42px;border-radius:var(--pill);display:grid;place-items:center;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);transition:border-color .2s,background .2s}
+.icon-btn:hover{border-color:var(--ink)}
+.icon-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--focus)}
+.saved-chip{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;border:1.5px solid var(--line);background:var(--paper);border-radius:var(--pill);padding:8px 14px}
+.saved-chip b{color:var(--terra)}
+
+.hero{position:relative;z-index:1;padding:44px 0 8px;text-align:center}
+.avatar{width:88px;height:88px;border-radius:26px;margin:0 auto 16px;background:linear-gradient(150deg,var(--sage),var(--ocean) 70%,var(--terra));display:grid;place-items:center;color:#fff;box-shadow:0 18px 40px -12px var(--ocean);position:relative}
+.avatar::after{content:"";position:absolute;inset:-4px;border-radius:30px;border:2px solid color-mix(in srgb,var(--sage) 40%,transparent);animation:pulse 3.4s var(--ease) infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.06);opacity:.2}}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--sage)}
+.hero h1{font-size:clamp(34px,6vw,58px);font-weight:900;margin:10px 0 12px}
+.hero h1 em{font-style:italic;color:var(--terra)}
+.hero p{color:var(--ink-2);max-width:60ch;margin:0 auto;font-size:clamp(15px,2vw,18px)}
+.speech{max-width:640px;margin:20px auto 0;background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);text-align:left;display:flex;gap:12px;align-items:flex-start}
+.speech .mini{width:34px;height:34px;border-radius:11px;flex:0 0 auto;background:linear-gradient(135deg,var(--sage),var(--ocean));display:grid;place-items:center;color:#fff}
+.speech p{font-size:14.5px;color:var(--ink-2);margin:0;text-align:left}
+.speech .who{font-family:'Fraunces';font-style:italic;font-size:12.5px;color:var(--ink-3);display:block;margin-top:4px}
+
+/* planner */
+.panel{position:relative;z-index:1;background:var(--paper);border:1.5px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:22px;margin:28px 0}
+.qgroup{padding:14px 0;border-bottom:1px dashed var(--line)}
+.qgroup:last-child{border-bottom:none}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.qnum{width:26px;height:26px;border-radius:9px;background:var(--sage-t);color:var(--sage);display:grid;place-items:center;font-weight:800;font-size:13px;flex:0 0 auto}
+html[data-theme="dark"] .qnum{color:var(--sage)}
+.qhead h3{font-size:16px;font-weight:700}
+.qhead .qsub{font-size:12px;color:var(--ink-3);font-family:'Plus Jakarta Sans';font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:var(--pill);border:1.5px solid var(--line);background:var(--bg);font-size:14px;font-weight:600;color:var(--ink-2);transition:all .16s var(--ease);min-height:40px}
+.chip:hover{border-color:var(--ocean);color:var(--ink)}
+.chip .em{font-size:16px}
+.chip[aria-pressed="true"]{background:var(--ocean);border-color:var(--ocean);color:#fff;box-shadow:0 6px 16px -6px var(--ocean)}
+.chip:focus-visible{outline:none;box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--focus)}
+.chip.mod[aria-pressed="true"]{background:var(--m,var(--sage));border-color:var(--m,var(--sage));box-shadow:0 6px 16px -6px var(--m,var(--sage))}
+
+.build-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:22px}
+.btn{font-weight:800;font-size:16px;border-radius:var(--pill);padding:15px 26px;display:inline-flex;align-items:center;gap:9px;transition:transform .12s var(--ease),filter .2s,background .2s,border-color .2s;min-height:52px}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--focus)}
+.btn-primary{background:linear-gradient(135deg,var(--terra),#f97316);color:#fff;box-shadow:0 12px 28px -8px var(--terra)}
+.btn-primary:hover{filter:brightness(1.05)}
+.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--ink)}
+.hintline{font-size:13px;color:var(--ink-3)}
+
+/* results */
+#results{position:relative;z-index:1;display:none}
+#results.show{display:block;animation:rise .5s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.res-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:6px 0 14px}
+.res-head h2{font-size:clamp(24px,4vw,34px);font-weight:900}
+.summary{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px}
+.tagpill{font-size:12px;font-weight:700;color:var(--ink-2);background:var(--paper-2);border:1px solid var(--line);border-radius:var(--pill);padding:5px 11px;display:inline-flex;gap:6px;align-items:center}
+.total-time{font-weight:800;color:var(--terra)}
+
+.timeline{display:grid;gap:14px}
+@media(min-width:820px){.timeline{grid-template-columns:1fr 1fr}.timeline .phase.core{grid-column:1/-1}}
+.phase{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border-top:5px solid var(--pc,var(--sage))}
+.ph-top{display:flex;gap:14px;align-items:flex-start;padding:16px 18px}
+.ph-em{font-size:30px;line-height:1;flex:0 0 auto}
+.ph-body{flex:1;min-width:0}
+.ph-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px}
+.ph-label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--pc,var(--sage))}
+.ph-time{font-size:11px;font-weight:800;color:var(--ink-3);background:var(--bg);border:1px solid var(--line);border-radius:var(--pill);padding:3px 9px}
+.ph-title{font-size:19px;font-weight:700;font-family:'Fraunces'}
+.ph-desc{font-size:14px;color:var(--ink-2);margin-top:3px}
+.ph-mod{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.inspect{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--ocean);padding:8px 18px 4px}
+.inspect:focus-visible{outline:none;box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--focus);border-radius:8px}
+.detail{max-height:0;overflow:hidden;transition:max-height .35s var(--ease)}
+.detail-in{padding:4px 18px 18px}
+.detail h5{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:12px 0 6px}
+.steps{list-style:none;display:grid;gap:7px}
+.steps li{display:flex;gap:10px;font-size:14px;color:var(--ink-2)}
+.steps li .n{width:22px;height:22px;border-radius:50%;background:var(--sage-t);color:var(--sage);font-weight:800;font-size:12px;display:grid;place-items:center;flex:0 0 auto}
+.adapt{display:grid;gap:8px;grid-template-columns:1fr 1fr}
+@media(max-width:560px){.adapt{grid-template-columns:1fr}}
+.adapt div{font-size:13px;border-radius:var(--r-sm);padding:10px 12px;border:1px solid var(--line)}
+.adapt .easier{background:var(--sage-t)}.adapt .harder{background:var(--ocean-t)}
+.adapt b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.adapt .easier b{color:var(--sage)}.adapt .harder b{color:var(--ocean)}
+
+.aux{display:grid;gap:14px;margin-top:16px}
+@media(min-width:820px){.aux{grid-template-columns:1fr 1fr}}
+.box{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.box h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.box h3 .ic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;flex:0 0 auto;color:#fff}
+.mat li{list-style:none;display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.mat li:last-child{border-bottom:none}
+.mat .sub{color:var(--ink-3);font-size:12.5px;font-style:italic;font-family:'Fraunces'}
+.mat .noprep{color:var(--sage);font-weight:700}
+.backup{border-left:4px solid var(--coral)}
+.backup h3 .ic{background:var(--coral)}
+.backup p{font-size:14px;color:var(--ink-2)}
+.rationale{border-left:4px solid var(--sage);grid-column:1/-1}
+.rationale h3 .ic{background:var(--sage)}
+.rationale p{font-family:'Fraunces';font-size:16px;line-height:1.65;color:var(--ink-2);font-style:italic}
+.rationale .sig{font-family:'Fraunces';font-style:normal;font-weight:700;color:var(--ink);font-size:14px;margin-top:10px;display:block}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.act{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;border-radius:var(--pill);padding:12px 18px;border:1.5px solid var(--line);background:var(--paper);transition:all .18s}
+.act:hover{border-color:var(--ink)}
+.act.primary{background:var(--sage);color:#fff;border-color:var(--sage)}
+.act.primary:hover{filter:brightness(1.06)}
+.act.saved{background:var(--sage-t);color:var(--sage);border-color:var(--sage)}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:var(--pill);font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:all .3s var(--ease);z-index:60;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+footer{position:relative;z-index:1;text-align:center;padding:40px 20px 60px;color:var(--ink-3);font-size:13px}
+
+@media print{
+  header,.ambient,.hero .speech,.build-row,.panel,.actions,.icon-btn,.inspect{display:none!important}
+  body{background:#fff;color:#000}
+  .detail{max-height:none!important}
+  .phase,.box{break-inside:avoid;box-shadow:none;border-color:#ccc}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<header>
+  <div class="wrap hd">
+    <div class="brand"><span class="orb"><i data-lucide="sparkles" style="width:17px"></i></span> Mrs. Bailie</div>
+    <div class="sp"></div>
+    <button class="saved-chip" id="savedBtn" aria-label="Saved sessions"><i data-lucide="bookmark" style="width:15px"></i> Saved <b id="savedCount">0</b></button>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle light and dark"><i data-lucide="moon" style="width:18px"></i></button>
+  </div>
+</header>
+
+<main>
+<section class="hero wrap">
+  <div class="avatar"><i data-lucide="sparkles" style="width:38px"></i></div>
+  <div class="kicker">Smart Session Planner</div>
+  <h1 class="serif">Not just an activity. <em>A whole plan.</em></h1>
+  <p>Tell me the reality of your room right now — the age, the space, the time you've got, what's on hand and the mood in the air — and I'll build a complete, timed session that flows from warm‑up to calm‑down, with a backup for when things wobble.</p>
+  <div class="speech">
+    <span class="mini"><i data-lucide="quote" style="width:16px"></i></span>
+    <div><p>"Good planning isn't about one clever activity — it's about the <em>arc</em> of a session: how you bring children in, hold their focus, move their bodies, and settle them again. That's what I'll build with you."</p><span class="who serif">— Tatianna Bailie, Senior Childhood Educator</span></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="panel" id="planner"></div>
+  <div class="build-row">
+    <button class="btn btn-primary" id="buildBtn"><i data-lucide="wand-sparkles" style="width:18px"></i> Build my session</button>
+    <button class="btn btn-ghost" id="surpriseBtn"><i data-lucide="shuffle" style="width:17px"></i> Surprise me</button>
+    <span class="hintline" id="hint">Pick what fits — anything you skip, I'll choose for you.</span>
+  </div>
+
+  <div id="results">
+    <div class="res-head">
+      <div><div class="summary" id="summary"></div><h2 class="serif" id="resTitle">Your session</h2></div>
+    </div>
+    <div class="timeline" id="timeline"></div>
+    <div class="aux">
+      <div class="box"><h3><span class="ic" style="background:var(--mustard)"><i data-lucide="clipboard-list" style="width:18px"></i></span> Materials & swaps</h3><ul class="mat" id="matList"></ul></div>
+      <div class="box backup"><h3><span class="ic"><i data-lucide="life-buoy" style="width:18px"></i></span> If the room spikes</h3><p id="backup"></p></div>
+      <div class="box rationale"><h3><span class="ic"><i data-lucide="graduation-cap" style="width:18px"></i></span> Why this works</h3><p id="rationale"></p><span class="sig" id="sig">— Mrs. Bailie</span></div>
+    </div>
+    <div class="actions">
+      <button class="act primary" id="saveBtn"><i data-lucide="bookmark-plus" style="width:16px"></i> Save to my planner</button>
+      <button class="act" id="printBtn"><i data-lucide="printer" style="width:16px"></i> Print (clipboard‑ready)</button>
+      <button class="act" id="restartBtn"><i data-lucide="rotate-ccw" style="width:16px"></i> Start over</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>Mrs. Bailie runs entirely in your browser — a preview of the reinvented planner for The Activity Vault. Original, educator‑authored activities · no data leaves this page.</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- QUESTION MODEL ---------------- */
+const MODS={adapted:'--adapt',camped:'--camp',teenaged:'--teen',regulated:'--reg',parented:'--parent',unboxed:'--unbox'};
+const QUESTIONS=[
+ {id:'module',title:'Which module?',sub:'Your context',type:'mod',opts:[
+   {v:'adapted',l:'AdaptED',em:'📘'},{v:'camped',l:'CampED',em:'⛺'},{v:'teenaged',l:'TeenagED',em:'🎒'},
+   {v:'regulated',l:'RegulatED',em:'🧘'},{v:'parented',l:'ParentED',em:'🏠'},{v:'unboxed',l:'UnboxED',em:'📦'}]},
+ {id:'age',title:'Age group',sub:'Who is in the room?',opts:[
+   {v:'2-5',l:'Early years 2–5',em:'🧸'},{v:'6-10',l:'School age 6–10',em:'✏️'},{v:'11-17',l:'Teens 11–17',em:'🛹'},{v:'family',l:'Whole family',em:'👨‍👩‍👧'}]},
+ {id:'group',title:'Group size',opts:[
+   {v:'solo',l:'1‑on‑1',em:'🙋'},{v:'small',l:'Small (3–6)',em:'👬'},{v:'large',l:'Large (12–25)',em:'👥'}]},
+ {id:'env',title:'Where are you?',opts:[
+   {v:'indoor',l:'Indoor / classroom',em:'🏫'},{v:'outdoor',l:'Outdoor / yard',em:'🌳'},{v:'home',l:'Small room / home',em:'🛋️'}]},
+ {id:'time',title:'Time you have',sub:'Shapes the whole plan',opts:[
+   {v:'5',l:'5 min reset',em:'⚡'},{v:'15',l:'15 min transition',em:'⏱️'},{v:'30',l:'30 min block',em:'🕐'},{v:'60',l:'60 min session',em:'📆'}]},
+ {id:'mats',title:'Materials on hand',sub:'Pick any — or none',multi:true,opts:[
+   {v:'zero',l:'Zero prep',em:'🙌'},{v:'paper',l:'Paper / recyclables',em:'📄'},{v:'sensory',l:'Sensory bin',em:'🌾'},{v:'art',l:'Art supplies',em:'🎨'},{v:'outdoor',l:'Natural objects',em:'🍃'}]},
+ {id:'mood',title:'Energy in the room',sub:'The most important question',opts:[
+   {v:'hyper',l:'Over‑stimulated',em:'🌀'},{v:'low',l:'Sluggish / low',em:'🥱'},{v:'fidgety',l:'Fidgety / restless',em:'🐝'},{v:'balanced',l:'Balanced',em:'🙂'}]},
+ {id:'goal',title:'Developmental goal',opts:[
+   {v:'gross',l:'Gross motor',em:'🤸'},{v:'fine',l:'Fine motor',em:'✋'},{v:'reg',l:'Emotional regulation',em:'💗'},{v:'exec',l:'Executive function',em:'🧠'},{v:'social',l:'Social skills',em:'🤝'}]},
+ {id:'sn',title:'Support tier',sub:'So it fits every child',opts:[
+   {v:'any',l:'Typical',em:'⭐'},{v:'neuro',l:'Neurodivergent‑friendly',em:'🧩'},{v:'seek',l:'Sensory‑seeking',em:'🎢'},{v:'quiet',l:'Low‑stimulus / quiet',em:'🤫'}]},
+];
+
+/* ---------------- ACTIVITY LIBRARY (original, educator-authored) ---------------- */
+// phase: warm|core|trans|calm ; energy: calm|focus|move ; mats: array
+const A=[
+ // WARM-UPS
+ {id:'w1',ph:'warm',mod:'regulated',em:'🌬️',t:'Weather Check‑In',en:'calm',ages:['2-5','6-10','family'],grp:['solo','small','large'],env:['indoor','home'],mats:['zero'],goals:['reg','social'],sn:['any','neuro','quiet'],
+   d:'Each child names an inner "weather" — sunny, cloudy, stormy — to arrive and be seen.',steps:['Model one: "I feel a little cloudy today."','Go round; each child names a weather.','No fixing, just naming.'],easier:'Offer a 3‑picture choice (sun/cloud/storm) to point at.',harder:'Add "and one thing that would make it sunnier."'},
+ {id:'w2',ph:'warm',mod:'camped',em:'👏',t:'Echo Clap Wake‑Up',en:'move',ages:['6-10','11-17','family'],grp:['small','large'],env:['indoor','outdoor'],mats:['zero'],goals:['gross','exec','social'],sn:['any','seek'],
+   d:'A call‑and‑response clap pattern that pulls scattered attention into one shared beat.',steps:['Clap a short pattern; group echoes it.','Make each one a touch harder.','End on one big unison clap.'],easier:'Keep patterns to 2 claps.',harder:'Add stomps and knee‑pats to the sequence.'},
+ {id:'w3',ph:'warm',mod:'adapted',em:'🦋',t:'Body Butterfly Stretch',en:'calm',ages:['2-5','6-10'],grp:['solo','small','large'],env:['indoor','home'],mats:['zero'],goals:['gross','reg'],sn:['any','neuro','quiet'],
+   d:'Slow, big stretches that lengthen the exhale and settle bodies before focus work.',steps:['Reach tall like a growing tree.','Fold slowly like a closing flower.','Three slow butterfly‑wing arm sweeps.'],easier:'Do it seated.',harder:'Add a balance hold on one foot.'},
+ {id:'w4',ph:'warm',mod:'teenaged',em:'🎯',t:'One‑Word Landing',en:'focus',ages:['11-17','family'],grp:['small','large'],env:['indoor'],mats:['zero'],goals:['reg','social','exec'],sn:['any','quiet'],
+   d:'Each person drops in with a single honest word — a low‑pressure way to read the group.',steps:['Explain: one word, no explanation needed.','Go round the circle.','Notice the pattern out loud, kindly.'],easier:'Let them pass and come back.',harder:'Add a one‑word intention for the session.'},
+
+ // CORE
+ {id:'c1',ph:'core',mod:'adapted',em:'🌈',t:'Rainbow Rice Discovery',en:'focus',ages:['2-5','6-10'],grp:['solo','small'],env:['indoor','home'],mats:['sensory'],goals:['fine','reg'],sn:['any','seek','quiet'],
+   d:'Coloured rice, scoops and hidden objects — deep, absorbing tactile play that calms and builds fine motor.',steps:['Set out the bin with scoops and cups.','Hide 6–8 small objects to find.','Let children dig, pour and discover with no "right" way.'],easier:'Fewer objects, bigger scoops.',harder:'Sort finds by colour or count them into groups.'},
+ {id:'c2',ph:'core',mod:'camped',em:'🍃',t:'Texture Trail Hunt',en:'move',ages:['6-10','11-17','family'],grp:['small','large'],env:['outdoor'],mats:['outdoor','zero'],goals:['gross','social','exec'],sn:['any','seek'],
+   d:'A short outdoor hunt for five different natural textures, mapped and compared back together.',steps:['Name five textures to find (rough, soft, cool…).','Search in pairs and collect or photograph.','Regroup and compare what you found.'],easier:'Find three textures with a partner.',harder:'Sketch each texture and guess why it feels that way.'},
+ {id:'c3',ph:'core',mod:'unboxed',em:'📦',t:'One‑Box Build Challenge',en:'focus',ages:['6-10','11-17','family'],grp:['small','large'],env:['indoor','home'],mats:['paper'],goals:['fine','exec','social'],sn:['any','neuro'],
+   d:'A single cardboard box plus tape becomes anything — pure loose‑parts engineering and problem‑solving.',steps:['Give each group one box + tape + scissors.','Set a prompt: build something that moves, holds, or hides.','Share what it became and one problem they solved.'],easier:'Offer a picture of one simple build to copy.',harder:'Add a constraint: it must stand on its own.'},
+ {id:'c4',ph:'core',mod:'regulated',em:'💗',t:'Feelings Volume Dial',en:'focus',ages:['6-10','11-17','family'],grp:['small','large'],env:['indoor','home'],mats:['zero','paper'],goals:['reg','social','exec'],sn:['any','neuro','quiet'],
+   d:'Children map a feeling onto a 0–10 "volume" and practise turning it down with a chosen tool.',steps:['Draw or imagine a dial from 0 to 10.','Name a feeling and where it sits right now.','Pick one tool (breath, water, movement) and re‑check the number.'],easier:'Use a 3‑step dial: low, medium, high.',harder:'Match a specific tool to each level in advance.'},
+ {id:'c5',ph:'core',mod:'teenaged',em:'🧠',t:'Real‑World Decision Lab',en:'focus',ages:['11-17'],grp:['small','large'],env:['indoor'],mats:['paper','zero'],goals:['exec','social'],sn:['any','quiet'],
+   d:'Teens work a realistic everyday dilemma (budget, time, conflict) through a simple decision framework.',steps:['Pose a realistic scenario with a trade‑off.','List options, then a pro and a con for each.','Choose, and name what would change your mind.'],easier:'Give two options instead of open‑ended.',harder:'Add a surprise constraint halfway and re‑decide.'},
+ {id:'c6',ph:'core',mod:'adapted',em:'🎨',t:'Process Art Table',en:'focus',ages:['2-5','6-10'],grp:['small','large'],env:['indoor','home'],mats:['art'],goals:['fine','reg'],sn:['any','seek','quiet'],
+   d:'Open‑ended art with no sample to copy — the making is the point, not the product.',steps:['Set out 3–4 colours and tools, no example.','Invite children to explore, not to "make a thing".','Display everything together with names.'],easier:'Use bigger brushes and one surface each.',harder:'Introduce a second tool and ask them to blend.'},
+ {id:'c7',ph:'core',mod:'camped',em:'🪢',t:'Team Bridge Relay',en:'move',ages:['6-10','11-17'],grp:['large'],env:['outdoor','indoor'],mats:['zero'],goals:['gross','social','exec'],sn:['any','seek'],
+   d:'Teams move together across a "gap" using limited stepping spots — cooperation under gentle pressure.',steps:['Mark a start and a finish with a gap between.','Give each team a few floor spots to place and re‑use.','Whole team must cross without touching the "gap".'],easier:'Widen the spots and shorten the gap.',harder:'Add a no‑talking round.'},
+ {id:'c8',ph:'core',mod:'parented',em:'🍳',t:'Kitchen Helper Task',en:'focus',ages:['2-5','6-10','family'],grp:['solo','small'],env:['home'],mats:['zero'],goals:['fine','exec','social'],sn:['any','neuro'],
+   d:'A real, safe kitchen job (washing, sorting, measuring) that builds skill and belonging at home.',steps:['Choose one safe real task for the child.','Show it once, slowly, then hand it over.','Thank them for the real help — because it is real.'],easier:'Break it into one single step.',harder:'Give the whole mini‑job start to finish.'},
+
+ // TRANSITIONS
+ {id:'t1',ph:'trans',mod:'regulated',em:'⏳',t:'Two‑Minute Warning Bridge',en:'focus',ages:['2-5','6-10','11-17','family'],grp:['solo','small','large'],env:['indoor','home','outdoor'],mats:['zero'],goals:['exec','reg'],sn:['any','neuro','quiet'],
+   d:'A visual "first / then" countdown that makes the next change predictable and calm.',steps:['Two minutes before, get to eye level.','Say a clear "first this, then that".','Show a visible timer and give a 30‑second call.'],easier:'Use a picture card for first/then.',harder:'Let a child run the countdown for the group.'},
+ {id:'t2',ph:'trans',mod:'camped',em:'🚶',t:'Animal Walk Transition',en:'move',ages:['2-5','6-10'],grp:['small','large'],env:['indoor','outdoor'],mats:['zero'],goals:['gross','reg'],sn:['any','seek'],
+   d:'Move to the next space as bears, then snakes, then still statues — a body reset between activities.',steps:['Bear‑walk to the next spot.','Slow to a quiet snake slither.','Freeze as a statue to land.'],easier:'Two animals only.',harder:'Children call the next animal each time.'},
+ {id:'t3',ph:'trans',mod:'adapted',em:'🎵',t:'Clean‑Up Rhythm',en:'move',ages:['2-5','6-10'],grp:['small','large'],env:['indoor','home'],mats:['zero'],goals:['exec','social'],sn:['any'],
+   d:'A steady clap‑and‑hum tidy that turns the boring bit into a shared beat.',steps:['Start a slow, steady beat everyone knows.','Each item away = one beat.','Speed up gently as the space clears.'],easier:'Assign each child one item.',harder:'Add a "beat the timer" goal.'},
+ {id:'t4',ph:'trans',mod:'teenaged',em:'📱',t:'Reset & Refocus Pause',en:'calm',ages:['11-17','family'],grp:['small','large'],env:['indoor'],mats:['zero'],goals:['exec','reg'],sn:['any','quiet'],
+   d:'A short, respectful pause to close one task and prime the next without nagging.',steps:['Name what just finished, briefly.','30 seconds of quiet or a stretch.','Name the one thing that comes next.'],easier:'Offer a stretch instead of stillness.',harder:'Have teens set their own next micro‑goal.'},
+
+ // CALM
+ {id:'k1',ph:'calm',mod:'regulated',em:'🫧',t:'Bubble Breathing',en:'calm',ages:['2-5','6-10','family'],grp:['solo','small','large'],env:['indoor','home','outdoor'],mats:['zero'],goals:['reg'],sn:['any','neuro','seek','quiet'],
+   d:'A co‑regulation breath where the adult matches the child first, then slows — lengthening the exhale.',steps:['Sit at the child\'s level and match their pace.','Breathe out slowly, "blowing one big careful bubble".','Repeat five times, slowing a touch each time.'],easier:'Use real bubbles to make the exhale visible.',harder:'Let a child lead the group\'s bubble breaths.'},
+ {id:'k2',ph:'calm',mod:'regulated',em:'🖐️',t:'Five‑Finger Trace',en:'calm',ages:['6-10','11-17','family'],grp:['solo','small','large'],env:['indoor','home'],mats:['zero'],goals:['reg'],sn:['any','neuro','quiet'],
+   d:'Trace up and down each finger, breathing in on the way up and out on the way down — a portable anchor.',steps:['Spread one hand.','Breathe in tracing up a finger, out tracing down.','One whole hand = five calm breaths.'],easier:'Trace just three fingers.',harder:'Add a calm word on each exhale.'},
+ {id:'k3',ph:'calm',mod:'adapted',em:'🐢',t:'Turtle Tuck',en:'calm',ages:['2-5','6-10'],grp:['solo','small','large'],env:['indoor','home'],mats:['zero'],goals:['reg'],sn:['any','neuro','seek','quiet'],
+   d:'Tuck into a "shell", count to ten, and come out slowly — big‑feeling first aid for little bodies.',steps:['Pull arms in, tuck chin, imagine a shell.','Count slowly to ten inside.','Come out slowly, like the sun rising.'],easier:'Count to five.',harder:'Name how the body feels before and after.'},
+ {id:'k4',ph:'calm',mod:'camped',em:'🌌',t:'Sky Watch Wind‑Down',en:'calm',ages:['6-10','11-17','family'],grp:['small','large'],env:['outdoor'],mats:['zero'],goals:['reg','social'],sn:['any','quiet'],
+   d:'Lie back, watch the sky, and share one quiet noticing — a gentle close to an active session.',steps:['Lie or sit facing the sky.','One slow minute of just watching.','Each person shares one quiet thing they noticed.'],easier:'Keep it to 30 seconds.',harder:'Add a gratitude sentence each.'},
+ {id:'k5',ph:'calm',mod:'unboxed',em:'🧦',t:'Heavy‑Work Bin Pack‑Down',en:'calm',ages:['2-5','6-10'],grp:['small','large'],env:['indoor','home'],mats:['sensory','zero'],goals:['reg','fine'],sn:['any','seek','neuro'],
+   d:'Carrying and packing the bin gives calming "heavy work" input while it doubles as clean‑up.',steps:['Fill a bin so it is nicely heavy but safe.','Children carry it slowly to its home.','Press hands flat on the lid, three slow breaths.'],easier:'Two children carry together.',harder:'Add a slow squat to place it down.'},
+];
+
+/* ---------------- STATE ---------------- */
+const sel={module:null,age:null,group:null,env:null,time:null,mats:[],mood:null,goal:null,sn:null};
+let currentPlan=null;
+
+/* ---------------- RENDER PLANNER ---------------- */
+function renderPlanner(){
+  const p=document.getElementById('planner');
+  p.innerHTML=QUESTIONS.map((q,i)=>`
+    <div class="qgroup">
+      <div class="qhead"><span class="qnum">${i+1}</span><div><h3 class="serif">${q.title}</h3>${q.sub?`<div class="qsub">${q.sub}</div>`:''}</div></div>
+      <div class="chips" data-q="${q.id}" role="group" aria-label="${q.title}">
+        ${q.opts.map(o=>`<button class="chip ${q.type==='mod'?'mod':''}" data-v="${o.v}" ${q.type==='mod'?`style="--m:var(${MODS[o.v]})"`:''} aria-pressed="false"><span class="em">${o.em}</span>${o.l}</button>`).join('')}
+      </div>
+    </div>`).join('');
+  p.querySelectorAll('.chips').forEach(row=>{
+    const qid=row.dataset.q, q=QUESTIONS.find(x=>x.id===qid);
+    row.querySelectorAll('.chip').forEach(ch=>ch.addEventListener('click',()=>{
+      const v=ch.dataset.v;
+      if(q.multi){
+        const arr=sel[qid]; const idx=arr.indexOf(v);
+        if(idx>=0){arr.splice(idx,1);ch.setAttribute('aria-pressed','false');}
+        else{arr.push(v);ch.setAttribute('aria-pressed','true');}
+      }else{
+        sel[qid]=v;
+        row.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+        ch.setAttribute('aria-pressed','true');
+      }
+    }));
+  });
+}
+
+/* ---------------- ENGINE ---------------- */
+function pick(phase){
+  const pool=A.filter(a=>a.ph===phase);
+  const scored=pool.map(a=>{
+    let s=Math.random()*0.9; // variety tie-breaker
+    if(sel.module&&a.mod===sel.module) s+=4;
+    if(sel.age&&a.ages.includes(sel.age)) s+=3; else if(sel.age&&sel.age==='family'&&a.ages.includes('6-10')) s+=1;
+    if(sel.group&&a.grp.includes(sel.group)) s+=2;
+    if(sel.env&&a.env.includes(sel.env)) s+=2;
+    if(sel.mats.length){ if(sel.mats.includes('zero')&&a.mats.includes('zero'))s+=1.5; if(a.mats.some(m=>sel.mats.includes(m)))s+=2.5; else if(!a.mats.includes('zero'))s-=1.5; }
+    else { if(a.mats.includes('zero'))s+=1; }
+    if(sel.goal){ const g={gross:'gross',fine:'fine',reg:'reg',exec:'exec',social:'social'}[sel.goal]; if(a.goals.includes(g)) s+= (phase==='core'?3:1.5); }
+    if(sel.sn&&a.sn.includes(sel.sn)) s+=2.5; else if(sel.sn&&sel.sn!=='any'&&!a.sn.includes(sel.sn)) s-=1;
+    // mood shaping
+    if(sel.mood){
+      if(phase==='warm'){ if(sel.mood==='low'&&a.en==='move')s+=2; if((sel.mood==='hyper'||sel.mood==='fidgety')&&a.en==='calm')s+=2; if(sel.mood==='balanced'&&a.en==='focus')s+=1; }
+      if(phase==='core'){ if(sel.mood==='hyper'&&a.en!=='move')s+=1.5; if(sel.mood==='fidgety'&&a.en==='move')s+=1.5; if(sel.mood==='low'&&a.en==='move')s+=1.5; }
+      if(phase==='trans'){ if((sel.mood==='hyper'||sel.mood==='fidgety')&&a.en!=='move')s+=1; }
+    }
+    return {a,s};
+  }).sort((x,y)=>y.s-x.s);
+  return scored[0]?scored[0].a:pool[0];
+}
+function distribute(total){
+  if(total===5) return null; // quick-reset handled separately
+  const w=Math.max(2,Math.round(total*0.16)), tr=Math.max(2,Math.round(total*0.12)), k=Math.max(3,Math.round(total*0.2));
+  const core=Math.max(5,total-w-tr-k);
+  return {warm:w,core,trans:tr,calm:k};
+}
+const PHLABEL={warm:'Warm‑up',core:'Core play',trans:'Transition',calm:'Calm‑down'};
+const PHCOLOR={warm:'--sage',core:'--terra',trans:'--ocean',calm:'--lav'};
+
+function generate(){
+  // sensible defaults for anything skipped
+  if(!sel.time) sel.time='30';
+  if(!sel.mood) sel.mood='balanced';
+  const total=parseInt(sel.time,10);
+  const dist=distribute(total);
+  let phases;
+  if(!dist){ // 5-minute reset = single calming micro-session
+    phases=[{key:'calm',mins:5,a:pick('calm')}];
+  }else{
+    phases=[
+      {key:'warm',mins:dist.warm,a:pick('warm')},
+      {key:'core',mins:dist.core,a:pick('core')},
+      {key:'trans',mins:dist.trans,a:pick('trans')},
+      {key:'calm',mins:dist.calm,a:pick('calm')},
+    ];
+  }
+  currentPlan={sel:JSON.parse(JSON.stringify(sel)),total,phases,ts:Date.now()};
+  renderResults();
+}
+
+/* ---------------- MATERIALS + SUBS ---------------- */
+const SUBS={art:'Kitchen swap: use cotton buds & watered‑down paint, or mud on card.',sensory:'No bin? Try dry oats, shredded paper or a towel of buttons.',paper:'Cereal boxes, junk mail and old envelopes all work.',outdoor:'Indoors? A tray of leaves, stones and sticks brought in.',zero:''};
+function materials(){
+  const set=new Set(); currentPlan.phases.forEach(p=>p.a.mats.forEach(m=>set.add(m)));
+  const items=[...set];
+  const labels={zero:'Nothing to prep',paper:'Paper / recyclables',sensory:'Sensory materials',art:'Art supplies',outdoor:'Natural objects'};
+  return items.map(m=>({name:labels[m]||m,sub:SUBS[m]||'',noprep:m==='zero'}));
+}
+
+/* ---------------- RATIONALE (Tatianna voice, generated) ---------------- */
+function rationale(){
+  const moodTxt={hyper:'an over‑stimulated room needs a calmer landing before anything else',low:'a sluggish group needs their bodies woken gently first',fidgety:'restless energy needs somewhere to GO before it needs to focus',balanced:'a settled group can move straight into rich, focused play'}[currentPlan.sel.mood];
+  const goalTxt={gross:'gross‑motor',fine:'fine‑motor',reg:'emotional‑regulation',exec:'executive‑function',social:'social',null:'developmental'}[currentPlan.sel.goal]||'developmental';
+  if(currentPlan.total===5){
+    return `A five‑minute window isn\'t for teaching — it\'s for regulating. Because ${moodTxt}, I\'ve chosen a single co‑regulation reset rather than an activity to "get through". Do it with them, not at them: your calm is the intervention.`;
+  }
+  return `The arc matters more than any one activity. I\'ve front‑loaded a warm‑up because ${moodTxt}. The core is where your ${goalTxt} goal lives, held long enough for children to get properly absorbed. The transition is the piece most plans forget — it\'s the bridge that prevents the melt‑down between "stop" and "next". And we always land soft: the calm‑down sends everyone on regulated, not wound up.`;
+}
+function backupText(){
+  const t={hyper:'they\'re already high — so if it tips over',fidgety:'restlessness is close to the surface here',low:'even a low room can flip to silly fast',balanced:'if the mood suddenly shifts'}[currentPlan.sel.mood];
+  return `Because ${t}, keep this in your back pocket: stop the current activity without a fuss, drop your own voice low and slow, and go straight to “Bubble Breathing” or a “Turtle Tuck”. Lower the lights or step outside if you can. Re‑enter the plan at the calm‑down — never push back into core play from an overload.`;
+}
+
+/* ---------------- RENDER RESULTS ---------------- */
+function labelFor(qid,v){const q=QUESTIONS.find(x=>x.id===qid);const o=q&&q.opts.find(x=>x.v===v);return o?o.l:v;}
+function renderResults(){
+  const r=document.getElementById('results');
+  // summary chips
+  const s=currentPlan.sel; const pieces=[];
+  if(s.module)pieces.push(labelFor('module',s.module));
+  if(s.age)pieces.push(labelFor('age',s.age));
+  if(s.group)pieces.push(labelFor('group',s.group));
+  if(s.env)pieces.push(labelFor('env',s.env));
+  pieces.push(labelFor('mood',s.mood));
+  if(s.goal)pieces.push(labelFor('goal',s.goal));
+  if(s.sn&&s.sn!=='any')pieces.push(labelFor('sn',s.sn));
+  document.getElementById('summary').innerHTML=pieces.map(p=>`<span class="tagpill">${p}</span>`).join('')+`<span class="tagpill total-time"><i data-lucide="clock" style="width:13px"></i> ${currentPlan.total} min total</span>`;
+  document.getElementById('resTitle').textContent=currentPlan.total===5?'Your 5‑minute reset':'Your '+currentPlan.total+'‑minute session';
+
+  // timeline
+  const modName={adapted:'AdaptED',camped:'CampED',teenaged:'TeenagED',regulated:'RegulatED',parented:'ParentED',unboxed:'UnboxED'};
+  document.getElementById('timeline').innerHTML=currentPlan.phases.map((p,i)=>{
+    const a=p.a; const col=PHCOLOR[p.key];
+    return `<div class="phase ${p.key==='core'?'core':''}" style="--pc:var(${col})">
+      <div class="ph-top">
+        <div class="ph-em">${a.em}</div>
+        <div class="ph-body">
+          <div class="ph-meta"><span class="ph-label">${PHLABEL[p.key]}</span><span class="ph-time">${p.mins} min</span><span class="ph-mod" style="color:var(${MODS[a.mod]})">${modName[a.mod]}</span></div>
+          <div class="ph-title">${a.t}</div>
+          <div class="ph-desc">${a.d}</div>
+        </div>
+      </div>
+      <button class="inspect" aria-expanded="false" data-i="${i}"><i data-lucide="chevron-down" style="width:15px"></i> Inspect this activity</button>
+      <div class="detail" id="det${i}">
+        <div class="detail-in">
+          <h5>Steps</h5>
+          <ul class="steps">${a.steps.map((st,n)=>`<li><span class="n">${n+1}</span><span>${st}</span></li>`).join('')}</ul>
+          <h5>Adapt it</h5>
+          <div class="adapt"><div class="easier"><b>Make it easier</b>${a.easier}</div><div class="harder"><b>Make it harder</b>${a.harder}</div></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // materials
+  document.getElementById('matList').innerHTML=materials().map(m=>`<li><span>${m.name}</span>${m.noprep?'<span class="noprep">Ready to go</span>':(m.sub?`<span class="sub">${m.sub}</span>`:'')}</li>`).join('');
+  document.getElementById('backup').textContent=backupText();
+  document.getElementById('rationale').textContent=rationale();
+
+  r.classList.add('show');
+  if(window.lucide)lucide.createIcons();
+  // wire inspect
+  r.querySelectorAll('.inspect').forEach(btn=>btn.addEventListener('click',()=>{
+    const i=btn.dataset.i, det=document.getElementById('det'+i), open=btn.getAttribute('aria-expanded')==='true';
+    btn.setAttribute('aria-expanded',String(!open));
+    det.style.maxHeight=open?'0':det.scrollHeight+40+'px';
+    btn.querySelector('i').style.transform=open?'':'rotate(180deg)';
+  }));
+  r.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ---------------- SAVED (localStorage) ---------------- */
+function savedList(){try{return JSON.parse(localStorage.getItem('mb_saved')||'[]')}catch(e){return[]}}
+function refreshSaved(){document.getElementById('savedCount').textContent=savedList().length;}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+/* ---------------- ACTIONS ---------------- */
+document.getElementById('buildBtn').addEventListener('click',generate);
+document.getElementById('surpriseBtn').addEventListener('click',()=>{
+  QUESTIONS.forEach(q=>{ if(q.multi){sel[q.id]=[q.opts[Math.floor(Math.random()*q.opts.length)].v];}
+    else{sel[q.id]=q.opts[Math.floor(Math.random()*q.opts.length)].v;} });
+  // reflect in UI
+  document.querySelectorAll('.chips').forEach(row=>{const qid=row.dataset.q;row.querySelectorAll('.chip').forEach(c=>{const on=Array.isArray(sel[qid])?sel[qid].includes(c.dataset.v):sel[qid]===c.dataset.v;c.setAttribute('aria-pressed',String(on));});});
+  generate();
+});
+document.getElementById('restartBtn').addEventListener('click',()=>{
+  Object.keys(sel).forEach(k=>sel[k]=Array.isArray(sel[k])?[]:null);
+  document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+  document.getElementById('results').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+document.getElementById('saveBtn').addEventListener('click',()=>{
+  if(!currentPlan)return; const list=savedList();
+  list.push({title:document.getElementById('resTitle').textContent,ts:currentPlan.ts,phases:currentPlan.phases.map(p=>({label:PHLABEL[p.key],mins:p.mins,title:p.a.t}))});
+  localStorage.setItem('mb_saved',JSON.stringify(list));refreshSaved();
+  const b=document.getElementById('saveBtn');b.classList.add('saved');b.innerHTML='<i data-lucide="check" style="width:16px"></i> Saved to planner';lucide.createIcons();
+  toast('Session saved to your planner');
+});
+document.getElementById('printBtn').addEventListener('click',()=>{document.querySelectorAll('.inspect').forEach(b=>{if(b.getAttribute('aria-expanded')==='false')b.click();});setTimeout(()=>window.print(),300);});
+document.getElementById('savedBtn').addEventListener('click',()=>{const n=savedList().length;toast(n?`${n} saved session${n>1?'s':''} in your planner`:'No saved sessions yet — build one!');});
+
+/* theme */
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const h=document.documentElement,dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.querySelector('#themeBtn i').setAttribute('data-lucide',dark?'moon':'sun');lucide.createIcons();
+});
+
+/* init */
+renderPlanner();refreshSaved();if(window.lucide)lucide.createIcons();
+</script>
+</body>
+</html>
