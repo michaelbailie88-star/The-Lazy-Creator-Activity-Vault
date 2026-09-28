@@ -18902,9 +18902,15 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 #langSelect option{background:#ffffff!important;color:#141a2e!important}
 /* module / category / age / material dropdowns: centred row, yellow text + outline */
 #filterDdRow,.filter-dd-row{justify-content:center!important}
-.filter-dd-btn,.filter-dd-btn span{color:#facc15!important}
+.filter-dd-btn,.filter-dd-btn span{color:#ffffff!important;font-weight:800!important;text-shadow:0 1px 2px rgba(80,40,0,.55)!important}
+.filter-dd-btn{background:linear-gradient(180deg,#fcd34d,#eab308 55%,#ca8a04)!important;box-shadow:0 4px 12px -4px rgba(202,138,4,.6),inset 0 1px 0 rgba(255,255,255,.45)!important}
+.filter-dd-btn:hover,.filter-dd.open .filter-dd-btn{background:linear-gradient(180deg,#fde68a,#facc15 55%,#d97706)!important}
 .filter-dd-btn,.filter-dd-btn:hover,.filter-dd.open .filter-dd-btn{border-color:#facc15!important}
-.filter-dd-btn .dd-chev{color:#facc15!important}
+.filter-dd-btn .dd-chev{color:#ffffff!important}
+/* rounded corners on every strip */
+#viewModeBar,#demoTimer,#weatherBar,.hdr{border-radius:16px!important;margin-left:8px!important;margin-right:8px!important;margin-top:6px!important}
+#statsRow{border-radius:14px!important;margin-left:8px!important;margin-right:8px!important}
+nav.bottom-bar{border-radius:20px 20px 0 0!important}
 /* search: brighter text, smaller centred bar */
 .fbar .search{width:100%!important;max-width:620px!important;margin:0 auto!important;box-sizing:border-box!important}
 #searchInput{color:#ffffff!important;padding-top:6px!important;padding-bottom:6px!important;font-size:13px!important}
@@ -18916,7 +18922,7 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 .hdr .brand{font-family:'Fredoka','Baloo 2','Trebuchet MS',sans-serif!important;font-weight:700!important;font-size:38px!important;letter-spacing:.01em!important;line-height:1!important;justify-content:center}
 .hdr .brand .b2{font-weight:600!important;margin:0 6px!important}
 .hdr .brand-sub{font-size:20px!important;margin-top:6px!important;letter-spacing:.12em!important}
-.hdr .brand-wrap .brand-sub:last-child{font-size:14px!important;margin-top:4px!important;letter-spacing:.12em!important}
+.hdr .brand-wrap .brand-sub:last-child{font-size:14px!important;margin-top:4px!important;letter-spacing:.12em!important;color:#ffffff!important;font-weight:800!important}
 .hdr{min-height:118px}
 @media(max-width:560px){.hdr{min-height:0;flex-wrap:wrap;row-gap:4px}.hdr .brand-wrap{position:static;transform:none;order:10;flex:0 0 100%}.hdr .brand{font-size:30px!important}.hdr .brand-sub{font-size:16px!important;margin-top:4px!important}.hdr .brand-wrap .brand-sub:last-child{font-size:12px!important;margin-top:3px!important}}
 /* date + weather: same playful font as the header title (position, size, colour unchanged) */
@@ -18936,8 +18942,8 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 .mood-bar-opt .mood-bar-opt-em{font-size:13px!important;line-height:1!important}
 .mood-bar-opt .mood-bar-opt-lbl{font-size:9px!important;margin-top:2px!important}
 /* Plan pill now lives in the dropdown row, styled to match the yellow pills */
-#filterDdRow .wb-plan-btn{align-self:center;margin:0!important;padding:6px 13px!important;font-size:12px!important;font-weight:700!important;color:#facc15!important;background:rgba(255,255,255,.06)!important;border:1px solid #facc15!important;border-radius:100px!important;line-height:1.2}
-#filterDdRow .wb-plan-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.1)!important}
+#filterDdRow .wb-plan-btn{align-self:center;margin:0!important;padding:6px 13px!important;font-size:12px!important;font-weight:800!important;color:#ffffff!important;text-shadow:0 1px 2px rgba(80,40,0,.55)!important;background:linear-gradient(180deg,#fcd34d,#eab308 55%,#ca8a04)!important;border:1px solid #facc15!important;border-radius:100px!important;line-height:1.2}
+#filterDdRow .wb-plan-btn:hover{transform:translateY(-2px);background:linear-gradient(180deg,#fde68a,#facc15 55%,#d97706)!important}
 /* (activity pop-up artwork is painted by forceCardColors(), which sets the pop-up background inline) */
 .grid .card>*{position:relative;z-index:1}
 
