@@ -12562,6 +12562,11 @@ function forceCardColors(scopeEls){
     ? scopeEls.filter(el=>el.matches && el.matches('.card, div.pick-card, .modal'))
     : document.querySelectorAll('.card, div.pick-card, .modal');
   cardEls.forEach(el=>{
+    if(el.id==='actModalContent'){
+      // activity pop-up: module colour as a veil over the faded per-module artwork (--cardart)
+      const v='rgba('+parseInt(bg.slice(1,3),16)+','+parseInt(bg.slice(3,5),16)+','+parseInt(bg.slice(5,7),16)+',.84)';
+      el.style.setProperty('background', 'linear-gradient('+v+','+v+'), var(--cardart,none) center/cover no-repeat, '+bg, 'important');
+    } else
     el.style.setProperty('background', bg, 'important');
     el.style.setProperty('border', el.classList.contains('modal') ? '1px solid rgba(255,255,255,0.16)' : '1px solid rgba(255,255,255,0.14)', 'important');
   });
@@ -18874,10 +18879,11 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 .card::before,div.pick-card::before{background:linear-gradient(90deg,var(--cc),color-mix(in srgb,var(--cc) 50%,#fff)) !important}
 .grid .card:hover{border-color:var(--cc) !important;box-shadow:0 26px 56px -16px color-mix(in srgb,var(--cc) 55%,transparent), 0 10px 22px -12px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.2) !important}
 
-/* faded category-themed artwork inside every activity card */
+/* faded per-module artwork (same image as the side panels) behind every activity card */
 .grid .card{position:relative}
-.grid .card::after{content:'';position:absolute;right:10px;bottom:10px;width:118px;height:118px;background-image:var(--cardart,none);background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.20;pointer-events:none;border-radius:18px;-webkit-mask-image:radial-gradient(circle at 68% 68%,#000 8%,transparent 74%);mask-image:radial-gradient(circle at 68% 68%,#000 8%,transparent 74%);z-index:0;transition:opacity .4s ease}
-.grid .card:hover::after{opacity:.34}
+.grid .card::after{content:'';position:absolute;inset:0;top:0;left:0;right:0;bottom:0;width:auto;height:auto;transform:none;animation:none;background-image:var(--cardart,none);background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.16;pointer-events:none;border-radius:inherit;z-index:0;transition:opacity .4s ease}
+.grid .card:hover::after{opacity:.22}
+/* (activity pop-up artwork is painted by forceCardColors(), which sets the pop-up background inline) */
 .grid .card>*{position:relative;z-index:1}
 
 @media(prefers-reduced-motion:reduce){
@@ -18935,7 +18941,7 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
   }
   window.addEventListener('resize',function(){sizeScenes();});
   try{var _ap=document.getElementById('app');if(_ap&&window.ResizeObserver)new ResizeObserver(function(){sizeScenes();}).observe(_ap);}catch(e){}
-  function sync(){var bg=ensureBg();var m=currentMod();if(m!==lastMod){lastMod=m;buildMotifs(bg.querySelector('.fxo-motifs'),m);var u=SCENES[m]||SCENES.adapted;var l=bg.querySelector('.fxo-scene.left'),r=bg.querySelector('.fxo-scene.right');if(l)l.style.backgroundImage='url('+u+')';if(r)r.style.backgroundImage='url('+u+')';var ap=document.getElementById('app');if(ap)ap.style.setProperty('--cardart','url('+u+')');}}
+  function sync(){var bg=ensureBg();var m=currentMod();if(m!==lastMod){lastMod=m;buildMotifs(bg.querySelector('.fxo-motifs'),m);var u=SCENES[m]||SCENES.adapted;var l=bg.querySelector('.fxo-scene.left'),r=bg.querySelector('.fxo-scene.right');if(l)l.style.backgroundImage='url('+u+')';if(r)r.style.backgroundImage='url('+u+')';var ap=document.getElementById('app');if(ap)ap.style.setProperty('--cardart','url('+u+')');document.documentElement.style.setProperty('--cardart','url('+u+')');}}
   function tag(){try{document.querySelectorAll('.mood-bar-opt').forEach(function(el){var mm=el.getAttribute('data-mood');if(mm&&!el.getAttribute('data-testid'))el.setAttribute('data-testid','energy-tile-'+mm);});document.querySelectorAll('.filter-dd-btn').forEach(function(el,i){if(!el.getAttribute('data-testid'))el.setAttribute('data-testid','filter-dd-'+i);});}catch(e){}}
   sync();tag();sizeScenes();
   try{new MutationObserver(function(){sync();tag();sizeScenes();}).observe(document.body,{childList:true,subtree:true});}catch(e){}
