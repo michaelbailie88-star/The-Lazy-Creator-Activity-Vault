@@ -29,6 +29,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#fffaf3; --paper:#fff; --ink:#0f1d2e; --ink-2:#3b4a5e; --ink-3:#6b7a8e;
@@ -3616,7 +3617,7 @@ body,button,input,select,textarea{font-family:'Plus Jakarta Sans',system-ui,sans
  <header class="hdr">
  <div class="brand-wrap">
  <div class="brand"><span class="b1">Adapt</span><span class="b2">+</span><span class="b3">ED</span></div>
- <div class="brand-sub">Activity Vault</div>
+ <div class="brand-sub">The Activity Vault</div>
  <div class="brand-sub" style="color:var(--accent);letter-spacing:0.12em;margin-top:1px">by The Lazy Creator</div>
  </div>
  <div class="tier-badge t2" id="tierBadge">Vault</div>
@@ -18901,6 +18902,13 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 .filter-dd-btn,.filter-dd-btn span{color:#facc15!important}
 .filter-dd-btn,.filter-dd-btn:hover,.filter-dd.open .filter-dd-btn{border-color:#facc15!important}
 .filter-dd-btn .dd-chev{color:#facc15!important}
+/* header module title: centred, larger, playful font */
+.hdr{min-height:84px}
+.hdr .brand-wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);align-items:center;text-align:center;white-space:nowrap}
+.hdr .brand{font-family:'Fredoka','Baloo 2','Trebuchet MS',sans-serif!important;font-weight:700!important;font-size:38px!important;letter-spacing:.01em!important;line-height:1!important;justify-content:center}
+.hdr .brand .b2{font-weight:600!important;margin:0 6px!important}
+.hdr .brand-sub{font-size:11px!important;margin-top:5px!important}
+@media(max-width:560px){.hdr{min-height:0;flex-wrap:wrap;row-gap:4px}.hdr .brand-wrap{position:static;transform:none;order:10;flex:0 0 100%}.hdr .brand{font-size:30px!important}.hdr .brand-sub{font-size:9px!important;margin-top:3px!important}}
 /* (activity pop-up artwork is painted by forceCardColors(), which sets the pop-up background inline) */
 .grid .card>*{position:relative;z-index:1}
 
