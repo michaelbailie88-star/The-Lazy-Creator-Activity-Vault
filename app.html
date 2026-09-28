@@ -18912,6 +18912,14 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
     regulated:'assets/scenes/regulated.webp',
     parented:'assets/scenes/parented.webp'
   };
+  /* side-panel versions, trimmed to the solid artwork so they fill each panel edge to edge */
+  var PANELS={
+    adapted:'assets/scenes/panels/adapted.webp',
+    camped:'assets/scenes/panels/camped.webp',
+    teenaged:'assets/scenes/panels/teenaged.webp',
+    regulated:'assets/scenes/panels/regulated.webp',
+    parented:'assets/scenes/panels/parented.webp'
+  };
   var MOTIFS={
     adapted:['\uD83E\uDDE9','\u2B50','\uD83D\uDD37','\u2728','\uD83C\uDFAF','\uD83E\uDDE0','\uD83D\uDD35','\uD83D\uDCA0'],
     camped:['\uD83C\uDF32','\uD83C\uDF43','\uD83D\uDD25','\u26FA','\uD83C\uDF3F','\uD83E\uDD8B','\uD83C\uDF1E','\uD83C\uDF44'],
@@ -18949,7 +18957,7 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
   }
   window.addEventListener('resize',function(){sizeScenes();});
   try{var _ap=document.getElementById('app');if(_ap&&window.ResizeObserver)new ResizeObserver(function(){sizeScenes();}).observe(_ap);}catch(e){}
-  function sync(){var bg=ensureBg();var m=currentMod();if(m!==lastMod){lastMod=m;buildMotifs(bg.querySelector('.fxo-motifs'),m);var u=SCENES[m]||SCENES.adapted;var l=bg.querySelector('.fxo-scene.left'),r=bg.querySelector('.fxo-scene.right');if(l)l.style.backgroundImage='url('+u+')';if(r)r.style.backgroundImage='url('+u+')';var ap=document.getElementById('app');if(ap)ap.style.setProperty('--cardart','url('+u+')');document.documentElement.style.setProperty('--cardart','url('+u+')');}}
+  function sync(){var bg=ensureBg();var m=currentMod();if(m!==lastMod){lastMod=m;buildMotifs(bg.querySelector('.fxo-motifs'),m);var u=SCENES[m]||SCENES.adapted,pu=PANELS[m]||PANELS.adapted;var l=bg.querySelector('.fxo-scene.left'),r=bg.querySelector('.fxo-scene.right');if(l)l.style.backgroundImage='url('+pu+')';if(r)r.style.backgroundImage='url('+pu+')';var ap=document.getElementById('app');if(ap)ap.style.setProperty('--cardart','url('+u+')');document.documentElement.style.setProperty('--cardart','url('+u+')');}}
   function tag(){try{document.querySelectorAll('.mood-bar-opt').forEach(function(el){var mm=el.getAttribute('data-mood');if(mm&&!el.getAttribute('data-testid'))el.setAttribute('data-testid','energy-tile-'+mm);});document.querySelectorAll('.filter-dd-btn').forEach(function(el,i){if(!el.getAttribute('data-testid'))el.setAttribute('data-testid','filter-dd-'+i);});}catch(e){}}
   sync();tag();sizeScenes();
   try{new MutationObserver(function(){sync();tag();sizeScenes();}).observe(document.body,{childList:true,subtree:true});}catch(e){}
