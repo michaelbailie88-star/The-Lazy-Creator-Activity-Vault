@@ -18891,6 +18891,16 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 .mat-card::after{content:'';position:absolute;inset:0;background-image:var(--cardart,none);background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.16;pointer-events:none;border-radius:inherit;z-index:0;transition:opacity .4s ease}
 .mat-card:hover::after{opacity:.22}
 .mat-card>*{position:relative;z-index:1}
+/* language bar: centred, white bar with dark text */
+#langBar{justify-content:center!important;background:#ffffff!important;color:#141a2e!important;border-bottom:1px solid rgba(20,26,46,.12)!important}
+#langBarLabel{color:#141a2e!important;opacity:1!important}
+#langSelect{flex:0 0 auto!important;background:#ffffff!important;color:#141a2e!important;border:1px solid rgba(20,26,46,.3)!important}
+#langSelect option{background:#ffffff!important;color:#141a2e!important}
+/* module / category / age / material dropdowns: centred row, yellow text + outline */
+#filterDdRow,.filter-dd-row{justify-content:center!important}
+.filter-dd-btn,.filter-dd-btn span{color:#facc15!important}
+.filter-dd-btn,.filter-dd-btn:hover,.filter-dd.open .filter-dd-btn{border-color:#facc15!important}
+.filter-dd-btn .dd-chev{color:#facc15!important}
 /* (activity pop-up artwork is painted by forceCardColors(), which sets the pop-up background inline) */
 .grid .card>*{position:relative;z-index:1}
 
