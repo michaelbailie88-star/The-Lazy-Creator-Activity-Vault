@@ -3610,7 +3610,6 @@ body,button,input,select,textarea{font-family:'Plus Jakarta Sans',system-ui,sans
  <span class="wb-icon" id="wbIcon">🌤</span>
  <span class="wb-temp" id="wbTemp">--°</span>
  <span class="wb-desc" id="wbDesc">Getting weather…</span>
- <span class="wb-plan-btn" id="wbPlanBtn" onclick="event.stopPropagation();buildWeatherPlan()" title="Build a plan around today's weather" style="display:none">📋 Plan</span>
  <span class="wb-refresh" onclick="event.stopPropagation();refreshWeather()" title="Refresh">↻</span>
  </div>
  </div>
@@ -3718,6 +3717,7 @@ body,button,input,select,textarea{font-family:'Plus Jakarta Sans',system-ui,sans
     </button>
     <div class="filter-dd-panel" id="ddMaterialPanel"></div>
   </div>
+  <span class="wb-plan-btn" id="wbPlanBtn" onclick="event.stopPropagation();buildWeatherPlan()" title="Build a plan around today's weather" style="display:none">📋 Plan</span>
 </div>
 <div id="catChips" style="display:none"></div>
 <div class="toggle" id="brandToggle" style="display:none">
@@ -18912,6 +18912,22 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 /* date + weather: same playful font as the header title (position, size, colour unchanged) */
 #weatherBar .wb-date,#weatherBar .wb-temp{font-family:'Fredoka','Baloo 2','Trebuchet MS',sans-serif!important;font-weight:700!important;letter-spacing:.02em!important}
 #weatherBar .wb-desc{font-family:'Fredoka','Baloo 2','Trebuchet MS',sans-serif!important;font-weight:600!important}
+/* date + weather: much larger */
+#weatherBar .wb-date{font-size:20px!important}
+#weatherBar .wb-temp{font-size:22px!important}
+#weatherBar .wb-desc{font-size:16px!important;max-width:260px!important}
+#weatherBar .wb-icon{font-size:26px!important}
+#weatherBar .wb-date{white-space:nowrap!important}
+@media(max-width:480px){#weatherBar .wb-date{font-size:16px!important}#weatherBar .wb-temp{font-size:18px!important}#weatherBar .wb-desc{font-size:13px!important;max-width:96px!important}#weatherBar .wb-icon{font-size:20px!important}}
+@media(max-width:380px){#weatherBar .wb-desc{display:none!important}}
+/* energy buttons: half size, centred */
+.mood-bar-opts{justify-content:center!important}
+.mood-bar-opt{flex:0 1 calc((100% - 20px) / 6)!important;min-width:64px!important;padding:4px 4px 3px!important;border-radius:14px!important}
+.mood-bar-opt .mood-bar-opt-em{font-size:13px!important;line-height:1!important}
+.mood-bar-opt .mood-bar-opt-lbl{font-size:9px!important;margin-top:2px!important}
+/* Plan pill now lives in the dropdown row, styled to match the yellow pills */
+#filterDdRow .wb-plan-btn{align-self:center;margin:0!important;padding:6px 13px!important;font-size:12px!important;font-weight:700!important;color:#facc15!important;background:rgba(255,255,255,.06)!important;border:1px solid #facc15!important;border-radius:100px!important;line-height:1.2}
+#filterDdRow .wb-plan-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.1)!important}
 /* (activity pop-up artwork is painted by forceCardColors(), which sets the pop-up background inline) */
 .grid .card>*{position:relative;z-index:1}
 
