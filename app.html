@@ -18893,7 +18893,10 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 .mat-card:hover::after{opacity:.22}
 .mat-card>*{position:relative;z-index:1}
 /* language bar: centred, white bar with dark text */
-#langBar{justify-content:center!important;background:#ffffff!important;color:#141a2e!important;border-bottom:1px solid rgba(20,26,46,.12)!important}
+#langBar{justify-content:center!important;background:#ffffff!important;color:#141a2e!important;border:1px solid rgba(20,26,46,.12)!important;width:calc((100% - 52px) / 6)!important;min-width:212px!important;height:43px!important;box-sizing:border-box!important;margin:10px auto!important;padding:0 10px!important;border-radius:14px!important;gap:8px!important;box-shadow:0 8px 22px -10px rgba(0,0,0,.55)!important}
+#langSelect{max-width:108px!important;min-width:0!important;font-size:11px!important;padding:3px 4px!important}
+#langBarLabel{font-size:10px!important;letter-spacing:.06em!important;white-space:nowrap!important}
+#langBar{padding:0 8px!important;gap:6px!important;overflow:hidden!important}
 #langBarLabel{color:#141a2e!important;opacity:1!important}
 #langSelect{flex:0 0 auto!important;background:#ffffff!important;color:#141a2e!important;border:1px solid rgba(20,26,46,.3)!important}
 #langSelect option{background:#ffffff!important;color:#141a2e!important}
@@ -18902,13 +18905,20 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 .filter-dd-btn,.filter-dd-btn span{color:#facc15!important}
 .filter-dd-btn,.filter-dd-btn:hover,.filter-dd.open .filter-dd-btn{border-color:#facc15!important}
 .filter-dd-btn .dd-chev{color:#facc15!important}
+/* search: brighter text, smaller centred bar */
+.fbar .search{width:100%!important;max-width:620px!important;margin:0 auto!important;box-sizing:border-box!important}
+#searchInput{color:#ffffff!important;padding-top:6px!important;padding-bottom:6px!important;font-size:13px!important}
+#searchInput::placeholder{color:rgba(255,255,255,.92)!important;opacity:1!important}
+#searchGoBtn{padding:5px 12px!important;font-size:11px!important}
 /* header module title: centred, larger, playful font */
 .hdr{min-height:84px}
 .hdr .brand-wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);align-items:center;text-align:center;white-space:nowrap}
 .hdr .brand{font-family:'Fredoka','Baloo 2','Trebuchet MS',sans-serif!important;font-weight:700!important;font-size:38px!important;letter-spacing:.01em!important;line-height:1!important;justify-content:center}
 .hdr .brand .b2{font-weight:600!important;margin:0 6px!important}
-.hdr .brand-sub{font-size:11px!important;margin-top:5px!important}
-@media(max-width:560px){.hdr{min-height:0;flex-wrap:wrap;row-gap:4px}.hdr .brand-wrap{position:static;transform:none;order:10;flex:0 0 100%}.hdr .brand{font-size:30px!important}.hdr .brand-sub{font-size:9px!important;margin-top:3px!important}}
+.hdr .brand-sub{font-size:20px!important;margin-top:6px!important;letter-spacing:.12em!important}
+.hdr .brand-wrap .brand-sub:last-child{font-size:14px!important;margin-top:4px!important;letter-spacing:.12em!important}
+.hdr{min-height:118px}
+@media(max-width:560px){.hdr{min-height:0;flex-wrap:wrap;row-gap:4px}.hdr .brand-wrap{position:static;transform:none;order:10;flex:0 0 100%}.hdr .brand{font-size:30px!important}.hdr .brand-sub{font-size:16px!important;margin-top:4px!important}.hdr .brand-wrap .brand-sub:last-child{font-size:12px!important;margin-top:3px!important}}
 /* date + weather: same playful font as the header title (position, size, colour unchanged) */
 #weatherBar .wb-date,#weatherBar .wb-temp{font-family:'Fredoka','Baloo 2','Trebuchet MS',sans-serif!important;font-weight:700!important;letter-spacing:.02em!important}
 #weatherBar .wb-desc{font-family:'Fredoka','Baloo 2','Trebuchet MS',sans-serif!important;font-weight:600!important}
