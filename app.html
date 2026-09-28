@@ -18818,30 +18818,100 @@ button.bb-btn.active{background:linear-gradient(135deg,var(--m1),var(--m3)) !imp
 /* universal springy active press */
 .card:active,button.more-card:active,.mood-bar-opt:active,.filter-dd-btn:active,.fx-plan:active,.fx-surprise:active,.bb-btn:active,#searchGoBtn:active{transform:scale(.96) !important}
 
+/* ═══ LIVE BACKGROUND GRAPHICS — per-module, always alive ═══ */
+.fxo-grid{position:absolute;inset:-2px;pointer-events:none;opacity:.06;background-image:linear-gradient(var(--m2) 1px,transparent 1px),linear-gradient(90deg,var(--m2) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(circle at 50% 38%,#000,transparent 78%);mask-image:radial-gradient(circle at 50% 38%,#000,transparent 78%);animation:fxoGrid 22s linear infinite}
+@keyframes fxoGrid{0%{background-position:0 0,0 0}100%{background-position:48px 48px,48px 48px}}
+.fxo-orb{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.95), var(--m2) 42%, transparent 70%);box-shadow:0 0 18px var(--mg);opacity:0;animation:fxoRise linear infinite}
+@keyframes fxoRise{0%{transform:translateY(20px) scale(.5);opacity:0}12%{opacity:.75}88%{opacity:.6}100%{transform:translateY(-118vh) scale(1.15);opacity:0}}
+.fxo-motif{position:absolute;pointer-events:none;opacity:.17;filter:drop-shadow(0 4px 12px rgba(0,0,0,.35));will-change:transform;animation:fxoFloat ease-in-out infinite}
+@keyframes fxoFloat{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(20px,-24px) rotate(9deg)}50%{transform:translate(-16px,-44px) rotate(-7deg)}75%{transform:translate(12px,-22px) rotate(6deg)}}
+.fxo-ring{position:absolute;border:2px solid var(--m2);border-radius:50%;opacity:0;pointer-events:none;animation:fxoRing ease-out infinite}
+@keyframes fxoRing{0%{transform:scale(.3);opacity:.5}100%{transform:scale(2.6);opacity:0}}
+
+/* ambient audio toggle */
+.fxo-audio-btn{position:fixed;left:16px;bottom:calc(150px + env(safe-area-inset-bottom,0px));z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(16,21,32,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 8px 22px -8px rgba(0,0,0,.6);display:grid;place-items:center;transition:transform .16s var(--fxo-spring),box-shadow .2s,border-color .2s}
+.fxo-audio-btn:hover{transform:translateY(-3px) scale(1.06);border-color:var(--m2)}
+.fxo-audio-btn.on{border-color:var(--m2);box-shadow:0 0 18px var(--mg),0 8px 22px -8px rgba(0,0,0,.6)}
+.fxo-audio-btn.on::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--m2);opacity:.5;animation:fxoRing 2.4s ease-out infinite}
+
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001ms !important;transition-duration:.001ms !important}
-  .fxo-blob{animation:none !important}
+  .fxo-blob,.fxo-orb,.fxo-motif,.fxo-ring,.fxo-grid{animation:none !important}
+  .fxo-orb,.fxo-ring{opacity:0 !important}
   .card:hover,div.card:hover,div.pick-card:hover,.mood-bar-opt:hover,button.more-card:hover,.res-card:hover{transform:none !important}
 }
 </style>
 <script>
-/* FX overhaul v2 — inject aurora blob layer + tag key controls (visual/testing only) */
+/* FX overhaul v2 — living per-module background graphics + tag key controls (visual/testing only) */
 (function(){
-  try{
-    if(!document.querySelector('.fxo-bg')){
-      var bg=document.createElement('div');bg.className='fxo-bg';
-      bg.innerHTML='<div class="fxo-blob b1"></div><div class="fxo-blob b2"></div><div class="fxo-blob b3"></div>';
-      document.body.insertBefore(bg,document.body.firstChild);
+  var MOTIFS={
+    adapted:['\uD83E\uDDE9','\u2B50','\uD83D\uDD37','\u2728','\uD83C\uDFAF','\uD83E\uDDE0','\uD83D\uDD35','\uD83D\uDCA0'],
+    camped:['\uD83C\uDF32','\uD83C\uDF43','\uD83D\uDD25','\u26FA','\uD83C\uDF3F','\uD83E\uDD8B','\uD83C\uDF1E','\uD83C\uDF44'],
+    teenaged:['\uD83C\uDFA7','\u26A1','\uD83C\uDFAE','\uD83C\uDF1F','\uD83D\uDEF9','\uD83D\uDC9C','\uD83C\uDFB5','\uD83D\uDD2E'],
+    regulated:['\uD83C\uDF0A','\uD83E\uDEE7','\uD83C\uDF00','\uD83D\uDCA7','\u2601\uFE0F','\uD83D\uDD4A\uFE0F','\uD83C\uDF08','\uD83D\uDD37'],
+    parented:['\u2764\uFE0F','\uD83C\uDFE0','\uD83E\uDDF8','\u2B50','\uD83C\uDF3B','\uD83C\uDF7C','\uD83E\uDD0D','\u2600\uFE0F']
+  };
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  function currentMod(){var a=document.getElementById('app');if(!a)return 'adapted';var c=['camped','teenaged','regulated','parented','adapted'];for(var i=0;i<c.length;i++){if(a.classList.contains(c[i]))return c[i];}return 'adapted';}
+  function buildOrbs(w){var h='';for(var i=0;i<18;i++){var s=rnd(5,16);h+='<span class="fxo-orb" style="left:'+rnd(0,100)+'%;bottom:-6vh;width:'+s+'px;height:'+s+'px;animation-duration:'+rnd(16,34)+'s;animation-delay:-'+rnd(0,30)+'s"></span>';}w.innerHTML=h;}
+  function buildRings(w){var h='';for(var i=0;i<5;i++){var s=rnd(80,180);h+='<span class="fxo-ring" style="left:'+rnd(5,90)+'%;top:'+rnd(10,80)+'%;width:'+s+'px;height:'+s+'px;animation-duration:'+rnd(6,11)+'s;animation-delay:-'+rnd(0,8)+'s"></span>';}w.innerHTML=h;}
+  function buildMotifs(w,mod){var list=MOTIFS[mod]||MOTIFS.adapted;var h='';for(var i=0;i<12;i++){var em=list[i%list.length];h+='<span class="fxo-motif" style="left:'+rnd(2,94)+'%;top:'+rnd(6,88)+'%;font-size:'+rnd(22,46)+'px;animation-duration:'+rnd(9,18)+'s;animation-delay:-'+rnd(0,12)+'s">'+em+'</span>';}w.innerHTML=h;}
+  function ensureBg(){
+    var bg=document.querySelector('.fxo-bg');
+    if(!bg){bg=document.createElement('div');bg.className='fxo-bg';document.body.insertBefore(bg,document.body.firstChild);}
+    if(!bg.querySelector('.fxo-blob')){
+      bg.innerHTML='<div class="fxo-grid"></div><div class="fxo-blob b1"></div><div class="fxo-blob b2"></div><div class="fxo-blob b3"></div><div class="fxo-orbs"></div><div class="fxo-rings"></div><div class="fxo-motifs"></div>';
+      buildOrbs(bg.querySelector('.fxo-orbs'));buildRings(bg.querySelector('.fxo-rings'));
     }
-  }catch(e){}
-  function tag(){
-    try{
-      document.querySelectorAll('.mood-bar-opt').forEach(function(el){var m=el.getAttribute('data-mood');if(m&&!el.getAttribute('data-testid'))el.setAttribute('data-testid','energy-tile-'+m);});
-      document.querySelectorAll('.filter-dd-btn').forEach(function(el,i){if(!el.getAttribute('data-testid'))el.setAttribute('data-testid','filter-dd-'+i);});
-    }catch(e){}
+    return bg;
   }
-  tag();
-  try{new MutationObserver(tag).observe(document.body,{childList:true,subtree:true});}catch(e){}
+  var lastMod=null;
+  function sync(){var bg=ensureBg();var m=currentMod();if(m!==lastMod){lastMod=m;buildMotifs(bg.querySelector('.fxo-motifs'),m);}}
+  function tag(){try{document.querySelectorAll('.mood-bar-opt').forEach(function(el){var mm=el.getAttribute('data-mood');if(mm&&!el.getAttribute('data-testid'))el.setAttribute('data-testid','energy-tile-'+mm);});document.querySelectorAll('.filter-dd-btn').forEach(function(el,i){if(!el.getAttribute('data-testid'))el.setAttribute('data-testid','filter-dd-'+i);});}catch(e){}}
+  sync();tag();
+  try{new MutationObserver(function(){sync();tag();}).observe(document.body,{childList:true,subtree:true});}catch(e){}
+  var app=document.getElementById('app');
+  if(app){try{new MutationObserver(function(){sync();}).observe(app,{attributes:true,attributeFilter:['class']});}catch(e){}}
+  var iv=setInterval(sync,1000);setTimeout(function(){clearInterval(iv);},10000);
+})();
+</script>
+<script>
+/* FX ambient audio — opt-in, per-module generative soundscape (WebAudio, no files) */
+(function(){
+  var ctx=null,master=null,nodes=[],playing=false,chimeTimer=null,curMod='adapted';
+  var SCALES={
+    adapted:{root:220,steps:[0,3,5,7,10]},
+    camped:{root:196,steps:[0,2,4,7,9]},
+    teenaged:{root:246,steps:[0,3,5,6,10]},
+    regulated:{root:174,steps:[0,2,5,7,9]},
+    parented:{root:261,steps:[0,4,7,9,12]}
+  };
+  function mod(){var a=document.getElementById('app');if(!a)return 'adapted';var c=['camped','teenaged','regulated','parented','adapted'];for(var i=0;i<c.length;i++){if(a.classList.contains(c[i]))return c[i];}return 'adapted';}
+  function build(){
+    master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+    var s=SCALES[curMod]||SCALES.adapted;
+    var filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=680;filt.connect(master);
+    [0,1].forEach(function(i){var o=ctx.createOscillator();o.type='sine';o.frequency.value=s.root/(i?1:2);o.detune.value=i?6:-6;var g=ctx.createGain();g.gain.value=i?0.05:0.08;o.connect(g);g.connect(filt);o.start();nodes.push(o,g);});
+    var lfo=ctx.createOscillator();lfo.type='sine';lfo.frequency.value=0.06;var lg=ctx.createGain();lg.gain.value=260;lfo.connect(lg);lg.connect(filt.frequency);lfo.start();nodes.push(lfo,lg);
+    master.gain.linearRampToValueAtTime(0.13,ctx.currentTime+2.5);
+    scheduleChime();
+  }
+  function scheduleChime(){chimeTimer=setTimeout(function(){if(playing){chime();scheduleChime();}},2600+Math.random()*3400);}
+  function chime(){var s=SCALES[curMod]||SCALES.adapted;var st=s.steps[Math.floor(Math.random()*s.steps.length)];var oct=Math.random()<0.5?1:2;var f=s.root*Math.pow(2,(st+12*oct)/12);var o=ctx.createOscillator();o.type='triangle';o.frequency.value=f;var g=ctx.createGain();g.gain.value=0;o.connect(g);g.connect(master);var t=ctx.currentTime;g.gain.linearRampToValueAtTime(0.055,t+0.05);g.gain.exponentialRampToValueAtTime(0.0008,t+2.2);o.start(t);o.stop(t+2.35);}
+  function stopAll(){try{if(master)master.gain.linearRampToValueAtTime(0,ctx.currentTime+0.4);}catch(e){}setTimeout(function(){nodes.forEach(function(n){try{if(n.stop)n.stop();if(n.disconnect)n.disconnect();}catch(e){}});nodes=[];try{if(master)master.disconnect();}catch(e){}master=null;},460);if(chimeTimer)clearTimeout(chimeTimer);}
+  function start(){if(playing)return;if(!ctx){try{ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return;}}if(ctx.state==='suspended')ctx.resume();curMod=mod();playing=true;build();}
+  function stop(){if(!playing)return;playing=false;stopAll();}
+  function retune(){if(!playing)return;var m=mod();if(m!==curMod){curMod=m;stopAll();setTimeout(function(){if(playing)build();},480);}}
+  function addBtn(){
+    if(document.querySelector('.fxo-audio-btn'))return;
+    var b=document.createElement('button');b.className='fxo-audio-btn';b.setAttribute('data-testid','ambient-audio-toggle');b.setAttribute('aria-label','Toggle ambient sound');b.innerHTML='\uD83D\uDD08';
+    b.onclick=function(){if(playing){stop();b.innerHTML='\uD83D\uDD08';b.classList.remove('on');}else{start();b.innerHTML='\uD83D\uDD0A';b.classList.add('on');}};
+    document.body.appendChild(b);
+  }
+  addBtn();
+  try{new MutationObserver(addBtn).observe(document.body,{childList:true});}catch(e){}
+  var app=document.getElementById('app');
+  if(app){try{new MutationObserver(retune).observe(app,{attributes:true,attributeFilter:['class']});}catch(e){}}
 })();
 </script>
 
