@@ -52,6 +52,11 @@ header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 8
 .icon-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--focus)}
 .saved-chip{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;border:1.5px solid var(--line);background:var(--paper);border-radius:var(--pill);padding:8px 14px}
 .saved-chip b{color:var(--terra)}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:var(--pill);padding:8px 14px 8px 10px;min-height:42px;box-sizing:border-box;text-decoration:none;white-space:nowrap;transition:border-color .2s}
+.back-btn:hover{border-color:var(--ink)}
+.back-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--focus)}
+/* phones: header row stays as-is; Back drops to its own slim row underneath */
+@media(max-width:480px){.hd{position:relative;margin-bottom:36px}.hd .back-btn{position:absolute;left:20px;top:62px;height:36px;min-height:0;padding:0;border:0;background:none;border-radius:0;font-size:14px;gap:6px}.hd .back-btn:hover{border:0;text-decoration:underline}.hd .back-btn:focus-visible{box-shadow:none;outline:2px solid var(--focus);outline-offset:2px}}
 
 .hero{position:relative;z-index:1;padding:44px 0 8px;text-align:center}
 .avatar{width:88px;height:88px;border-radius:26px;margin:0 auto 16px;background:linear-gradient(150deg,var(--sage),var(--ocean) 70%,var(--terra));display:grid;place-items:center;color:#fff;box-shadow:0 18px 40px -12px var(--ocean);position:relative}
@@ -216,6 +221,7 @@ footer{position:relative;z-index:1;text-align:center;padding:40px 20px 60px;colo
 
 <header>
   <div class="wrap hd">
+    <a class="back-btn" id="backBtn" href="index.html#bailie" aria-label="Back to the Activity Vault"><i data-lucide="arrow-left" style="width:16px"></i><span class="back-lbl">Back</span></a>
     <div class="brand"><span class="orb"><i data-lucide="sparkles" style="width:17px"></i></span> Mrs. Bailie</div>
     <div class="sp"></div>
     <button class="saved-chip" id="savedBtn" aria-label="Saved sessions"><i data-lucide="bookmark" style="width:15px"></i> Saved <b id="savedCount">0</b></button>
@@ -654,6 +660,21 @@ document.getElementById('themeBtn').addEventListener('click',()=>{
   h.setAttribute('data-theme',dark?'light':'dark');
   document.querySelector('#themeBtn i').setAttribute('data-lucide',dark?'moon':'sun');lucide.createIcons();
 });
+
+/* back button: on its own page, return to where the visitor came from on this
+   site (or the landing page); inside the demo's planner pop-up, close the pop-up */
+(function(){
+  var b=document.getElementById('backBtn');if(!b)return;
+  var closeBtn=null;
+  try{if(window.self!==window.top)closeBtn=window.parent.document.getElementById('fxOvClose');}catch(e){}
+  var fromSite=false;try{fromSite=!!document.referrer&&new URL(document.referrer).origin===location.origin&&!/mrs-bailie\.html/.test(document.referrer);}catch(e){}
+  if(closeBtn)b.setAttribute('aria-label','Back to the demo');
+  b.addEventListener('click',function(e){
+    if(closeBtn){e.preventDefault();closeBtn.click();return;}
+    if(window.self!==window.top){e.preventDefault();window.top.location.href=b.href;return;}
+    if(fromSite&&history.length>1){e.preventDefault();history.back();}
+  });
+})();
 
 /* init */
 renderPlanner();refreshSaved();if(window.lucide)lucide.createIcons();
