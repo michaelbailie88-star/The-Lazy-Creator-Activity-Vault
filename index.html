@@ -195,6 +195,157 @@ footer a{color:#cbd5e1}
 footer a:hover{color:#fff}
 footer .legal{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);font-size:12.5px;color:#94a3b8;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
+/* ═══════════ NEW LANDING SECTIONS — light, cool "cosmic" tints that contrast the warm cream ═══════════ */
+:root{--cos-1:#eef3ff;--cos-2:#f3ecff;--cos-ink:#1e2a5a;--indigo:#4f46e5;--violet:#7c3aed;--ok:#16a34a;--no:#e11d48}
+
+/* hero */
+.hx{position:relative;z-index:1;padding:26px 0 36px}
+.hx-panel{position:relative;overflow:hidden;border-radius:30px;padding:56px 48px;background:radial-gradient(ellipse 60% 70% at 88% 12%,rgba(124,58,237,.16),transparent 60%),radial-gradient(ellipse 55% 60% at 8% 90%,rgba(2,132,199,.16),transparent 60%),linear-gradient(135deg,var(--cos-1),var(--cos-2));border:1.5px solid #dcd6f5;box-shadow:0 30px 70px -30px rgba(49,46,129,.35);display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center}
+.hx-stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(#6366f1 1px,transparent 1.6px),radial-gradient(#a78bfa 1px,transparent 1.6px);background-size:46px 46px,71px 71px;background-position:0 0,23px 31px;opacity:.28;mask-image:linear-gradient(180deg,#000,transparent 85%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 85%)}
+.hx-orb{position:absolute;border-radius:50%;filter:blur(2px);pointer-events:none}
+.hx-orb.o1{width:14px;height:14px;background:#a78bfa;top:14%;left:46%;animation:hxOrb 9s ease-in-out infinite}
+.hx-orb.o2{width:9px;height:9px;background:#38bdf8;bottom:18%;left:6%;animation:hxOrb 11s ease-in-out infinite reverse}
+@keyframes hxOrb{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-14px)}}
+.hx-copy{position:relative}
+.hx-copy .eyebrow{color:var(--indigo)}
+.hx h1{font-size:clamp(36px,5.6vw,62px);font-weight:800;margin:16px 0 18px;color:var(--cos-ink);max-width:14ch}
+.hx h1 em{font-style:normal;background:linear-gradient(90deg,var(--indigo),var(--violet) 60%,#db2777);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hx .lede{font-size:clamp(15.5px,1.7vw,18px);color:#3b4468;max-width:52ch;margin-bottom:26px}
+.hx-cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn-hx{background:linear-gradient(135deg,var(--terra),#f97316);color:#fff;font-size:16px;padding:16px 26px;box-shadow:0 14px 30px -10px var(--terra),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn-hx:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.btn-hx2{background:#fff;color:var(--cos-ink);border-color:#c7c2ee}
+.btn-hx2:hover{transform:translateY(-2px);border-color:var(--indigo)}
+.btn-hx2 .live{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:hxLive 1.8s ease-out infinite}
+@keyframes hxLive{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}100%{box-shadow:0 0 0 10px rgba(34,197,94,0)}}
+.hx .trust{justify-content:flex-start;margin-top:18px;color:#56608a}
+.hx .trust i{color:var(--indigo)!important}
+/* hero visual: the 3-click flow */
+.hx-demo{position:relative;background:#fff;border:1.5px solid #dcd6f5;border-radius:22px;padding:18px;box-shadow:0 24px 50px -24px rgba(49,46,129,.45)}
+.hx-bar{display:flex;align-items:center;gap:6px;margin-bottom:14px}
+.hx-bar span{width:9px;height:9px;border-radius:50%;background:#e5e3f3}
+.hx-bar b{margin-left:auto;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#7b7fa8}
+.hx-step{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:14px;border:1.5px solid transparent;transition:background .35s,border-color .35s}
+.hx-step+.hx-step{margin-top:6px}
+.hx-step .n{flex:0 0 auto;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:#eef0fb;color:#6b6fa0;transition:background .35s,color .35s}
+.hx-step .t{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#7b7fa8;margin-bottom:6px}
+.hx-chips{display:flex;gap:6px;flex-wrap:wrap}
+.hx-chip{font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;background:#f3f2fb;color:#4b4f7a;border:1px solid #e3e1f4;transition:background .3s,color .3s,transform .3s}
+.hx-step.on{background:#f6f4ff;border-color:#d9d2ff}
+.hx-step.on .n{background:var(--indigo);color:#fff}
+.hx-chip.pick{background:var(--indigo);color:#fff;border-color:var(--indigo);transform:scale(1.06)}
+.hx-result{margin-top:10px;border-radius:16px;padding:14px;background:linear-gradient(135deg,#0369a1,#4f46e5);color:#fff;opacity:0;transform:translateY(10px) scale(.98);transition:opacity .45s,transform .45s}
+.hx-result.show{opacity:1;transform:none}
+.hx-result .k{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.hx-result .h{font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;margin:3px 0}
+.hx-result .d{font-size:12.5px;opacity:.92}
+.hx-result .tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.hx-result .tags span{font-size:10.5px;font-weight:800;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:999px}
+.hx .stat-row{margin-top:26px}
+@media(max-width:900px){.hx-panel{grid-template-columns:1fr;padding:40px 26px}.hx h1{max-width:none}}
+@media(max-width:520px){.hx-panel{padding:30px 18px;border-radius:24px}.hx-cta .btn{width:100%;justify-content:center}}
+
+/* feature showcase */
+.fx-band{position:relative;z-index:1;padding:72px 0;background:linear-gradient(180deg,rgba(238,243,255,0),#eef3ff 18%,#f1ecff 82%,rgba(241,236,255,0))}
+.fx-band .sec-head h2 em{color:var(--indigo)}
+.fx-band .eyebrow{color:var(--indigo)}
+.fxg{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:900px){.fxg{grid-template-columns:1fr;max-width:560px;margin:0 auto}}
+.fxc{position:relative;background:#fff;border:1.5px solid #e1dcf6;border-radius:22px;padding:22px;box-shadow:0 14px 34px -18px rgba(49,46,129,.28);transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s;overflow:hidden;opacity:0;transform:translateY(18px)}
+.fxc.in{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .6s var(--ease),box-shadow .3s,border-color .3s}
+.fxc::before{content:'';position:absolute;inset:0 0 auto 0;height:4px;background:var(--fc)}
+.fxc:hover{transform:translateY(-6px);border-color:var(--fc);box-shadow:0 26px 48px -20px color-mix(in srgb,var(--fc) 55%,transparent)}
+.fxc .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;background:var(--fc);box-shadow:0 10px 20px -8px var(--fc);transition:transform .4s var(--ease)}
+.fxc:hover .ic{transform:rotate(-8deg) scale(1.08)}
+.fxc h3{font-size:21px;font-weight:800;margin:14px 0 6px;color:var(--cos-ink)}
+.fxc p{font-size:14px;color:var(--ink-2);margin-bottom:16px}
+.fx-live{border-radius:16px;background:#f7f6fd;border:1px solid #ebe8f8;padding:14px;min-height:150px}
+.fx-live .lbl{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8a8db3;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.fx-live .lbl i{width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block}
+/* weather mini */
+.wx-now{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--cos-ink)}
+.wx-now .e{font-size:30px;transition:transform .5s var(--ease)}
+.wx-now .s{font-size:13px;color:#56608a;font-weight:700}
+.wx-nudge{margin-top:10px;font-size:12.5px;font-weight:800;border-radius:10px;padding:8px 10px;opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
+.wx-list{display:grid;gap:6px;margin-top:8px}
+.wx-list span{font-size:12.5px;font-weight:700;background:#fff;border:1px solid #e6e3f5;border-radius:9px;padding:6px 9px;opacity:0;transform:translateX(-8px);transition:opacity .35s,transform .35s}
+.wx.show .wx-nudge,.wx.show .wx-list span{opacity:1;transform:none}
+.wx.show .wx-list span:nth-child(2){transition-delay:.12s}.wx.show .wx-list span:nth-child(3){transition-delay:.24s}
+.wx.rain .wx-nudge{color:#0369a1;background:#e0f2fe}.wx:not(.rain) .wx-nudge{color:#a16207;background:#fef3c7}
+/* filter mini */
+.flt-row{display:flex;gap:5px;flex-wrap:nowrap;margin-bottom:7px}
+.flt-row .g{font-size:10px;font-weight:800;color:#8a8db3;width:60px;flex:0 0 auto;align-self:center;text-transform:uppercase;letter-spacing:.08em}
+.flt-row .c{font-size:11px;font-weight:700;padding:4px 7px;border-radius:999px;background:#fff;border:1px solid #e3e1f4;color:#4b4f7a;transition:all .3s}
+.flt-row .c.pick{background:var(--fc);border-color:var(--fc);color:#fff}
+.flt-res{display:grid;gap:5px;margin-top:9px}
+.flt-res div{height:9px;border-radius:5px;background:linear-gradient(90deg,#c7d2fe,#e0e7ff);transition:width .5s var(--ease),opacity .5s}
+/* starters mini */
+.cs-q{font-family:'Fraunces';font-style:italic;font-size:17px;line-height:1.4;color:var(--cos-ink);min-height:72px;transition:opacity .35s,transform .35s}
+.cs-q.out{opacity:0;transform:translateY(6px)}
+.cs-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.cs-meta span{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8a8db3}
+.cs-next{font:inherit;font-size:12px;font-weight:800;color:#fff;background:var(--fc);border:0;border-radius:999px;padding:6px 12px;cursor:pointer;transition:transform .15s,filter .2s}
+.cs-next:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.cs-next:focus-visible{outline:none;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--focus)}
+
+/* comparison */
+.cmp-wrap{max-width:900px;margin:0 auto;background:#f7f8fc;border:1.5px solid #dfe3ef;border-radius:24px;padding:10px;box-shadow:0 20px 50px -28px rgba(30,42,90,.35)}
+.cmp{width:100%;border-collapse:separate;border-spacing:0}
+.cmp th,.cmp td{padding:15px 16px;text-align:left;font-size:14.5px;border-bottom:1px solid #e6e9f2;vertical-align:middle}
+.cmp thead th{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6b7390;background:#eef1f8}
+.cmp thead th:first-child{border-top-left-radius:16px}.cmp thead th:last-child{border-top-right-radius:16px}
+.cmp thead th.us{color:#fff;background:linear-gradient(135deg,#4f46e5,#0369a1)}
+.cmp td:first-child{font-weight:700;color:#2b3452;width:34%}
+.cmp td.them{color:#6b7390;background:#fbfbfd}
+.cmp td.us{color:#1e2a5a;font-weight:700;background:#f3f5ff}
+.cmp tbody tr:hover td{background:#eef2ff}
+.cmp tbody tr:last-child td{border-bottom:0}
+.cmp .m{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;margin-right:8px;font-size:13px;font-weight:900;vertical-align:-5px;flex:0 0 auto}
+.cmp .m.ok{background:#dcfce7;color:var(--ok)}
+.cmp .m.no{background:#ffe4e6;color:var(--no)}
+.cmp tr.price-row td{font-size:15.5px}
+.cmp tr.price-row td.us{background:linear-gradient(90deg,#fff7ed,#ffedd5);color:#9a3412}
+.cmp tr.price-row td.us b{font-family:'Bricolage Grotesque';font-size:22px;color:#c2410c}
+.cmp-cell{display:flex;align-items:center}
+.flat{max-width:900px;margin:18px auto 0;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:#fff;border:1.5px solid #fed7aa;border-radius:20px;padding:20px 24px;box-shadow:0 14px 30px -18px rgba(194,65,12,.4)}
+.flat .ic{width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,var(--terra),#f97316);color:#fff;display:grid;place-items:center}
+.flat h3{font-size:19px;font-weight:800;margin-bottom:2px}
+.flat p{font-size:14px;color:var(--ink-2)}
+.flat .btn{justify-content:center}
+@media(max-width:520px){.flt-row{flex-wrap:wrap}.flt-row .g{width:100%}}
+@media(max-width:680px){
+  .cmp thead{display:none}
+  .cmp,.cmp tbody,.cmp tr,.cmp td{display:block;width:100%}
+  .cmp tr{border-bottom:1px solid #e6e9f2;padding:12px 6px}
+  .cmp tbody tr:last-child{border-bottom:0}
+  .cmp td{border:0;padding:6px 8px;border-radius:10px}
+  .cmp td:first-child{width:100%;font-size:15px;padding-bottom:4px}
+  .cmp td.them::before{content:'Pinterest & Google';display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#8a92ad;margin-bottom:3px}
+  .cmp td.us::before{content:'The Activity Vault';display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#4f46e5;margin-bottom:3px}
+  .cmp td.us{margin-top:5px}
+  .flat{grid-template-columns:1fr;text-align:center}.flat .ic{margin:0 auto}
+}
+
+/* our story */
+.story-band{position:relative;z-index:1;padding:72px 0 30px}
+.story{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:820px){.story{grid-template-columns:1fr}}
+.st-col{position:relative;border-radius:24px;padding:32px;background:#fff;border:1.5px solid var(--sc-b);box-shadow:0 18px 40px -24px rgba(18,27,40,.35);overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s}
+.st-col:hover{transform:translateY(-4px);box-shadow:0 26px 50px -24px rgba(18,27,40,.4)}
+.st-col::after{content:'';position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:var(--sc-t);opacity:.7;pointer-events:none}
+.st-col.edu{--sc:#3b7a57;--sc-b:#cfe5d8;--sc-t:#e0efe6}
+.st-col.tech{--sc:#4f46e5;--sc-b:#dcd6f5;--sc-t:#ece9ff}
+.st-col .ic{position:relative;z-index:1;width:56px;height:56px;border-radius:16px;background:var(--sc);color:#fff;display:grid;place-items:center;box-shadow:0 12px 24px -10px var(--sc)}
+.st-col .k{position:relative;z-index:1;font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--sc);margin:18px 0 6px}
+.st-col h3{position:relative;z-index:1;font-size:clamp(22px,2.8vw,28px);font-weight:800;margin-bottom:6px}
+.st-col .who{font-size:14px;color:var(--ink-3);font-weight:700;margin-bottom:14px}
+.st-col blockquote{font-family:'Fraunces';font-style:italic;font-size:16.5px;line-height:1.5;color:var(--ink-2);border-left:3px solid var(--sc);padding-left:14px;margin-bottom:16px}
+.st-col ul{list-style:none;display:grid;gap:10px;position:relative;z-index:1}
+.st-col li{display:flex;gap:10px;font-size:14.5px;color:var(--ink-2)}
+.st-col li .d{flex:0 0 auto;width:24px;height:24px;border-radius:8px;background:var(--sc-t);color:var(--sc);display:grid;place-items:center;margin-top:1px}
+.st-close{margin-top:18px;text-align:center;background:linear-gradient(135deg,#eef3ff,#f3ecff);border:1.5px solid #dcd6f5;border-radius:20px;padding:22px 24px;font-size:16px;color:var(--cos-ink);font-weight:600}
+.st-close b{font-weight:800}
+
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 </style>
 </head>
@@ -208,7 +359,7 @@ footer .legal{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
     <nav class="nav-links" id="navLinks" aria-label="Primary">
       <a href="#modules">Modules</a>
       <a href="mrs-bailie.html">Mrs. Bailie</a>
-      <a href="#educator">Educator</a>
+      <a href="#story">Our Story</a>
       <a href="#giveback">Give‑back</a>
       <a href="#pricing">Pricing</a>
       <a href="app.html">Try the demo</a>
@@ -218,18 +369,30 @@ footer .legal{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
 </header>
 
 <main>
-<section class="hero wrap">
-  <span class="eyebrow"><i data-lucide="sparkles" style="width:14px"></i> Inspired by YMCA &amp; play‑to‑learn</span>
-  <h1>Stop searching. <em>Start doing.</em></h1>
-  <p class="lede">5,330 educator‑authored activities across six modules — plus Mrs. Bailie, an AI planner that builds a whole timed session, not just one idea. One‑time price. No subscription.</p>
-  <div class="hero-cta">
-    <a href="https://thelazycreator.gumroad.com/l/kbylil" class="btn btn-primary" data-testid="hero-buy-cta">Get the Vault — $67 <i data-lucide="arrow-right" style="width:17px"></i></a>
-    <a href="mrs-bailie.html" class="btn btn-ghost" data-testid="hero-bailie-cta"><i data-lucide="wand-sparkles" style="width:17px"></i> Meet Mrs. Bailie</a>
-  </div>
-  <div class="trust">
-    <span><i data-lucide="check-circle" style="width:15px;color:var(--sage)"></i> One‑time payment</span>
-    <span><i data-lucide="printer" style="width:15px;color:var(--sage)"></i> Print‑ready</span>
-    <span><i data-lucide="wifi-off" style="width:15px;color:var(--sage)"></i> Works offline</span>
+<section class="hx wrap" id="top">
+  <div class="hx-panel">
+    <div class="hx-stars" aria-hidden="true"></div><span class="hx-orb o1" aria-hidden="true"></span><span class="hx-orb o2" aria-hidden="true"></span>
+    <div class="hx-copy">
+      <span class="eyebrow"><i data-lucide="sparkles" style="width:14px"></i> Inspired by YMCA &amp; play‑to‑learn</span>
+      <h1>Zero‑prep activities in <em>under 3 clicks.</em></h1>
+      <p class="lede">Stop wasting hours scrolling through ad-filled blogs and dead Pinterest links. Get instant access to a massive vault of 5,330+ expert-built activities, zero-prep setups, and clinical conversation starters—engineered to keep kids engaged and regulated.</p>
+      <div class="hx-cta">
+        <a href="https://thelazycreator.gumroad.com/l/kbylil" class="btn btn-hx" data-testid="hero-buy-cta">Get Lifetime Access — Just $67 <i data-lucide="arrow-right" style="width:17px"></i></a>
+        <a href="app.html" class="btn btn-hx2" data-testid="hero-demo-cta"><span class="live" aria-hidden="true"></span> Test the Live 5-Minute Demo</a>
+      </div>
+      <div class="trust">
+        <span><i data-lucide="check-circle" style="width:15px"></i> One‑time payment</span>
+        <span><i data-lucide="printer" style="width:15px"></i> Print‑ready</span>
+        <span><i data-lucide="wifi-off" style="width:15px"></i> Works offline</span>
+      </div>
+    </div>
+    <div class="hx-demo" id="hxDemo" aria-label="How it works: three clicks to a ready activity">
+      <div class="hx-bar"><span></span><span></span><span></span><b>3 clicks</b></div>
+      <div class="hx-step" data-s="1"><div class="n">1</div><div><div class="t">Pick a module</div><div class="hx-chips"><span class="hx-chip" data-p>AdaptED</span><span class="hx-chip">CampED</span><span class="hx-chip">TeenagED</span><span class="hx-chip">RegulatED</span></div></div></div>
+      <div class="hx-step" data-s="2"><div class="n">2</div><div><div class="t">Match the room's energy</div><div class="hx-chips"><span class="hx-chip">🔋 Low</span><span class="hx-chip">⚡ Medium</span><span class="hx-chip" data-p>🚀 High</span></div></div></div>
+      <div class="hx-step" data-s="3"><div class="n">3</div><div><div class="t">Open it &amp; go</div><div class="hx-chips"><span class="hx-chip" data-p>🎈 Balloon Volley</span><span class="hx-chip">🦘 Animal Walk Stations</span></div></div></div>
+      <div class="hx-result" id="hxResult"><div class="k">Ready to run · no prep</div><div class="h">🎈 Balloon Volley</div><div class="d">Keep the balloon off the floor. Hands only. Two minutes feels like ten.</div><div class="tags"><span>AdaptED</span><span>Ages 2–5</span><span>High energy</span></div></div>
+    </div>
   </div>
   <div class="stat-row">
     <div class="stat"><b>5,330</b><span>Activities</span></div>
@@ -252,6 +415,51 @@ footer .legal{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
     <div class="mod m-reg"><div class="bg"></div><div class="mtop"><span class="mem">🧘</span><span class="mkind">Core</span></div><div class="mbot"><h3>RegulatED</h3><p>Social‑emotional learning, co‑regulation &amp; calm.</p></div></div>
     <div class="mod m-parent"><div class="bg"></div><div class="mtop"><span class="mem">🏠</span><span class="mkind">Extra</span></div><div class="mbot"><h3>ParentED</h3><p>At‑home guidance &amp; parent handouts — free with every plan.</p></div></div>
     <div class="mod m-unbox"><div class="bg"></div><div class="mtop"><span class="mem">📦</span><span class="mkind">Extra</span></div><div class="mbot"><h3>UnboxED</h3><p>Ideas built around one everyday material you already have.</p></div></div>
+  </div>
+</section>
+
+<section class="fx-band" id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow"><i data-lucide="zap" style="width:14px"></i> Live inside the app</span>
+      <h2>Features that do the <em>thinking for you.</em></h2>
+      <p>Not a static PDF library. The Vault reacts to your day, your room and your kids — in real time.</p>
+    </div>
+    <div class="fxg">
+      <article class="fxc" style="--fc:#0284c7">
+        <div class="ic"><i data-lucide="cloud-rain" style="width:24px"></i></div>
+        <h3>Smart Weather Integration</h3>
+        <p>The Vault checks your local forecast. When rain is coming, it flags it and builds an indoor plan before the kids even ask to go outside.</p>
+        <div class="fx-live wx" id="fxWx">
+          <div class="lbl"><i></i> Live forecast</div>
+          <div class="wx-now"><span class="e" id="fxWxE">☀️</span><div><div id="fxWxT">Sunny · 21°</div><div class="s" id="fxWxS">Outdoor activities look great</div></div></div>
+          <div class="wx-nudge" id="fxWxN">☀️ Great day to get outside — outdoor picks</div>
+          <div class="wx-list" id="fxWxL"><span>🔔 Sound Walk</span><span>🟤 Mud Kitchen</span><span>🐛 Garden Bug Watch</span></div>
+        </div>
+      </article>
+      <article class="fxc" style="--fc:#7c3aed">
+        <div class="ic"><i data-lucide="sliders-horizontal" style="width:24px"></i></div>
+        <h3>Instant Multi‑Filter System</h3>
+        <p>Stack energy, age and category at once. 5,330 activities narrow to the handful that fit your room — instantly, with no page reloads.</p>
+        <div class="fx-live" id="fxFlt">
+          <div class="lbl"><i></i> Filtering live</div>
+          <div class="flt-row" data-g="e"><span class="g">Energy</span><span class="c">Low</span><span class="c">Med</span><span class="c">High</span></div>
+          <div class="flt-row" data-g="a"><span class="g">Age</span><span class="c">0–3</span><span class="c">3–5</span><span class="c">5–8</span></div>
+          <div class="flt-row" data-g="c"><span class="g">Category</span><span class="c">Movement</span><span class="c">Sensory</span><span class="c">Language</span></div>
+          <div class="flt-res" id="fxFltRes"><div style="width:96%"></div><div style="width:88%"></div><div style="width:92%"></div><div style="width:80%"></div></div>
+        </div>
+      </article>
+      <article class="fxc" style="--fc:#3b7a57">
+        <div class="ic"><i data-lucide="message-circle-heart" style="width:24px"></i></div>
+        <h3>Educator Conversation Starters</h3>
+        <p>Every activity comes with a conversation starter matched to the age group — so the learning lands after the fun, not just during it.</p>
+        <div class="fx-live">
+          <div class="lbl"><i></i> Conversation starter</div>
+          <div class="cs-q" id="fxCsQ">“What did your hands feel? What did your eyes see?”</div>
+          <div class="cs-meta"><span id="fxCsW">Kids</span><button type="button" class="cs-next" id="fxCsNext">Next starter →</button></div>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -279,25 +487,40 @@ footer .legal{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
     </div>
   </div>
 </section>
-
-<section class="blk wrap" id="educator">
-  <div class="auth">
-    <div class="face"><i data-lucide="graduation-cap" style="width:64px"></i></div>
-    <div>
-      <div class="role">The educator behind the Vault</div>
-      <h2>Tatianna Bailie</h2>
-      <p style="color:var(--ink-3);font-size:14px;margin:6px 0 16px">Senior Childhood Educator</p>
-      <blockquote class="ed">"Every activity here is something I'd actually run with real children — with the materials you really have, and the mess, energy and feelings that really happen. That's the difference between a nice idea and a plan that works."</blockquote>
-    </div>
-  </div>
-</section>
-
 <section class="blk wrap" id="giveback">
   <div class="give">
     <div class="bg" aria-hidden="true"></div>
     <div class="ic"><i data-lucide="heart-handshake" style="width:30px"></i></div>
     <h2>Every purchase gives back</h2>
     <p>A percentage of every Vault and School purchase is donated to organisations that support children, families and educators. When you plan a better day for your kids, you help fund one for others too.</p>
+  </div>
+</section>
+
+<section class="blk wrap" id="compare">
+  <div class="sec-head">
+    <span class="eyebrow"><i data-lucide="scale" style="width:14px"></i> The honest comparison</span>
+    <h2>The scroll hunt vs. <em>the Vault.</em></h2>
+    <p>Pinterest and Google are free — you just pay for them with your evenings.</p>
+  </div>
+  <div class="cmp-wrap">
+    <table class="cmp">
+      <thead><tr><th scope="col">What you need</th><th scope="col">Pinterest &amp; Google</th><th scope="col" class="us">The Activity Vault</th></tr></thead>
+      <tbody>
+        <tr><td>Time to a usable activity</td><td class="them"><span class="cmp-cell"><span class="m no">✕</span>Hours of scrolling</span></td><td class="us"><span class="cmp-cell"><span class="m ok">✓</span>Under 3 clicks</span></td></tr>
+        <tr><td>Ads, pop‑ups &amp; life‑story blogs</td><td class="them"><span class="cmp-cell"><span class="m no">✕</span>Everywhere</span></td><td class="us"><span class="cmp-cell"><span class="m ok">✓</span>Zero ads</span></td></tr>
+        <tr><td>Dead or broken links</td><td class="them"><span class="cmp-cell"><span class="m no">✕</span>Constantly</span></td><td class="us"><span class="cmp-cell"><span class="m ok">✓</span>Never — it all lives in the Vault</span></td></tr>
+        <tr><td>Filter by energy, age &amp; category at once</td><td class="them"><span class="cmp-cell"><span class="m no">✕</span>Not possible</span></td><td class="us"><span class="cmp-cell"><span class="m ok">✓</span>Instant, stackable filters</span></td></tr>
+        <tr><td>Written by a real educator</td><td class="them"><span class="cmp-cell"><span class="m no">✕</span>Anyone can post</span></td><td class="us"><span class="cmp-cell"><span class="m ok">✓</span>A 20‑year veteran educator</span></td></tr>
+        <tr><td>Conversation starter &amp; group adaptations</td><td class="them"><span class="cmp-cell"><span class="m no">✕</span>Rarely</span></td><td class="us"><span class="cmp-cell"><span class="m ok">✓</span>On every activity</span></td></tr>
+        <tr><td>Rainy‑day indoor suggestions</td><td class="them"><span class="cmp-cell"><span class="m no">✕</span>Search again</span></td><td class="us"><span class="cmp-cell"><span class="m ok">✓</span>Built from your forecast</span></td></tr>
+        <tr class="price-row"><td>What it really costs</td><td class="them"><span class="cmp-cell"><span class="m no">✕</span>“Free” — paid in your time, every week</span></td><td class="us"><span class="cmp-cell"><span class="m ok">✓</span><span><b>$67</b> once · yours for life</span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="flat">
+    <div class="ic"><i data-lucide="badge-dollar-sign" style="width:26px"></i></div>
+    <div><h3>One flat fee. That's the whole deal.</h3><p>No subscription, no renewals, no upsells to unlock “premium” activities. Pay $67 once and every activity — plus every future update — is yours.</p></div>
+    <a href="https://thelazycreator.gumroad.com/l/kbylil" class="btn btn-primary" data-testid="compare-buy-cta">Get Lifetime Access</a>
   </div>
 </section>
 
@@ -373,8 +596,43 @@ footer .legal{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
     <details><summary>Is this a subscription?<span class="p">+</span></summary><p><strong>No.</strong> One‑time payment, lifetime access. No recurring charges, no auto‑renewal, no "free trial" that secretly bills you.</p></details>
     <details><summary>What's the difference between Vault and School?<span class="p">+</span></summary><p>Both unlock the full catalog — all 5,330 activities, every module, UnboxED and resource PDFs. The only difference is seats. <strong>Vault ($67)</strong> is one login for one educator. <strong>School ($397)</strong> is the same library across 10 educator seats. ParentED is free with either.</p></details>
     <details><summary>Can I see it before I buy?<span class="p">+</span></summary><p>Yes. The <a href="app.html" style="text-decoration:underline">live demo</a> needs no signup or card, and <a href="mrs-bailie.html" style="text-decoration:underline">Mrs. Bailie</a> is free to try right now.</p></details>
-    <details><summary>Who writes the activities?<span class="p">+</span></summary><p>Senior Childhood Educator Tatianna Bailie and her team — every activity is something they'd run with real children, using materials you really have.</p></details>
+    <details><summary>Who writes the activities?<span class="p">+</span></summary><p>20‑year veteran childhood educator Tatianna Bailie and her team — every activity is something they'd run with real children, using materials you really have.</p></details>
   </div>
+</section>
+
+<section class="story-band wrap" id="story">
+  <div class="sec-head">
+    <span class="eyebrow"><i data-lucide="book-heart" style="width:14px"></i> Our story</span>
+    <h2>Built by an educator. <em>Engineered to be instant.</em></h2>
+    <p>Two kinds of expertise, one goal: the right activity in your hands before the room loses its focus.</p>
+  </div>
+  <div class="story">
+    <div class="st-col edu">
+      <div class="ic"><i data-lucide="graduation-cap" style="width:28px"></i></div>
+      <div class="k">The educational expertise</div>
+      <h3>Tatianna Bailie</h3>
+      <div class="who">20‑Year Veteran Childhood Educator · Early childhood development &amp; sensory regulation</div>
+      <blockquote>"Every activity here is something I'd actually run with real children — with the materials you really have, and the mess, energy and feelings that really happen. That's the difference between a nice idea and a plan that works."</blockquote>
+      <ul>
+        <li><span class="d"><i data-lucide="check" style="width:14px"></i></span> Two decades with real children shaped every activity's structure</li>
+        <li><span class="d"><i data-lucide="check" style="width:14px"></i></span> Each one has a goal, conversation starter, educator tip, steps, materials, and small &amp; large group adaptations</li>
+        <li><span class="d"><i data-lucide="check" style="width:14px"></i></span> Sensory regulation built in — RegulatED is a full module of co‑regulation and calm</li>
+      </ul>
+    </div>
+    <div class="st-col tech">
+      <div class="ic"><i data-lucide="cpu" style="width:28px"></i></div>
+      <div class="k">The technical execution</div>
+      <h3>The Lazy Creator Company</h3>
+      <div class="who">Clean, light‑speed software architecture</div>
+      <blockquote>Educators don't have time for loading screens, so the Vault was built to keep up with a teacher's next decision.</blockquote>
+      <ul>
+        <li><span class="d"><i data-lucide="check" style="width:14px"></i></span> All 5,330 activities searchable and filterable instantly — no page reloads</li>
+        <li><span class="d"><i data-lucide="check" style="width:14px"></i></span> Live weather awareness and Mrs. Bailie, an AI planner that builds full timed sessions</li>
+        <li><span class="d"><i data-lucide="check" style="width:14px"></i></span> No ads, no clutter, print‑ready, and it works offline</li>
+      </ul>
+    </div>
+  </div>
+  <div class="st-close"><b>Why it works better:</b> most tools have either the classroom know‑how or the technology. The Vault was built with both at the table from day one.</div>
 </section>
 </main>
 
@@ -394,6 +652,46 @@ footer .legal{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
   var mb=document.getElementById('menuBtn'),nl=document.getElementById('navLinks');
   mb.addEventListener('click',function(){var o=nl.classList.toggle('open');mb.setAttribute('aria-expanded',String(o));});
   nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('open');mb.setAttribute('aria-expanded','false');});});
+  // ── hero: loop the 3-click demo ──
+  (function(){
+    var d=document.getElementById('hxDemo');if(!d)return;
+    var steps=[].slice.call(d.querySelectorAll('.hx-step')),res=document.getElementById('hxResult'),i=0;
+    var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function reset(){steps.forEach(function(s){s.classList.remove('on');s.querySelectorAll('.hx-chip').forEach(function(c){c.classList.remove('pick');});});res.classList.remove('show');}
+    function show(n){if(n===0)reset();if(n<3){var s=steps[n];s.classList.add('on');setTimeout(function(){var p=s.querySelector('[data-p]');if(p)p.classList.add('pick');},350);}else{res.classList.add('show');}}
+    if(reduce){steps.forEach(function(s,n){s.classList.add('on');s.querySelector('[data-p]').classList.add('pick');});res.classList.add('show');return;}
+    function tick(){show(i);i=(i+1)%5;setTimeout(tick,i===0?2600:1100);}
+    tick();
+  })();
+  // ── feature cards: reveal on scroll ──
+  (function(){
+    var cards=[].slice.call(document.querySelectorAll('.fxc'));
+    if(!('IntersectionObserver' in window)){cards.forEach(function(c){c.classList.add('in');});return;}
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var n=cards.indexOf(e.target);setTimeout(function(){e.target.classList.add('in');},n*120);io.unobserve(e.target);}});},{threshold:.15});
+    cards.forEach(function(c){io.observe(c);});
+  })();
+  // ── weather card: sunny ↔ rain ──
+  (function(){
+    var w=document.getElementById('fxWx');if(!w)return;var e=document.getElementById('fxWxE'),t=document.getElementById('fxWxT'),s=document.getElementById('fxWxS'),n=document.getElementById('fxWxN'),l=document.getElementById('fxWxL'),rain=false;
+    var OUT='<span>🔔 Sound Walk</span><span>🟤 Mud Kitchen</span><span>🐛 Garden Bug Watch</span>',IN='<span>🎈 Balloon Volley</span><span>🦘 Animal Walk Stations</span><span>🛣️ Tape Road Course</span>';
+    w.classList.add('show');
+    setInterval(function(){rain=!rain;w.classList.remove('show');setTimeout(function(){w.classList.toggle('rain',rain);e.textContent=rain?'🌧':'☀️';t.textContent=rain?'Rain at 11am · 14°':'Sunny · 21°';s.textContent=rain?'Switching to indoor picks':'Outdoor activities look great';n.textContent=rain?'🌧 Rain coming — indoor day plan ready':'☀️ Great day to get outside — outdoor picks';l.innerHTML=rain?IN:OUT;void w.offsetWidth;w.classList.add('show');},350);},3600);
+  })();
+  // ── filter card: stack filters one by one ──
+  (function(){
+    var f=document.getElementById('fxFlt');if(!f)return;var rows=[].slice.call(f.querySelectorAll('.flt-row')),bars=[].slice.call(document.querySelectorAll('#fxFltRes div')),picks=[[2,1,0],[0,2,1],[1,0,2]],k=0,step=0;
+    var widths=[[96,88,92,80],[70,54,62,0],[44,30,0,0],[26,0,0,0]];
+    function paint(){rows.forEach(function(r,ri){r.querySelectorAll('.c').forEach(function(c,ci){c.classList.toggle('pick',ri<step&&ci===picks[k][ri]);});});bars.forEach(function(b,bi){var w=widths[step][bi];b.style.width=(w||0)+'%';b.style.opacity=w?1:0;});}
+    setInterval(function(){step++;if(step>3){step=0;k=(k+1)%picks.length;}paint();},1200);paint();
+  })();
+  // ── conversation starters: rotate + tap for next (prompts taken from the app) ──
+  (function(){
+    var q=document.getElementById('fxCsQ'),w=document.getElementById('fxCsW'),b=document.getElementById('fxCsNext');if(!q)return;
+    var L=[['Kids','What did your hands feel? What did your eyes see?'],['Teens','What’s the hardest part — the doing or the starting?'],['Camp','What did you notice that no one else might have?'],['Kids','What would happen if you tried it backwards?'],['Teens','How could you teach this to a younger sibling?'],['Camp','Who really stepped up today?']],n=0,timer;
+    function next(){n=(n+1)%L.length;q.classList.add('out');setTimeout(function(){q.textContent='“'+L[n][1]+'”';w.textContent=L[n][0];q.classList.remove('out');},300);}
+    function auto(){clearInterval(timer);timer=setInterval(next,4200);}
+    b.addEventListener('click',function(){next();auto();});auto();
+  })();
   if(window.lucide)lucide.createIcons();
 </script>
 </body>
