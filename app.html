@@ -1124,6 +1124,59 @@ body>.skiptranslate{display:none!important}
 .plan-card-name{font-family:'Fraunces',serif;font-weight:600;font-size:18px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .plan-card-meta{font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px}
 .plan-card-actions{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;max-width:120px;justify-content:flex-end}
+/* ── Your Plans revamp: My Custom Frameworks + Instant Module Blueprints ── */
+.pl-wrap{width:min(980px,calc(100vw - 48px));max-width:100%;box-sizing:border-box}
+@media(max-width:820px){.pl-wrap{width:auto}}
+.pl-wrap .plan-list-hdr{justify-content:flex-start;gap:10px;flex-wrap:wrap}
+.pl-wrap .plan-list-hdr>div:first-child{margin-right:auto}
+.pl-sec{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.pl-sec-hdr{display:flex;align-items:center;gap:10px}
+.pl-sec-title{margin:0;font-family:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.02em;color:#fff}
+.pl-sec-count{min-width:24px;height:22px;padding:0 8px;border-radius:100px;display:inline-grid;place-items:center;font-size:11px;font-weight:800;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14)}
+.pl-sec-hdr::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.16),transparent)}
+.pl-row{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.pl-row-bp{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.pl-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pl-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:10.5px;font-weight:800;letter-spacing:.03em;color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.pl-btn{font-family:inherit;font-weight:800;font-size:12px;padding:8px 14px;border-radius:100px;cursor:pointer;border:1px solid transparent;transition:transform .15s,filter .2s,background .2s}
+.pl-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.pl-btn-ghost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#fff}
+.pl-btn-solid{background:linear-gradient(135deg,#e85d04,#f97316);color:#fff}
+/* custom framework cards */
+.pl-cf{position:relative;display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:18px;cursor:pointer;background:linear-gradient(160deg,rgba(251,146,60,.12),rgba(255,255,255,.03) 45%),rgba(12,15,30,.78);border:1px solid rgba(255,255,255,.1);box-shadow:0 18px 40px -26px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .2s cubic-bezier(.4,0,.2,1),border-color .2s,box-shadow .2s}
+.pl-cf:hover{transform:translateY(-3px);border-color:rgba(251,146,60,.45);box-shadow:0 24px 44px -24px rgba(251,146,60,.45)}
+.pl-cf-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pl-cf-badge{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fdba74}
+.pl-cf-date{font-size:11px;font-weight:700;color:rgba(255,255,255,.5)}
+.pl-cf-title{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:17px;line-height:1.25;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pl-cf-sub{font-size:13px;line-height:1.5;color:rgba(255,255,255,.65)}
+.pl-cf-list{display:flex;flex-direction:column;gap:5px;padding-left:9px;border-left:2px solid rgba(251,146,60,.4)}
+.pl-cf-row{display:flex;gap:8px;font-size:12px;color:rgba(255,255,255,.72);min-width:0}
+.pl-cf-time{flex:0 0 auto;color:#fb923c;font-weight:700}
+.pl-cf-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-cf-more{font-size:11px;color:rgba(255,255,255,.42)}
+.pl-cf-foot{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+.pl-cf-start{border-style:dashed;border-color:rgba(251,146,60,.4);justify-content:center}
+/* module blueprint cards */
+.pl-bp{--pa:#3b82f6;--pb:#60a5fa;position:relative;overflow:hidden;isolation:isolate;border-radius:20px;cursor:pointer;background:linear-gradient(165deg,color-mix(in srgb,var(--pa) 24%,transparent),rgba(12,15,30,.9) 55%),rgba(10,13,24,.92);border:1px solid color-mix(in srgb,var(--pa) 40%,rgba(255,255,255,.08));box-shadow:0 22px 44px -28px color-mix(in srgb,var(--pa) 70%,#000),inset 0 1px 0 rgba(255,255,255,.07);transition:transform .22s cubic-bezier(.4,0,.2,1),box-shadow .22s,border-color .22s}
+.pl-bp::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--pa),var(--pb));z-index:2}
+.pl-bp:hover{transform:translateY(-4px);border-color:var(--pb);box-shadow:0 28px 50px -24px color-mix(in srgb,var(--pa) 80%,#000)}
+.pl-bp-art{position:absolute;right:-28px;top:-18px;width:132px;height:auto;opacity:.34;transform:rotate(10deg);z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(200deg,#000 35%,transparent 85%);mask-image:linear-gradient(200deg,#000 35%,transparent 85%);transition:opacity .25s}
+.pl-bp:hover .pl-bp-art{opacity:.5}
+.pl-bp-body{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;padding:18px 16px 16px;height:100%}
+.pl-bp-mod{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:10.5px;font-weight:800;letter-spacing:.05em;color:#fff;background:linear-gradient(135deg,var(--pa),var(--pb));box-shadow:0 6px 14px -8px var(--pa)}
+.pl-bp-title{font-family:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif;font-weight:800;font-size:18px;line-height:1.2;letter-spacing:-.02em;color:#fff;max-width:88%}
+.pl-tag-acc{color:#fff;background:color-mix(in srgb,var(--pa) 32%,transparent);border-color:color-mix(in srgb,var(--pb) 60%,transparent)}
+.pl-bp-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;counter-reset:bp}
+.pl-bp-list li{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.82);min-width:0}
+.pl-bp-list li>span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-bp-em{flex:0 0 auto;width:24px;height:24px;border-radius:8px;display:inline-grid;place-items:center;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08)}
+.pl-btn-acc{margin-top:auto;align-self:flex-start;color:#fff;background:linear-gradient(135deg,var(--pa),var(--pb));box-shadow:0 10px 22px -12px var(--pa)}
+.pl-m-adapted{--pa:#3b82f6;--pb:#60a5fa}
+.pl-m-camped{--pa:#10b981;--pb:#34d399}
+.pl-m-regulated{--pa:#06b6d4;--pb:#22d3ee}
+.pl-m-parented{--pa:#ec4899;--pb:#f59e0b}
+@media(max-width:560px){.pl-row{grid-template-columns:1fr}.pl-bp-art{width:112px}}
 .plan-nav-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .plan-back-btn{background:var(--bg);border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--ink-2);cursor:pointer;font-family:inherit}
 .plan-title{font-family:'Fraunces',serif;font-weight:600;font-size:16px;color:#fff;flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 8px}
@@ -13930,6 +13983,7 @@ for(let h=7;h<=18;h++){
 
 // ── Main planner render ──────────────────────────────────────
 function renderPlanner(){
+  if(typeof __renderGridChunkId==='number') __renderGridChunkId++; // stop any in-flight activity-card render from appending onto the planner
   const grid=document.getElementById('grid');
   if(P.view==='list') renderPlanList(grid);
   else if(P.view==='week') renderWeekView(grid);
@@ -13937,26 +13991,94 @@ function renderPlanner(){
 }
 
 // ── Plan list ────────────────────────────────────────────────
+// Pre-made, ready-to-run plans — one per module. "Use this plan" copies it into the planner as a normal, editable plan.
+const PLAN_BLUEPRINTS=[
+  {mod:'adapted',  label:'AdaptED',   em:'📘', title:'The Inclusive Morning Routine',     start:'8:00 AM',  acts:['a515','a221','a602']},
+  {mod:'camped',   label:'CampED',    em:'⛺', title:'The Zero-Prep Rainy Afternoon',      start:'1:00 PM',  acts:['c709','c715','c717','c713']},
+  {mod:'regulated',label:'RegulatED', em:'🧘', title:'The 20-Minute Nervous System Reset', start:'10:00 AM', acts:['r40','r32']},
+  {mod:'parented', label:'ParentED',  em:'🏡', title:'The Screen-Time Transition Track',  start:'4:00 PM',  acts:['pe_routines_63','pe_screentime_101','pe_screentime_116']}
+];
+function planActById(id){
+  return ALL_ACTIVITIES.find(a=>a.id===id)||A_UNBOXED.find(a=>a.id===id)||A_PARENTED.find(a=>a.id===id)||null;
+}
+function _planEsc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function useBlueprint(i){
+  const bp=PLAN_BLUEPRINTS[i]; if(!bp) return;
+  const dk=dateKey(new Date());
+  const slots=TIME_SLOTS.map(t=>({time:t,actId:null,notes:''}));
+  let si=Math.max(0,TIME_SLOTS.indexOf(bp.start));
+  bp.acts.forEach(id=>{ if(planActById(id) && slots[si]){ slots[si].actId=id; si++; } });
+  const plans=loadPlans();
+  const id=newPlanId();
+  plans[id]={id, name:bp.title, created:Date.now(), updated:Date.now(), days:{[dk]:{slots}}, weekOffset:0};
+  savePlans(plans);
+  openPlan(id);
+}
 function renderPlanList(grid){
   const plans=loadPlans();
   const list=Object.values(plans).sort((a,b)=>b.updated-a.updated);
+  let mina=[];
+  try{ mina=JSON.parse(localStorage.getItem('lc_mina_plans')||'[]'); if(!Array.isArray(mina)) mina=[]; }catch(e){ mina=[]; }
+  const art={adapted:'assets/scenes/adapted.webp',camped:'assets/scenes/camped.webp',regulated:'assets/scenes/regulated.webp',parented:'assets/scenes/parented.webp'};
+  const customCards = mina.length ? mina.map((p,i)=>{
+    const blocks=Array.isArray(p.blocks)?p.blocks:[];
+    const d=new Date(p.when);
+    const when=isNaN(d)?'':d.toLocaleDateString('en-CA',{month:'short',day:'numeric'});
+    const kind=(p.type==='week')?'Week plan':'Day plan';
+    return `
+      <div class="pl-cf" onclick="minaOpenSaved(${i})">
+        <div class="pl-cf-top"><span class="pl-cf-badge">💬 Mrs. Bailie</span>${when?`<span class="pl-cf-date">${_planEsc(when)}</span>`:''}</div>
+        <div class="pl-cf-title">${_planEsc(p.title||'Untitled plan')}</div>
+        <div class="pl-tags"><span class="pl-tag">${blocks.length} ${blocks.length===1?'Block':'Blocks'}</span><span class="pl-tag">${kind}</span></div>
+        <div class="pl-cf-list">${blocks.slice(0,3).map(bk=>`<div class="pl-cf-row"><span class="pl-cf-time">${_planEsc(bk.time||'')}</span><span class="pl-cf-name">${_planEsc(bk.name||'')}</span></div>`).join('')}${blocks.length>3?`<div class="pl-cf-more">+ ${blocks.length-3} more</div>`:''}</div>
+        <div class="pl-cf-foot" onclick="event.stopPropagation()">
+          <button class="pl-btn pl-btn-ghost" onclick="minaOpenSaved(${i})">Open</button>
+          <button class="pl-btn pl-btn-ghost" onclick="minaExportSavedIdx(${i},this)">Export</button>
+        </div>
+      </div>`;
+  }).join('') : `
+      <div class="pl-cf pl-cf-start" onclick="minaOpen()">
+        <div class="pl-cf-top"><span class="pl-cf-badge">💬 Mrs. Bailie</span></div>
+        <div class="pl-cf-title">Build your first framework</div>
+        <div class="pl-cf-sub">Tell Mrs. Bailie about your group and she'll build a full plan you can save here.</div>
+        <div class="pl-cf-foot"><button class="pl-btn pl-btn-solid" onclick="event.stopPropagation();minaOpen()">Build with Mrs. Bailie →</button></div>
+      </div>`;
+  const bpCards = PLAN_BLUEPRINTS.map((bp,i)=>{
+    const acts=bp.acts.map(planActById).filter(Boolean);
+    return `
+      <div class="pl-bp pl-m-${bp.mod}" onclick="useBlueprint(${i})">
+        <img class="pl-bp-art" src="${art[bp.mod]}" alt="" loading="lazy" decoding="async">
+        <div class="pl-bp-body">
+          <div class="pl-bp-top"><span class="pl-bp-mod">${bp.em} ${bp.label}</span></div>
+          <div class="pl-bp-title">${bp.title}</div>
+          <div class="pl-tags"><span class="pl-tag pl-tag-acc">${acts.length} Activities</span><span class="pl-tag">🕒 ${bp.start}</span></div>
+          <ol class="pl-bp-list">${acts.map(a=>`<li><span class="pl-bp-em">${a.em||'•'}</span><span>${_planEsc(a.title)}</span></li>`).join('')}</ol>
+          <button class="pl-btn pl-btn-acc" onclick="event.stopPropagation();useBlueprint(${i})">Use this plan →</button>
+        </div>
+      </div>`;
+  }).join('');
   grid.innerHTML=`
-    <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:14px;padding:4px 0">
+    <div class="pl-wrap" style="grid-column:1/-1;display:flex;flex-direction:column;gap:14px;padding:4px 0">
       <div class="plan-list-hdr">
         <div>
           <div class="section-eyebrow">📅 Planner</div>
           <h2 class="section-title" style="font-size:22px">Your Plans</h2>
         </div>
         <button class="plan-new-btn" onclick="createPlan()">+ New Plan</button>
-        <button class="plan-new-btn" style="background:transparent;border:1.5px solid var(--ink-3);color:var(--ink-1)" onclick="minaViewSaved()">💬 From Mrs. Bailie${(()=>{try{const n=JSON.parse(localStorage.getItem('lc_mina_plans')||'[]').length;return n>0?` (${n})`:''}catch(e){return ''}})()}</button>
+        <button class="plan-new-btn" style="background:transparent;border:1.5px solid var(--ink-3);color:var(--ink-1)" onclick="minaViewSaved()">💬 My Custom Plans${mina.length>0?` (${mina.length})`:''}</button>
       </div>
-      ${list.length===0 ? `
-        <div class="plan-empty">
-          <div style="font-size:40px;margin-bottom:12px">📋</div>
-          <div style="font-weight:700;margin-bottom:6px">No plans yet</div>
-          <div style="font-size:13px;color:var(--ink-3)">Create your first plan to start building your week.</div>
-          <button class="plan-new-btn" style="margin-top:18px" onclick="createPlan()">+ Create First Plan</button>
-        </div>` :
+      <section class="pl-sec">
+        <div class="pl-sec-hdr"><h3 class="pl-sec-title">My Custom Frameworks</h3><span class="pl-sec-count">${mina.length}</span></div>
+        <div class="pl-row pl-row-cf">${customCards}</div>
+      </section>
+      <section class="pl-sec">
+        <div class="pl-sec-hdr"><h3 class="pl-sec-title">Instant Module Blueprints</h3><span class="pl-sec-count">${PLAN_BLUEPRINTS.length}</span></div>
+        <div class="pl-row pl-row-bp">${bpCards}</div>
+      </section>
+      ${list.length ? `
+      <section class="pl-sec">
+        <div class="pl-sec-hdr"><h3 class="pl-sec-title">Weekly Planner</h3><span class="pl-sec-count">${list.length}</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px">${
         list.map(plan=>`
           <div class="plan-card" onclick="openPlan('${plan.id}')">
             <div class="plan-card-inner">
@@ -13974,7 +14096,8 @@ function renderPlanList(grid){
               </div>
             </div>
           </div>`).join('')
-      }
+        }</div>
+      </section>` : ''}
     </div>`;
 }
 
@@ -14089,17 +14212,17 @@ function renderDayView(grid){
       </div>
       <div class="plan-slots">
         ${slots.map((slot,i)=>{
-          const act = slot.actId ? (ALL_ACTIVITIES.find(a=>a.id===slot.actId)||A_UNBOXED.find(a=>a.id===slot.actId)) : null;
+          const act = slot.actId ? planActById(slot.actId) : null;
           return `
             <div class="plan-slot${act?' has-act':''}">
               <div class="plan-slot-time">${slot.time}</div>
               <div class="plan-slot-content">
                 ${act ? `
-                  <div class="plan-slot-act" onclick="openActivity('${act.id}')">
+                  <div class="plan-slot-act" onclick="${act.brand==='pe'?'openParentStrategy':'openActivity'}('${act.id}')">
                     <span class="plan-slot-em">${act.em}</span>
                     <div>
                       <div class="plan-slot-title">${act.title}</div>
-                      <div class="plan-slot-cat">${(CATS.find(c=>c.id===act.cat)||{}).label||act.cat}</div>
+                      <div class="plan-slot-cat">${(act.brand==='pe'?act.catLabel:(CATS.find(c=>c.id===act.cat)||{}).label)||act.cat}</div>
                     </div>
                   </div>
                   <div class="plan-slot-btns">
@@ -14198,7 +14321,7 @@ function buildPlanText(plan){
     const slots=(day.slots||[]).filter(s=>s.actId);
     if(slots.length===0){ txt+='  (no activities)\n'; }
     slots.forEach(slot=>{
-      const act=ALL_ACTIVITIES.find(a=>a.id===slot.actId)||A_UNBOXED.find(a=>a.id===slot.actId);
+      const act=planActById(slot.actId);
       if(act) txt+=`  ${slot.time}  ${act.em} ${act.title}\n`;
     });
     txt+='\n';
@@ -14263,7 +14386,7 @@ function printPlan(planId){
     const d=new Date(dk+'T12:00:00');
     html+=`<h2>${fmtDay(d)}</h2>`;
     (day.slots||[]).forEach(slot=>{
-      const act=slot.actId?(ALL_ACTIVITIES.find(a=>a.id===slot.actId)||A_UNBOXED.find(a=>a.id===slot.actId)):null;
+      const act=slot.actId?planActById(slot.actId):null;
       html+=`<div class="slot"><span class="t">${slot.time}</span><span class="a">${act?`${act.em} ${act.title}`:'<span class="empty">—</span>'}</span></div>`;
     });
   });
@@ -14289,8 +14412,8 @@ function printDay(planId, dk){
   <h1>📅 ${fmtDay(d)}</h1>
   <div class="sub">${plan.name} · by The Lazy Creator</div>`;
   (day.slots.length?day.slots:TIME_SLOTS.map(t=>({time:t,actId:null}))).forEach(slot=>{
-    const act=slot.actId?(ALL_ACTIVITIES.find(a=>a.id===slot.actId)||A_UNBOXED.find(a=>a.id===slot.actId)):null;
-    html+=`<div class="slot"><span class="t">${slot.time}</span><div>${act?`<div class="a">${act.em} ${act.title}</div><div class="c">${(CATS.find(c=>c.id===act.cat)||{}).label||act.cat} · Age ${act.age}</div>`:'<span class="empty">—</span>'}</div></div>`;
+    const act=slot.actId?planActById(slot.actId):null;
+    html+=`<div class="slot"><span class="t">${slot.time}</span><div>${act?`<div class="a">${act.em} ${act.title}</div><div class="c">${(act.brand==='pe'?act.catLabel:(CATS.find(c=>c.id===act.cat)||{}).label)||act.cat}${act.age?` · Age ${act.age}`:''}</div>`:'<span class="empty">—</span>'}</div></div>`;
   });
   html+=`<div class="foot">by The Lazy Creator · thelazycreatorco@gmail.com</div></body></html>`;
   const w=window.open('','','width=700,height=900');
@@ -14307,7 +14430,7 @@ function copyPlan(planId){
     const d=new Date(dk+'T12:00:00');
     txt+=`${fmtDay(d)}\n`;
     (day.slots||[]).filter(s=>s.actId).forEach(slot=>{
-      const act=ALL_ACTIVITIES.find(a=>a.id===slot.actId)||A_UNBOXED.find(a=>a.id===slot.actId);
+      const act=planActById(slot.actId);
       if(act) txt+=`  ${slot.time}  ${act.em} ${act.title}\n`;
     });
     txt+='\n';
