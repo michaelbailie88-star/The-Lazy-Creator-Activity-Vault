@@ -3870,7 +3870,7 @@ body.utp-active .fx-fab,body.utp-active #utFab{display:none!important}
 /* ═══ INNER SIDE COLUMNS → module utility slots (between the illustrated frames and the centre cards) ═══ */
 #appRails{--ua:var(--m1,#3b82f6);--ub:var(--m2,#60a5fa)}
 #app[data-active-tab="parented"] #appRails{--ua:#f59e0b;--ub:#fb7185}
-.util-rail{position:fixed;top:var(--urTop,78px);bottom:108px;z-index:0;display:none;align-items:flex-start;justify-content:center;padding:18px 14px 0;box-sizing:border-box;pointer-events:none}
+.util-rail{position:fixed;top:var(--urTop,78px);bottom:0;z-index:0;display:none;align-items:flex-start;justify-content:center;padding:0 14px;box-sizing:border-box;pointer-events:none}
 .util-rail .util-card{transition:opacity .25s ease,border-color .5s ease,background .5s ease}
 .util-rail.cramped .util-card{opacity:0!important;pointer-events:none}
 #appRails.on .util-rail.has-slot{display:flex}
@@ -19571,10 +19571,11 @@ nav.bottom-bar{border-radius:20px 20px 0 0!important}
     rails.style.setProperty('--urR',Math.max(0,Math.round(vw-r.right))+'px');
     rails.style.setProperty('--urW',gut+'px');
     /* vertical band: below the sticky top bars and level with the activity grid (header content above the grid spills into these columns) */
-    var vh=window.innerHeight, safe=stickyBottom()+12, g=document.getElementById('grid'), gt=g?g.getBoundingClientRect().top:safe;
-    var top=Math.max(safe,Math.round(gt)), bottom=108;
+    /* top edge flush with the first row of activity cards; sticks below the top bars once that row scrolls away */
+    var vh=window.innerHeight, safe=stickyBottom()+12, g=document.getElementById('grid'), f=g&&(function(){var k=[].filter.call(g.children,function(e){return e.offsetHeight>0;});return k[0]||null;})(), ft=f?f.getBoundingClientRect().top:(g?g.getBoundingClientRect().top:safe);
+    var top=Math.max(safe,Math.round(ft));
     rails.style.setProperty('--urTop',top+'px');
-    [L,R].forEach(function(el){var c=el.firstElementChild;el.classList.toggle('cramped',!c||(vh-bottom-top)<(c.offsetHeight+36));});
+    [L,R].forEach(function(el){el.classList.toggle('cramped',(vh-top)<60);});
   }
   function stickyBottom(){var b=0;['viewModeBar','demoTimer'].forEach(function(id){var e=document.getElementById(id);if(!e)return;var cs=getComputedStyle(e);if(cs.display==='none'||(cs.position!=='sticky'&&cs.position!=='fixed'))return;var r=e.getBoundingClientRect();if(r.height>0&&r.top<120)b=Math.max(b,r.bottom);});return Math.round(b);}
   window.__utStickyBottom=stickyBottom;
@@ -19584,8 +19585,11 @@ nav.bottom-bar{border-radius:20px 20px 0 0!important}
     L=document.getElementById('utilRailL'); R=document.getElementById('utilRailR');
     if(!app||!rails) return;
     new MutationObserver(sched).observe(app,{attributes:true,attributeFilter:['class','data-active-tab','style']});
+    /* tab/module switches can shift the grid after their first paint — re-measure once things settle */
+    var late=null; new MutationObserver(function(){ clearTimeout(late); late=setTimeout(sched,450); }).observe(app,{attributes:true,attributeFilter:['class','data-active-tab']});
     window.addEventListener('resize',sched,{passive:true});
     window.addEventListener('scroll',function(){ if(rails.classList.contains('on')) sched(); },{passive:true});
+    var gr=document.getElementById('grid'); if(gr) new MutationObserver(function(){ if(rails.classList.contains('on')) sched(); }).observe(gr,{childList:true});
     if(window.ResizeObserver) new ResizeObserver(sched).observe(app);
     sched();
   }
