@@ -3541,45 +3541,178 @@ body,button,input,select,textarea{font-family:'Plus Jakarta Sans',system-ui,sans
 <!-- Module background — lives outside #app so it's always visible -->
 <canvas id="moduleBgCanvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;display:block"></canvas>
 
-<div id="gate">
- <div class="gate-card">
- <div class="gate-brand">
- <span class="gate-brand-pill lc-metal lc-metal-pink">Adapt<b style="color:#fde68a">ED</b></span>
- <span class="gate-brand-pill lc-metal lc-metal-green">Camp<b style="color:#fde68a">ED</b></span>
- <span class="gate-brand-pill lc-metal lc-metal-purple">Teenag<b style="color:#fde68a">ED</b></span>
- <span class="gate-brand-pill lc-metal lc-metal-cyan">Regulat<b style="color:#fde68a">ED</b></span>
- </div>
- <h1 class="gate-h">One vault.<br><em>Every activity.</em></h1>
- <p class="gate-sub">5,330 ready-to-use activities across 6 modules. Purchase below — your license key arrives by email and unlocks everything in seconds.</p>
- <label class="gate-key-label" for="keyInput">Already purchased? Enter your license key here</label>
- <div class="gate-err" id="keyErr"></div>
- <div class="gate-key-row">
- <input type="text" id="keyInput" placeholder="Enter your license key" autocomplete="off">
- <button type="button" id="unlockBtn" class="gate-unlock-btn" onclick="activate()">Unlock</button>
- </div>
- <div class="gate-divider">Try free · 1-click demo</div>
- <div class="gate-demo-row">
- <button class="demo-btn t2 lc-metal lc-metal-orange" onclick="tryDemo('vault')"><span class="demo-em">🗝️</span><span class="demo-lbl">TRY THE VAULT</span></button>
- <button class="demo-btn t4 lc-metal lc-metal-green" onclick="tryDemo('school')"><span class="demo-em">🏆</span><span class="demo-lbl">TRY AS SCHOOL</span></button>
- </div>
- <div class="gate-divider">Buy a tier · unlock instantly after purchase</div>
- <div class="gate-tiers" style="grid-template-columns:1fr 1fr!important">
- <a class="gate-tier gt2 lc-metal lc-metal-gold" href="https://thelazycreator.gumroad.com/l/kbylil" target="_blank" style="grid-column:span 1">
- <span class="gate-tier-em">🗝️</span>
- <div class="gate-tier-name">Vault</div>
- <span class="gate-tier-price">$67</span>
- <div class="gate-tier-c">All 5,330 activities<br>All 6 modules incl. ParentED</div>
- <div class="gate-tier-cta">Buy Vault →</div>
- </a>
- <a class="gate-tier gt4 lc-metal lc-metal-blue" href="https://thelazycreator.gumroad.com/l/muyuj" target="_blank" style="grid-column:span 1">
- <span class="gate-tier-em">🏆</span>
- <div class="gate-tier-name">School</div>
- <span class="gate-tier-price">$397</span>
- <div class="gate-tier-c">Up to 10 staff seats<br>Multi-user · Email support</div>
- <div class="gate-tier-cta">Buy School →</div>
- </a>
- </div>
- <div style="text-align:center;margin-top:18px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:.14em;text-transform:uppercase">The Lazy Creator Co. · Vault build v32 · Jul 15</div>
+<style id="gate-redesign">
+/* ===== GATE REDESIGN — base (visual only; IDs + handlers unchanged) ===== */
+html body #gate.vg{position:fixed;inset:0;z-index:100;display:block;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0!important;align-items:initial!important;background:none;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#fff}
+html body #gate.vg::before,html body #gate.vg::after{content:none!important;display:none!important;animation:none!important}
+#gate.vg *{box-sizing:border-box}
+#gate.vg .vg-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#gate.vg .vg-bg>span{position:absolute;display:block}
+#gate.vg .vg-wrap{position:relative;z-index:1;min-height:100%;margin:0 auto;padding:clamp(22px,5vh,56px) 16px 32px}
+#gate.vg .vg-f{margin:0;position:relative}
+#gate.vg .vg-f img{display:block;width:100%;height:100%;object-fit:cover}
+#gate.vg .vg-f figcaption b,#gate.vg .vg-mods b{color:#fde68a;font-weight:800}
+#gate.vg .vg-h{margin:0;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;letter-spacing:-.035em;line-height:.98}
+#gate.vg .vg-h em{font-style:normal;display:inline-block;padding-bottom:.06em}
+#gate.vg .vg-sub{margin:0}
+#gate.vg .vg-label{display:block;font-weight:700}
+#gate.vg .vg-err{min-height:0;font-size:13px;font-weight:700;color:#fb7185;text-align:center}
+#gate.vg .vg-err:not(:empty){margin:10px 0 0}
+#gate.vg .vg-key{display:flex;gap:10px;align-items:stretch}
+#gate.vg .vg-key input{flex:1 1 auto;min-width:0;height:54px;padding:0 18px;font-size:15px;font-weight:600;letter-spacing:.02em;outline:none;transition:border-color .2s,box-shadow .2s,background .2s}
+#gate.vg .vg-unlock{flex:0 0 auto;height:54px;padding:0 26px;white-space:nowrap;font-weight:800;font-size:15px;color:#fff;cursor:pointer;background:linear-gradient(135deg,#e85d04,#f97316);box-shadow:0 12px 28px -12px rgba(232,93,4,.8),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .15s cubic-bezier(.4,0,.2,1),filter .2s,box-shadow .2s}
+#gate.vg .vg-unlock:hover{transform:translateY(-2px);filter:brightness(1.07)}
+#gate.vg .vg-unlock:active{transform:translateY(0)}
+#gate.vg .vg-unlock:disabled{opacity:.75;cursor:progress;transform:none}
+#gate.vg .vg-div{display:flex;align-items:center;gap:14px;font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;text-align:center}
+#gate.vg .vg-div::before,#gate.vg .vg-div::after{content:'';flex:1;height:1px}
+#gate.vg .vg-demos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#gate.vg .vg-demo{display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:8px 16px;font-weight:800;font-size:14px;cursor:pointer;transition:transform .16s cubic-bezier(.4,0,.2,1),box-shadow .2s,background .2s,border-color .2s}
+#gate.vg .vg-demo:hover{transform:translateY(-2px)}
+#gate.vg .vg-demo-em{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;font-size:16px;flex:0 0 auto}
+#gate.vg .vg-tiers{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#gate.vg .vg-tier{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:22px 16px 18px;overflow:hidden;transition:transform .22s cubic-bezier(.4,0,.2,1),box-shadow .22s;isolation:isolate}
+#gate.vg .vg-tier:hover{transform:translateY(-4px)}
+#gate.vg .vg-tier-em{font-size:26px;line-height:1}
+#gate.vg .vg-tier-name{margin-top:8px;font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+#gate.vg .vg-tier-price{margin-top:4px;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:38px;letter-spacing:-.03em;line-height:1.05}
+#gate.vg .vg-tier-c{margin-top:8px;font-size:12px;font-weight:600;line-height:1.5}
+#gate.vg .vg-tier-cta{margin-top:auto;padding-top:14px}
+#gate.vg .vg-tier-cta{display:inline-block}
+#gate.vg .vg-tier-cta::before{content:none}
+#gate.vg .vg-foot{text-align:center;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+#gate.vg :focus-visible{outline:none!important;box-shadow:0 0 0 3px rgba(11,18,32,.9),0 0 0 5px #a78bfa!important}
+@media(max-width:420px){
+ #gate.vg .vg-key{flex-direction:column}
+ #gate.vg .vg-unlock{width:100%}
+ #gate.vg .vg-tier-price{font-size:32px}
+ #gate.vg .vg-demo{font-size:13px;padding:8px 10px;gap:8px}
+ #gate.vg .vg-tiers{gap:10px}
+}
+@media(max-width:340px){#gate.vg .vg-demos,#gate.vg .vg-tiers{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){#gate.vg *{animation:none!important;transition:none!important}}
+/* V5 — ORBIT: deep cosmic violet, module medallions orbiting the headline, glowing gradient-edged tiers */
+#gate.vg{background:#0c0722}
+#gate.vg .vg-bg{background:radial-gradient(800px 600px at 50% 30%,#2b1569 0%,transparent 65%),radial-gradient(900px 700px at 50% 120%,#3b0764 0%,transparent 60%),linear-gradient(180deg,#0e0828,#07041a)}
+#gate.vg .vg-glow{border-radius:50%}
+#gate.vg .g1{width:520px;height:520px;left:50%;top:40px;margin-left:-260px;background:radial-gradient(circle,rgba(251,146,60,.2),transparent 65%)}
+#gate.vg .g2{width:700px;height:700px;left:-260px;top:40%;background:radial-gradient(circle,rgba(56,189,248,.14),transparent 65%)}
+#gate.vg .g3{width:700px;height:700px;right:-260px;top:20%;background:radial-gradient(circle,rgba(236,72,153,.14),transparent 65%)}
+#gate.vg .vg-stars{inset:0;background-image:radial-gradient(1.4px 1.4px at 14% 22%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 36% 76%,#e9d5ff 50%,transparent 51%),radial-gradient(1.2px 1.2px at 64% 18%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 86% 58%,#fbcfe8 50%,transparent 51%),radial-gradient(1.5px 1.5px at 52% 92%,#fff 50%,transparent 51%);background-size:380px 380px;opacity:.6}
+#gate.vg .vg-rings{left:50%;top:130px;width:760px;height:760px;margin-left:-380px;border-radius:50%;border:1px solid rgba(196,181,253,.14);box-shadow:inset 0 0 0 110px rgba(0,0,0,0),0 0 0 1px rgba(196,181,253,.05);background:radial-gradient(circle,transparent 58%,rgba(196,181,253,.06) 58.2%,transparent 58.6%),radial-gradient(circle,transparent 38%,rgba(196,181,253,.08) 38.2%,transparent 38.6%)}
+#gate.vg .vg-wrap{max-width:620px;text-align:center}
+#gate.vg .vg-art{position:relative;height:190px;margin:0 auto 6px;max-width:600px}
+#gate.vg .vg-f{position:absolute;left:50%;width:110px;height:110px;margin-left:-55px;border-radius:50%;overflow:visible}
+#gate.vg .vg-f img{border-radius:50%;border:3px solid var(--pc);box-shadow:0 0 0 5px rgba(12,7,34,.9),0 0 34px -2px var(--pc),0 18px 30px -12px rgba(0,0,0,.8);transform:none;background:#150c3a}
+#gate.vg .vg-f figcaption{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:8px;font-size:11px;font-weight:800;white-space:nowrap;color:#fff;letter-spacing:.02em}
+#gate.vg .f-a{--pc:#60a5fa;transform:translate(-230px,70px) scale(.82)}
+#gate.vg .f-c{--pc:#4ade80;transform:translate(-120px,18px) scale(.92)}
+#gate.vg .f-t{--pc:#c084fc;transform:translate(0,0) scale(1.08);z-index:2}
+#gate.vg .f-r{--pc:#22d3ee;transform:translate(120px,18px) scale(.92)}
+#gate.vg .f-p{--pc:#fb923c;transform:translate(230px,70px) scale(.82)}
+#gate.vg .vg-panel{position:relative}
+#gate.vg .vg-mods{display:none}
+#gate.vg .vg-h{margin-top:22px;font-size:clamp(44px,7vw,68px);text-shadow:0 10px 40px rgba(124,58,237,.35)}
+#gate.vg .vg-h em{background:linear-gradient(90deg,#60a5fa,#c084fc 35%,#f472b6 65%,#fb923c);-webkit-background-clip:text;background-clip:text;color:transparent}
+#gate.vg .vg-sub{margin:16px auto 0;max-width:470px;font-size:15.5px;line-height:1.6;color:#c8bfe8}
+#gate.vg .vg-label{margin-top:26px;font-size:13px;color:#fff}
+#gate.vg .vg-key{margin:10px auto 0;max-width:520px;padding:6px;border-radius:100px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+#gate.vg .vg-key input{height:48px;border-radius:100px!important;background:transparent;border:none;color:#fff}
+#gate.vg .vg-key input::placeholder{color:rgba(255,255,255,.42)}
+#gate.vg .vg-key:focus-within{border-color:#c084fc;box-shadow:0 0 0 4px rgba(192,132,252,.18)}
+#gate.vg .vg-key input:focus-visible{box-shadow:none!important}
+#gate.vg .vg-unlock{height:48px;border-radius:100px!important}
+#gate.vg .vg-div{margin:26px auto 12px;max-width:520px;color:rgba(233,213,255,.5)}
+#gate.vg .vg-div::before,#gate.vg .vg-div::after{background:linear-gradient(90deg,transparent,rgba(233,213,255,.25),transparent)}
+#gate.vg .vg-demos,#gate.vg .vg-tiers{max-width:520px;margin:0 auto}
+#gate.vg .vg-demo{border-radius:100px!important;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16)}
+#gate.vg .d-v .vg-demo-em{background:linear-gradient(135deg,#fb923c,#e85d04)}
+#gate.vg .d-s .vg-demo-em{background:linear-gradient(135deg,#4ade80,#059669)}
+#gate.vg .d-v:hover{box-shadow:0 0 0 1px #fb923c,0 10px 30px -10px rgba(251,146,60,.6)}
+#gate.vg .d-s:hover{box-shadow:0 0 0 1px #4ade80,0 10px 30px -10px rgba(74,222,128,.55)}
+#gate.vg .vg-tier{border-radius:24px;color:#fff;border:1.5px solid transparent}
+#gate.vg .t-v{background:linear-gradient(170deg,#241441,#130a2b) padding-box,conic-gradient(from 200deg,#fde68a,#fb923c,#f472b6,#fde68a) border-box;box-shadow:0 24px 50px -24px rgba(251,146,60,.6)}
+#gate.vg .t-s{background:linear-gradient(170deg,#1b1a4a,#0d0b2b) padding-box,conic-gradient(from 200deg,#a5b4fc,#22d3ee,#c084fc,#a5b4fc) border-box;box-shadow:0 24px 50px -24px rgba(99,102,241,.7)}
+#gate.vg .vg-tier-name{color:rgba(255,255,255,.66)}
+#gate.vg .t-v .vg-tier-price{background:linear-gradient(90deg,#fde68a,#fb923c);-webkit-background-clip:text;background-clip:text;color:transparent}
+#gate.vg .t-s .vg-tier-price{background:linear-gradient(90deg,#a5b4fc,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+#gate.vg .vg-tier-c{color:rgba(255,255,255,.74)}
+#gate.vg .vg-tier-cta{margin-top:14px;padding:9px 18px;border-radius:100px;font-size:12.5px;font-weight:800;color:#0c0722}
+#gate.vg .t-v .vg-tier-cta{background:linear-gradient(90deg,#fde68a,#fb923c)}
+#gate.vg .t-s .vg-tier-cta{background:linear-gradient(90deg,#a5b4fc,#22d3ee)}
+#gate.vg .vg-foot{margin-top:24px;color:rgba(233,213,255,.32)}
+@media(max-width:560px){
+ #gate.vg .vg-rings{width:520px;height:520px;margin-left:-260px;top:90px}
+ #gate.vg .vg-art{height:128px}
+ #gate.vg .vg-f{width:66px;height:66px;margin-left:-33px}
+ #gate.vg .vg-f img{border-width:2px;box-shadow:0 0 0 3px rgba(12,7,34,.9),0 0 22px -2px var(--pc)}
+ #gate.vg .vg-f figcaption{font-size:9.5px;margin-top:5px}
+ #gate.vg .f-a{transform:translate(-132px,44px) scale(.84)}
+ #gate.vg .f-c{transform:translate(-68px,12px) scale(.92)}
+ #gate.vg .f-r{transform:translate(68px,12px) scale(.92)}
+ #gate.vg .f-p{transform:translate(132px,44px) scale(.84)}
+ #gate.vg .vg-h{font-size:44px;margin-top:18px}
+ #gate.vg .vg-sub{font-size:14.5px}
+}
+@media(max-width:420px){
+ #gate.vg .vg-key{flex-direction:column;border-radius:24px}
+ #gate.vg .vg-key input{text-align:center}
+}
+@media(max-width:360px){
+ #gate.vg .vg-f{width:54px;height:54px;margin-left:-27px}
+ #gate.vg .vg-f figcaption{font-size:8.5px}
+ #gate.vg .f-a{transform:translate(-108px,40px) scale(.84)}
+ #gate.vg .f-c{transform:translate(-56px,11px) scale(.92)}
+ #gate.vg .f-r{transform:translate(56px,11px) scale(.92)}
+ #gate.vg .f-p{transform:translate(108px,40px) scale(.84)}
+ #gate.vg .vg-art{height:112px}
+ #gate.vg .vg-h{font-size:37px}
+}
+</style>
+<div id="gate" class="vg">
+ <div class="vg-bg" aria-hidden="true"><span class="vg-glow g1"></span><span class="vg-glow g2"></span><span class="vg-glow g3"></span><span class="vg-stars"></span><span class="vg-rings"></span></div>
+ <div class="vg-wrap">
+  <div class="vg-art" aria-hidden="true">
+   <figure class="vg-f f-a"><img src="assets/scenes/adapted.webp" alt="" decoding="async"><figcaption>Adapt<b>ED</b></figcaption></figure>
+   <figure class="vg-f f-c"><img src="assets/scenes/camped.webp" alt="" decoding="async"><figcaption>Camp<b>ED</b></figcaption></figure>
+   <figure class="vg-f f-t"><img src="assets/scenes/teenaged.webp" alt="" decoding="async"><figcaption>Teenag<b>ED</b></figcaption></figure>
+   <figure class="vg-f f-r"><img src="assets/scenes/regulated.webp" alt="" decoding="async"><figcaption>Regulat<b>ED</b></figcaption></figure>
+   <figure class="vg-f f-p"><img src="assets/scenes/parented.webp" alt="" decoding="async"><figcaption>Parent<b>ED</b></figcaption></figure>
+  </div>
+  <div class="vg-panel">
+   <div class="vg-mods"><span class="m-a">Adapt<b>ED</b></span><span class="m-c">Camp<b>ED</b></span><span class="m-t">Teenag<b>ED</b></span><span class="m-r">Regulat<b>ED</b></span></div>
+   <h1 class="vg-h">One vault.<br><em>Every activity.</em></h1>
+   <p class="vg-sub">5,330 ready-to-use activities across 6 modules. Purchase below — your license key arrives by email and unlocks everything in seconds.</p>
+   <label class="vg-label" for="keyInput">Already purchased? Enter your license key here</label>
+   <div class="vg-err" id="keyErr"></div>
+   <div class="vg-key">
+    <input type="text" id="keyInput" placeholder="Enter your license key" autocomplete="off">
+    <button type="button" id="unlockBtn" class="vg-unlock" onclick="activate()">Unlock</button>
+   </div>
+   <div class="vg-div"><span>Try free · 1-click demo</span></div>
+   <div class="vg-demos">
+    <button type="button" class="vg-demo d-v" onclick="tryDemo('vault')"><span class="vg-demo-em">🗝️</span><span class="vg-demo-lbl">Try the Vault</span></button>
+    <button type="button" class="vg-demo d-s" onclick="tryDemo('school')"><span class="vg-demo-em">🏆</span><span class="vg-demo-lbl">Try as School</span></button>
+   </div>
+   <div class="vg-div"><span>Buy a tier · unlock instantly after purchase</span></div>
+   <div class="vg-tiers">
+    <a class="vg-tier t-v" href="https://thelazycreator.gumroad.com/l/kbylil" target="_blank">
+     <span class="vg-tier-em">🗝️</span>
+     <span class="vg-tier-name">Vault</span>
+     <span class="vg-tier-price">$67</span>
+     <span class="vg-tier-c">All 5,330 activities<br>All 6 modules incl. ParentED</span>
+     <span class="vg-tier-cta">Buy Vault →</span>
+    </a>
+    <a class="vg-tier t-s" href="https://thelazycreator.gumroad.com/l/muyuj" target="_blank">
+     <span class="vg-tier-em">🏆</span>
+     <span class="vg-tier-name">School</span>
+     <span class="vg-tier-price">$397</span>
+     <span class="vg-tier-c">Up to 10 staff seats<br>Multi-user · Email support</span>
+     <span class="vg-tier-cta">Buy School →</span>
+    </a>
+   </div>
+   <div class="vg-foot">The Lazy Creator Co. · Vault build v32</div>
+  </div>
  </div>
 </div>
 
@@ -18655,7 +18788,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none!imp
 <div class="fx-ov" id="fxOverlay"><div class="fx-ov-card"><button class="fx-close" id="fxOvClose" aria-label="Close planner">✕</button><iframe id="fxFrame" title="Mrs. Bailie planner" data-src="mrs-bailie.html"></iframe></div></div>
 <script>
 (function(){
-  function gateGone(){var g=document.getElementById('gate');return !g||getComputedStyle(g).display==='none'||g.offsetParent===null;}
+  function gateGone(){var g=document.getElementById('gate');return !g||getComputedStyle(g).display==='none';}
   var ov=document.getElementById('fxOverlay'),frame=document.getElementById('fxFrame'),fab=document.getElementById('fxFab'),w=document.getElementById('fxWelcome');
   function openPlan(){if(!frame.src)frame.src=frame.getAttribute('data-src');ov.classList.add('on');document.body.style.overflow='hidden';}
   function closePlan(){ov.classList.remove('on');document.body.style.overflow='';}
