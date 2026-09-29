@@ -18955,8 +18955,14 @@ nav.bottom-bar{border-radius:20px 20px 0 0!important}
   .fxo-orb,.fxo-ring{opacity:0 !important}
   .card:hover,div.card:hover,div.pick-card:hover,.mood-bar-opt:hover,button.more-card:hover,.res-card:hover{transform:none !important}
 }
-/* frosted-glass strip behind the dropdown pills + Plan pill so they read as one bar */
-#filterDdRow,body.perf-mode #filterDdRow{background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,.08))!important;border:1px solid rgba(255,255,255,.28)!important;border-radius:16px!important;margin:6px 8px 0!important;padding:10px 12px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 24px -12px rgba(0,0,0,.45)!important;-webkit-backdrop-filter:blur(14px) saturate(1.3)!important;backdrop-filter:blur(14px) saturate(1.3)!important}
+/* frosted-glass strip behind the dropdown pills + Plan pill: hugs the pills, deep module-coloured glass */
+#filterDdRow,body.perf-mode #filterDdRow{width:fit-content!important;max-width:calc(100% - 16px)!important;box-sizing:border-box!important;margin:6px auto 0!important;padding:10px 16px!important;border-radius:16px!important;-webkit-backdrop-filter:blur(14px) saturate(1.3)!important;backdrop-filter:blur(14px) saturate(1.3)!important;
+  background:linear-gradient(180deg,rgba(37,64,175,.72),rgba(23,37,110,.78))!important;border:1px solid rgba(147,180,255,.40)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 26px -12px rgba(10,20,80,.7)!important}
+#app.camped #filterDdRow,body.perf-mode #app.camped #filterDdRow{background:linear-gradient(180deg,rgba(21,110,55,.72),rgba(10,64,32,.78))!important;border-color:rgba(134,239,172,.40)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 26px -12px rgba(5,40,20,.7)!important}
+#app.teenaged #filterDdRow,body.perf-mode #app.teenaged #filterDdRow{background:linear-gradient(180deg,rgba(98,36,170,.72),rgba(58,18,110,.78))!important;border-color:rgba(216,180,254,.40)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 26px -12px rgba(40,10,80,.7)!important}
+#app.regulated #filterDdRow,body.perf-mode #app.regulated #filterDdRow{background:linear-gradient(180deg,rgba(10,110,140,.72),rgba(6,64,90,.78))!important;border-color:rgba(125,231,249,.40)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 26px -12px rgba(3,40,60,.7)!important}
+/* seasonal "… is here" strip: only as wide as its content, centred */
+#seasonalBanner>div[onclick]{width:fit-content!important;max-width:calc(100% - 16px)!important;box-sizing:border-box!important;margin:10px auto!important}
 /* title bar: half the width, centred (height and design unchanged) */
 .hdr{width:max(50%,600px)!important;max-width:calc(100% - 16px)!important;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box}
 /* title banner: same faded per-module artwork as the cards (AdaptED art on AdaptED, CampED art on CampED, …) */
@@ -18983,6 +18989,18 @@ nav.bottom-bar{border-radius:20px 20px 0 0!important}
 (function(){
   var root=document.documentElement;
   function align(){var a=document.getElementById('app');if(!a)return;var r=a.getBoundingClientRect();if(!r.width)return;var vw=root.clientWidth;a.style.setProperty('--appL',Math.max(0,Math.round(r.left))+'px');a.style.setProperty('--appR',Math.max(0,Math.round(vw-r.right))+'px');}
+  /* dropdown strip: when the pills wrap onto 2+ rows (phones), shrink the strip to the widest row so it still hugs the pills */
+  var ddQ=false;
+  function fitDd(){ddQ=false;var row=document.getElementById('filterDdRow');if(!row)return;row.style.removeProperty('width');
+    var k=[].filter.call(row.children,function(e){return e.offsetParent!==null;});if(k.length<2)return;
+    var rs=k.map(function(e){return e.getBoundingClientRect();});var t0=rs[0].top,wrapped=rs.some(function(r){return Math.abs(r.top-t0)>4;});if(!wrapped)return;
+    var L=Math.min.apply(null,rs.map(function(r){return r.left;})),R=Math.max.apply(null,rs.map(function(r){return r.right;}));var cs=getComputedStyle(row);
+    var w=Math.ceil(R-L+parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight)+parseFloat(cs.borderLeftWidth)+parseFloat(cs.borderRightWidth))+1;
+    row.style.setProperty('width',w+'px','important');}
+  function qDd(){if(!ddQ){ddQ=true;requestAnimationFrame(fitDd);}}
+  window.addEventListener('resize',qDd,{passive:true});
+  try{var ddr=document.getElementById('filterDdRow');if(ddr){if(window.ResizeObserver){var ro=new ResizeObserver(qDd);[].forEach.call(ddr.children,function(c){ro.observe(c);});}new MutationObserver(qDd).observe(ddr,{childList:true,subtree:true,characterData:true});}}catch(e){}
+  qDd();
   window.addEventListener('resize',align,{passive:true});
   try{var a0=document.getElementById('app');if(a0&&window.ResizeObserver)new ResizeObserver(align).observe(a0);}catch(e){}
   align();
