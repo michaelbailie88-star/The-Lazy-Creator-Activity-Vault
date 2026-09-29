@@ -20111,6 +20111,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 /* modal engine */
 #rpModal{position:fixed;inset:0;z-index:180;display:none;align-items:flex-start;justify-content:center;padding:max(24px,4vh) 16px 24px;background:rgba(3,6,16,.72);overflow-y:auto;-webkit-overflow-scrolling:touch}
 #rpModal.on{display:flex}
+body.rp-modal-open .fx-fab,body.rp-modal-open #utFab{display:none!important}
 #rpModal .rpm{width:min(860px,100%);border-radius:22px;overflow:hidden;background:#0b1020;border:1.5px solid color-mix(in srgb,var(--rkr) 60%,transparent);box-shadow:0 40px 90px -30px rgba(0,0,0,.95);color:#e8eef8;font-family:'Plus Jakarta Sans',system-ui,sans-serif;animation:utPop .25s cubic-bezier(.16,1,.3,1)}
 #rpModal .rpm-h{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(155deg,var(--rk0),var(--rk1) 30%,var(--rk2) 55%,var(--rk1) 78%,var(--rk0));box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
 #rpModal .rpm-h .em{font-size:22px}
@@ -20167,7 +20168,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   #rpPrint.compact th,#rpPrint.compact td{padding:2pt 4pt;font-size:8.5pt}
   #rpPrint.compact p,#rpPrint.compact li{margin:1.5pt 0;font-size:9pt}
   #rpPrint.compact .pm{margin:0 0 4pt;font-size:8.5pt}
-  #rpPrint.compact .lines div{height:15pt}
+  #rpPrint.compact .lines div{height:14pt}
+  #rpPrint.compact .ft{margin-top:4pt}
   #rpPrint.compact ul{margin:2pt 0;padding-left:14pt}
   body.rp-printing #rpPrint{display:block!important;color:#000!important;background:#fff!important;font:11pt/1.45 -apple-system,'Segoe UI',Arial,sans-serif}
   #rpPrint *{background:transparent!important;color:#000!important;box-shadow:none!important;text-shadow:none!important;filter:none!important}
@@ -20239,16 +20241,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('on')&&!document.querySelector('.modal-bg.show'))RP.close();});}
   var VARS={a:['#081033','#1a2a7a','#4d6bff','#b4c3ff'],r:['#031c28','#0a5a74','#3fdcf5','#bff4fc'],c:['#03241a','#0a6a45','#2fe0a0','#b4f5d8'],t:['#1c0838','#4d1d91','#a66bff','#dccbff']};
   RP.open=function(m,em,title,render){ensure();var v=VARS[m]||VARS.a;['--rk0','--rk1','--rk2','--rkr'].forEach(function(k,i){modal.style.setProperty(k,v[i]);});
-    modal.querySelector('[data-e]').textContent=em;modal.querySelector('[data-t]').textContent=title;body.innerHTML='';render(body);modal.classList.add('on');modal.scrollTop=0;document.body.style.overflow='hidden';
+    modal.querySelector('[data-e]').textContent=em;modal.querySelector('[data-t]').textContent=title;body.innerHTML='';render(body);modal.classList.add('on');modal.scrollTop=0;document.body.style.overflow='hidden';document.body.classList.add('rp-modal-open');
     try{modal.querySelector('.rpm-x').focus({preventScroll:true});}catch(e){}};
-  RP.close=function(){if(!modal)return;modal.classList.remove('on');document.body.style.overflow='';};
+  RP.close=function(){if(!modal)return;modal.classList.remove('on');document.body.style.overflow='';document.body.classList.remove('rp-modal-open');};
 
   /* ── print: in-page, white canvas, black ink ──────────────────────────── */
   RP.print=function(title,html,opt){opt=opt||{};var root=document.getElementById('rpPrint');if(!root){root=document.createElement('div');root.id='rpPrint';document.body.appendChild(root);}
     root.className=opt.compact?'compact':'';root.innerHTML='<h1>'+esc(title)+'</h1>'+html+'<div class="ft">The Lazy Creator Company · The Activity Vault · by Tatianna Bailie</div>';
+    if(RP._done)RP._done();var my=(RP._seq=(RP._seq||0)+1);
     var prevTitle=document.title;document.title=title;document.body.classList.add('rp-printing');document.documentElement.classList.add('rp-printing');
-    var done=function(){document.body.classList.remove('rp-printing');document.documentElement.classList.remove('rp-printing');document.title=prevTitle;window.removeEventListener('afterprint',done);};
-    window.addEventListener('afterprint',done);setTimeout(function(){try{window.print();}catch(e){}setTimeout(done,1500);},60);};
+    var done=function(){if(my!==RP._seq)return;RP._done=null;document.body.classList.remove('rp-printing');document.documentElement.classList.remove('rp-printing');document.title=prevTitle;window.removeEventListener('afterprint',done);};
+    RP._done=done;window.addEventListener('afterprint',done);setTimeout(function(){if(my!==RP._seq)return;try{window.print();}catch(e){}setTimeout(done,1500);},60);};
   RP.lines=function(n){var s='<div class="lines">';for(var i=0;i<n;i++)s+='<div></div>';return s+'</div>';};
   RP.copy=function(t,btn){var ok=function(){if(btn){var o=btn.textContent;btn.textContent='Copied ✓';setTimeout(function(){btn.textContent=o;},1400);}};
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,function(){});};
@@ -20438,5 +20441,148 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     actions:[{label:'👁 Open grid',primary:true,run:function(){RP.open('a','📊','Milestone Intake Screening Grid',msView);}},{label:'🖨 Print',run:function(){msPrint(msState());}}]});
 })();
 </script>
+<script id="res-pack-r-js">
+/* Templates & Tools · Part 3B — RegulatED resources */
+(function(){
+  var RP=window.RP;if(!RP)return;var esc=RP.esc,get=RP.get,set=RP.set;
+  function A(){try{return ALL_ACTIVITIES;}catch(e){return [];}}
+
+  /* 6 ── Calm-Down Corner Physical Kit ────────────────────────────────── */
+  var INF='<svg viewBox="0 0 600 300" width="100%" style="max-width:640px;display:block;margin:0 auto" aria-label="Infinity breathing track"><path d="M300 150 C 240 40, 60 40, 60 150 C 60 260, 240 260, 300 150 C 360 40, 540 40, 540 150 C 540 260, 360 260, 300 150 Z" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>'+
+    '<g fill="currentColor"><path d="M175 62 l22 -10 l-8 22 z"/><path d="M425 238 l-22 10 l8 -22 z"/></g><circle cx="300" cy="150" r="12" fill="currentColor"/>'+
+    '<text x="165" y="158" text-anchor="middle" font-size="21" font-weight="800" fill="currentColor">BREATHE IN</text><text x="435" y="158" text-anchor="middle" font-size="21" font-weight="800" fill="currentColor">BREATHE OUT</text><text x="300" y="290" text-anchor="middle" font-size="18" fill="currentColor">Start at the dot. Trace the loop with your finger.</text></svg>';
+  var BOX='<svg viewBox="0 0 420 420" width="100%" style="max-width:440px;display:block;margin:0 auto" aria-label="Box breathing square"><rect x="60" y="60" width="300" height="300" fill="none" stroke="currentColor" stroke-width="10" stroke-linejoin="round"/>'+
+    '<g fill="currentColor"><circle cx="60" cy="360" r="14"/><path d="M200 48 l22 12 l-22 12 z"/><path d="M348 200 l12 22 l12 -22 z"/><path d="M220 348 l-22 12 l22 12 z"/><path d="M72 220 l-12 -22 l-12 22 z"/></g>'+
+    '<g font-size="22" font-weight="700" fill="currentColor" text-anchor="middle"><text x="210" y="36">HOLD · 4</text><text x="210" y="398">HOLD · 4</text><text x="398" y="215" transform="rotate(90 398 210)">BREATHE OUT · 4</text><text x="22" y="215" transform="rotate(-90 22 210)">BREATHE IN · 4</text></g>'+
+    '<text x="210" y="215" text-anchor="middle" font-size="18" fill="currentColor">Start at the dot · go up</text></svg>';
+  var SIGNS=[['CALM CORNER','A place to reset your body. You are welcome here.'],['I’M TAKING A BREAK','I will come back when my body feels ready.'],['BREATHE · STRETCH · SQUEEZE · REST','Pick one. Try it for one minute.']];
+  function kitDoc(print){var sign=function(s){return '<div class="keep" style="border:4px solid #000;border-radius:18px;padding:34px 20px;text-align:center;margin:14px 0"><div style="font-size:'+(print?'34pt':'28px')+';font-weight:900;letter-spacing:.04em">'+s[0]+'</div><div style="font-size:'+(print?'14pt':'15px')+';margin-top:10px">'+s[1]+'</div></div>';};
+    return (print?'':'<p class="ut-muted">Printed version is high-contrast black on white — laminate and post at the calm corner.</p>')+
+      '<h2>Infinity loop breathing track</h2><div style="color:'+(print?'#000':'#fff')+'">'+INF+'</div><p>Trace the left loop while breathing in, the right loop while breathing out. Go slowly — three loops.</p>'+
+      '<div class="pb"></div><h2>Box breathing square</h2><div style="color:'+(print?'#000':'#fff')+'">'+BOX+'</div><p>Breathe in for 4 up the left side, hold for 4 across the top, breathe out for 4 down the right, hold for 4 along the bottom.</p>'+
+      '<div class="pb"></div><h2>Calm zone signs</h2>'+SIGNS.map(sign).join('');}
+  RP.add('r',{id:'calm-kit',name:'Calm-Down Corner Physical Kit',em:'🌀',kind:'Graphics pack · 3-page print',
+    desc:'A high-contrast printable pack for your calm corner: an infinity-loop breathing track, a box-breathing square and three calm-zone signs. Prints clean black on white.',
+    actions:[{label:'👁 Preview',run:function(){RP.open('r','🌀','Calm-Down Corner Physical Kit',function(b){b.innerHTML='<div class="rp-doc">'+kitDoc(false)+'</div><div class="rp-bar"><button type="button" class="rp-btn pri" data-kp>🖨 Print all tools</button></div>';b.querySelector('[data-kp]').onclick=function(){RP.print('Calm-Down Corner Kit',kitDoc(true));};});}},
+      {label:'🖨 Print all tools',primary:true,run:function(){RP.print('Calm-Down Corner Kit',kitDoc(true));}}]});
+
+  /* 7 ── Somatic Sensation Choice Board ───────────────────────────────── */
+  var SENS=[['hot','🔥','Hot','#ef4444','Cool down: a drink of cold water, fan, or wash your face.',['grounding','body-moves']],
+    ['shaky','🫨','Shaky','#a855f7','Push against a wall, squeeze a ball, or give yourself a tight hug.',['sensory-tools','body-moves']],
+    ['heavy','🪨','Heavy','#64748b','Rest somewhere soft, have a slow stretch, or get a gentle hug.',['calm-corner','body-moves']],
+    ['fast','💓','Fast','#f97316','Slow breaths — smell the flower, blow out the candle.',['breathing']],
+    ['tight','😣','Tight','#eab308','Squeeze and let go: fists, shoulders, then face.',['body-moves','grounding']],
+    ['calm','🙂','Calm','#22c55e','Your body feels ready. Nice noticing!',['emotion-label']]];
+  function speak(t){try{if('speechSynthesis' in window){window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=.9;window.speechSynthesis.speak(u);}}catch(e){}}
+  function boardView(body){
+    body.innerHTML='<div class="sb-q">My body feels…</div><div class="sb-grid">'+SENS.map(function(s){return '<button type="button" class="sb-btn" data-sb="'+s[0]+'" style="--sc:'+s[3]+'" aria-label="My body feels '+s[2]+'"><span class="e">'+s[1]+'</span><span class="w">'+s[2]+'</span></button>';}).join('')+'</div><div class="sb-out" data-sb-out aria-live="polite"></div>'+
+      '<p class="ut-muted" style="text-align:center;margin-top:12px">Tap a picture. The tablet says it out loud. 🔊</p>';
+    body.querySelectorAll('[data-sb]').forEach(function(b){b.onclick=function(){var s=SENS.filter(function(x){return x[0]===b.getAttribute('data-sb');})[0];
+      body.querySelectorAll('.sb-btn').forEach(function(x){x.classList.toggle('on',x===b);});speak('My body feels '+s[2]);
+      var pool=A().filter(function(a){return a.brand==='r'&&s[5].indexOf(a.cat)>=0&&(a.energy==='low'||a.energy==='any');}),act=pool.length?pool[Math.floor(Math.random()*pool.length)]:null;
+      var log=get('rp_sb_log',[]);log.unshift({s:s[0],t:Date.now()});set('rp_sb_log',log.slice(0,30));
+      body.querySelector('[data-sb-out]').innerHTML='<div class="sb-big" style="--sc:'+s[3]+'"><span>'+s[1]+'</span>My body feels <b>'+s[2]+'</b></div><div class="sb-adult"><b>For the adult:</b> '+esc(s[4])+(act?'<br><button type="button" class="rp-btn" style="margin-top:8px" data-open-act="'+act.id+'">Try: '+esc(act.title)+'</button>':'')+'</div>';
+      var o=body.querySelector('[data-open-act]');if(o)o.onclick=function(){try{openActivity(o.getAttribute('data-open-act'));}catch(e){}};};});}
+  RP.add('r',{id:'somatic-board',name:'Somatic Sensation Choice Board',em:'🫶',kind:'Kid-facing interactive tool',
+    desc:'Big friendly buttons a child can tap to show how their body feels — Hot, Shaky, Heavy, Fast, Tight or Calm. It speaks the choice aloud and gives the adult a matching calming idea.',
+    actions:[{label:'✨ Open interactive tool',primary:true,run:function(){RP.open('r','🫶','My Body Feels…',boardView);}},
+      {label:'🖨 Print board',run:function(){RP.print('My Body Feels…','<table>'+[0,3].map(function(i){return '<tr>'+SENS.slice(i,i+3).map(function(s){return '<td style="text-align:center;height:150pt;width:33%"><div style="font-size:54pt;line-height:1">'+s[1]+'</div><div style="font-size:22pt;font-weight:900;margin-top:8pt">'+s[2]+'</div></td>';}).join('')+'</tr>';}).join('')+'</table><p class="pm">Point to how your body feels.</p>');}}]});
+
+  /* 8 ── Co-Regulation Script Wallet Cards ────────────────────────────── */
+  var CARDS=[['Safety first','“I’m here. You’re safe. I’m staying right here with you.”','Get low and to the side. Slow, quiet voice.'],
+    ['Name it','“You’re really frustrated. That makes sense.”','Name the feeling before you address the behaviour.'],
+    ['Breathe together','“Let’s take three slow breaths. I’ll go first.”','Breathe out longer than in — they copy your rhythm.'],
+    ['Fewer words','“You don’t have to talk. I’ll wait with you.”','Silence and presence de-escalate more than questions.'],
+    ['Small choices','“Do you want to sit here, or by the window?”','Two safe choices give back a sense of control.'],
+    ['Repair','“When you’re ready, we’ll figure it out together.”','Reconnect first. Problem-solve only once calm.']];
+  function cardsDoc(print){return (print?'<p class="pm">Cut along the lines. Each card is business-card size (3.5" × 2"). Laminate and keep in a lanyard or pocket.</p>':'')+
+    '<div class="wc-grid">'+CARDS.map(function(c,i){return '<div class="wc keep"><div class="wc-n">'+(i+1)+' · '+c[0]+'</div><div class="wc-s">'+c[1]+'</div><div class="wc-t">'+c[2]+'</div></div>';}).join('')+'</div>';}
+  RP.add('r',{id:'wallet-cards',name:'Co-Regulation Script Wallet Cards',em:'💳',kind:'Print · 6 pocket cards',
+    desc:'Six business-card-size reminder cards with exact calm-voice phrases for de-escalating big moments — safety, naming the feeling, breathing, fewer words, choices and repair.',
+    actions:[{label:'👁 Preview',run:function(){RP.open('r','💳','Co-Regulation Script Wallet Cards',function(b){b.innerHTML=cardsDoc(false)+'<p class="ut-muted" style="margin-top:12px">Phrases reflect widely taught trauma-informed de-escalation practice. Follow your school or centre’s crisis policy.</p><div class="rp-bar"><button type="button" class="rp-btn pri" data-cp>🖨 Print cards</button></div>';b.querySelector('[data-cp]').onclick=function(){RP.print('Co-Regulation Wallet Cards',cardsDoc(true));};});}},
+      {label:'🖨 Print',primary:true,run:function(){RP.print('Co-Regulation Wallet Cards',cardsDoc(true));}}]});
+
+  /* 9 ── Post-Incident Clinical Debrief Protocol ──────────────────────── */
+  var DB=[['before','Before — what was happening just before?','Where were they, who was there, what was the task or transition?'],['trigger','Trigger — what changed?','A demand, a noise, a “no”, a peer, hunger, tiredness…'],['during','During — what did it look like?','Describe behaviour, not character.'],['helped','What helped them come back down?','Space, a person, a tool, time…'],['words','In the child’s own words','What they say happened and how they felt.'],['repair','Repair','How the relationship or situation was put right.'],['next','Plan for next time','One early sign to watch for + one thing to try sooner.'],['adult','Adult reflection','What went well? What would you change?']];
+  var DBSTEPS=['Wait until the child is fully calm — usually 20+ minutes, not straight after.','Choose a quiet, private moment. Sit side by side, not across a desk.','Start with connection: “I’m glad you’re feeling better.”','Walk the timeline together. Listen more than you talk.','Name the feeling together; avoid blame words.','Agree one small plan for next time — the child helps choose it.','Close warmly and record the notes below.'];
+  function dbState(){return get('rp_db',{name:'',date:'',adult:'',f:{}});}
+  function dbDoc(s,filled){var v=function(k){return filled&&s.f[k]?'<p>'+esc(s.f[k])+'</p>':RP.lines(2);};
+    return '<table><tr><th style="width:18%">Child</th><td>'+(filled?esc(s.name):'')+'&nbsp;</td><th style="width:12%">Date</th><td>'+(filled?esc(s.date):'')+'&nbsp;</td><th style="width:14%">Adult</th><td>'+(filled?esc(s.adult):'')+'&nbsp;</td></tr></table>'+
+      '<h2>Protocol</h2><ol class="cols">'+DBSTEPS.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>'+DB.map(function(d){return '<div class="keep"><h2>'+esc(d[1])+'</h2><p class="pm">'+esc(d[2])+'</p>'+v(d[0])+'</div>';}).join('');}
+  function dbView(body){var s=dbState();
+    body.innerHTML='<h3>Protocol</h3><ol>'+DBSTEPS.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol><h3>Details</h3><div class="rp-f"><label>Child (first name / initials)<input class="rp-in" data-db="name" value="'+esc(s.name)+'"></label><label>Date<input class="rp-in" type="date" data-db="date" value="'+esc(s.date)+'"></label><label>Adult<input class="rp-in" data-db="adult" value="'+esc(s.adult)+'"></label></div>'+
+      DB.map(function(d){return '<h3>'+esc(d[1])+'</h3><textarea class="rp-ta" data-dbf="'+d[0]+'" placeholder="'+esc(d[2])+'">'+esc(s.f[d[0]]||'')+'</textarea>';}).join('')+
+      '<div class="rp-bar"><button type="button" class="rp-btn pri" data-dbp1>🖨 Print filled</button><button type="button" class="rp-btn" data-dbp0>🖨 Print blank</button><button type="button" class="rp-btn" data-dbc>Clear</button></div><p class="ut-muted" style="margin-top:10px">Saved on this device only. Store completed sheets per your school’s privacy policy.</p>';
+    body.querySelectorAll('[data-db]').forEach(function(i){i.onchange=function(){var t=dbState();t[i.getAttribute('data-db')]=i.value;set('rp_db',t);};});
+    body.querySelectorAll('[data-dbf]').forEach(function(i){i.onchange=function(){var t=dbState();t.f[i.getAttribute('data-dbf')]=i.value;set('rp_db',t);};});
+    body.querySelector('[data-dbp1]').onclick=function(){body.querySelectorAll('[data-db],[data-dbf]').forEach(function(i){i.onchange();});RP.print('Post-Incident Debrief',dbDoc(dbState(),true),{compact:true});};
+    body.querySelector('[data-dbp0]').onclick=function(){RP.print('Post-Incident Debrief',dbDoc(dbState(),false),{compact:true});};
+    body.querySelector('[data-dbc]').onclick=function(){try{localStorage.removeItem('rp_db');}catch(e){}dbView(body);};}
+  RP.add('r',{id:'debrief',name:'Post-Incident Clinical Debrief Protocol',em:'🧭',kind:'Structured worksheet · fill or print',
+    desc:'A step-by-step reflection protocol for walking a child back through what happened once they are calm — before, trigger, during, what helped, their words, repair and next time.',
+    actions:[{label:'👁 View / Fill',primary:true,run:function(){RP.open('r','🧭','Post-Incident Debrief Protocol',dbView);}},{label:'🖨 Print blank',run:function(){RP.print('Post-Incident Debrief',dbDoc(dbState(),false),{compact:true});}}]});
+
+  /* 10 ── Sensory Profile Cheat Sheet Builder ─────────────────────────── */
+  var SP=[['aud','🔊','Auditory',['Loud or sudden noises','Many voices at once','Echoey rooms (gym, hall)','Music at high volume','Buzzing lights or fans','Fire drills / alarms'],['Noise-reducing headphones','Warn before loud sounds','Seat away from speakers and doors','Quiet space for breaks']],
+    ['vis','👀','Visual',['Bright or flickering lights','Busy, cluttered walls','Fast-moving screens','Crowded spaces','Direct sunlight / glare'],['Seat with back to the window','Reduce visual clutter nearby','Dim or natural light when possible','Show one step at a time']],
+    ['tac','✋','Tactile',['Messy textures (paint, glue, clay)','Light or unexpected touch','Clothing tags or seams','Being close in a line or group','Sand, grass or wet materials'],['Offer gloves or tools for messy work','Warn before touch; ask first','Place at the end of the line','Give a fidget or heavy-work job']]];
+  var SPEC={Art:{aud:'Keep background music low; offer headphones.',vis:'Limit materials on the table to one task.',tac:'Offer gloves, brushes or tools instead of hands-in messy work.'},
+    Music:{aud:'Offer headphones and a seat away from drums/speakers; warn before loud parts.',vis:'Dim bright stage lights where possible.',tac:'Let them choose an instrument they are comfortable holding.'},
+    Gym:{aud:'Pre-warn whistles and buzzers; allow ear defenders in the echoey gym.',vis:'Give a spot away from crowded, fast-moving games.',tac:'Avoid tag/contact games or give a non-contact role.'}};
+  function spAll(){return get('rp_sp',{cur:'',p:{}});}
+  function spCur(){var a=spAll();return a.p[a.cur]||{name:a.cur,trig:{},help:{},other:'',signs:'',calm:''};}
+  function spSave(p){var a=spAll();if(!p.name)return;a.p[p.name]=p;a.cur=p.name;set('rp_sp',a);}
+  function spDoc(p){var dom=SP.filter(function(d){return (p.trig[d[0]]||[]).length||(p.help[d[0]]||[]).length;});
+    var h='<table><tr><th style="width:24%">Student</th><td><b>'+esc(p.name||'')+'</b></td></tr><tr><th>Early signs of overload</th><td>'+esc(p.signs||'')+'&nbsp;</td></tr><tr><th>What calms them</th><td>'+esc(p.calm||'')+'&nbsp;</td></tr></table>';
+    h+='<h2>Sensory triggers &amp; supports</h2><table><tr><th style="width:16%">Sense</th><th>Triggers</th><th>What helps</th></tr>'+SP.map(function(d){return '<tr><td><b>'+d[2]+'</b></td><td>'+((p.trig[d[0]]||[]).map(esc).join('<br>')||'—')+'</td><td>'+((p.help[d[0]]||[]).map(esc).join('<br>')||'—')+'</td></tr>';}).join('')+'</table>';
+    if(p.other)h+='<h2>Other notes</h2><p>'+esc(p.other)+'</p>';
+    h+='<h2>For specialist teachers</h2><table><tr><th style="width:16%">Class</th><th>Do this</th></tr>'+Object.keys(SPEC).map(function(k){var tips=dom.map(function(d){return SPEC[k][d[0]];}).filter(Boolean);return '<tr><td><b>'+k+'</b></td><td>'+(tips.length?tips.map(esc).join('<br>'):'No specific sensory triggers noted.')+'</td></tr>';}).join('')+'</table>';return h;}
+  function spView(body){var a=spAll(),p=spCur(),names=Object.keys(a.p);
+    body.innerHTML='<div class="rp-f"><label>Student name<input class="rp-in" data-sp-name value="'+esc(p.name||'')+'" placeholder="First name"></label>'+(names.length?'<label>Saved profiles<select class="rp-sel" data-sp-pick><option value="">— new —</option>'+names.map(function(n){return '<option'+(n===a.cur?' selected':'')+'>'+esc(n)+'</option>';}).join('')+'</select></label>':'')+'</div>'+
+      SP.map(function(d){return '<h3>'+d[1]+' '+d[2]+' — triggers</h3><div class="rp-chk">'+d[3].map(function(t){return '<label><input type="checkbox" data-tr="'+d[0]+'" value="'+esc(t)+'"'+((p.trig[d[0]]||[]).indexOf(t)>=0?' checked':'')+'>'+esc(t)+'</label>';}).join('')+'</div>'+
+        '<h3 style="margin-top:10px">'+d[2]+' — what helps</h3><div class="rp-chk">'+d[4].map(function(t){return '<label><input type="checkbox" data-hp="'+d[0]+'" value="'+esc(t)+'"'+((p.help[d[0]]||[]).indexOf(t)>=0?' checked':'')+'>'+esc(t)+'</label>';}).join('')+'</div>';}).join('')+
+      '<h3>Early signs of overload</h3><input class="rp-in" data-sp-f="signs" value="'+esc(p.signs)+'" placeholder="e.g. covers ears, hums, gets silly, goes quiet"><h3>What calms them</h3><input class="rp-in" data-sp-f="calm" value="'+esc(p.calm)+'" placeholder="e.g. squeeze ball, walk to the water fountain"><h3>Other notes</h3><textarea class="rp-ta" data-sp-f="other">'+esc(p.other)+'</textarea>'+
+      '<h3>Preview</h3><div class="rp-doc" data-sp-prev>'+spDoc(p)+'</div><div class="rp-bar"><button type="button" class="rp-btn pri" data-sp-print>🖨 Print 1-page cheat sheet</button><button type="button" class="rp-btn" data-sp-new>+ New student</button></div>';
+    var collect=function(){var q={name:body.querySelector('[data-sp-name]').value.trim(),trig:{},help:{},signs:'',calm:'',other:''};
+      SP.forEach(function(d){q.trig[d[0]]=[].map.call(body.querySelectorAll('[data-tr="'+d[0]+'"]:checked'),function(c){return c.value;});q.help[d[0]]=[].map.call(body.querySelectorAll('[data-hp="'+d[0]+'"]:checked'),function(c){return c.value;});});
+      body.querySelectorAll('[data-sp-f]').forEach(function(i){q[i.getAttribute('data-sp-f')]=i.value;});return q;};
+    var upd=function(){var q=collect();spSave(q);body.querySelector('[data-sp-prev]').innerHTML=spDoc(q);};
+    body.querySelectorAll('input,textarea').forEach(function(i){i.addEventListener('change',upd);});
+    var pk=body.querySelector('[data-sp-pick]');if(pk)pk.onchange=function(){var t=spAll();t.cur=pk.value;set('rp_sp',t);spView(body);};
+    body.querySelector('[data-sp-new]').onclick=function(){var t=spAll();t.cur='';set('rp_sp',t);spView(body);};
+    body.querySelector('[data-sp-print]').onclick=function(){var q=collect();spSave(q);RP.print('Sensory Profile — '+(q.name||'Student'),spDoc(q),{compact:true});};}
+  RP.add('r',{id:'sensory-profile',name:'Sensory Profile Cheat Sheet Builder',em:'🧩',kind:'Interactive builder · 1-page print',
+    desc:'Type a student’s name, tick their auditory, visual and tactile triggers and what helps. It prints a one-page cheat sheet with ready tips for Art, Music and Gym teachers.',
+    actions:[{label:'👁 Open builder',primary:true,run:function(){RP.open('r','🧩','Sensory Profile Cheat Sheet Builder',spView);}},{label:'🖨 Print current',run:function(){var p=spCur();RP.print('Sensory Profile — '+(p.name||'Student'),spDoc(p),{compact:true});}}]});
+})();
+</script>
+<style id="res-pack-r-css">
+.sb-q{text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:28px;color:#fff;margin:4px 0 14px}
+.sb-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media(max-width:520px){.sb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sb-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:130px;border-radius:24px;border:3px solid color-mix(in srgb,var(--sc) 70%,#fff);background:linear-gradient(160deg,color-mix(in srgb,var(--sc) 45%,#0b1020),color-mix(in srgb,var(--sc) 20%,#0b1020));color:#fff;cursor:pointer;transition:transform .15s,box-shadow .2s;font-family:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif}
+.sb-btn:hover{transform:translateY(-3px) scale(1.02)}
+.sb-btn.on{box-shadow:0 0 0 4px #fff,0 0 30px var(--sc);transform:scale(1.04)}
+.sb-btn .e{font-size:54px;line-height:1}
+.sb-btn .w{font-size:22px;font-weight:800}
+.sb-out{margin-top:16px}
+.sb-big{display:flex;align-items:center;justify-content:center;gap:14px;padding:16px;border-radius:20px;background:color-mix(in srgb,var(--sc) 25%,#0b1020);border:2px solid var(--sc);font-size:24px;color:#fff;font-family:'Bricolage Grotesque',sans-serif}
+.sb-big span{font-size:44px}
+.sb-adult{margin-top:10px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.05);font-size:13px;color:rgba(255,255,255,.85)}
+.wc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(max-width:560px){.wc-grid{grid-template-columns:1fr}}
+.wc{border:1.5px dashed rgba(255,255,255,.4);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,.04)}
+.wc-n{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--rkr)}
+.wc-s{margin:6px 0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;line-height:1.3;color:#fff}
+.wc-t{font-size:12px;color:rgba(255,255,255,.7)}
+@media print{
+  #rpPrint .wc-grid{display:grid!important;grid-template-columns:3.5in 3.5in;gap:0;justify-content:start}
+  #rpPrint .wc{width:3.5in;height:2in;box-sizing:border-box;border:0.8pt dashed #000!important;border-radius:0;padding:10pt 12pt;display:flex;flex-direction:column;justify-content:center}
+  #rpPrint .wc-n{font-size:7.5pt;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+  #rpPrint .wc-s{font-size:11.5pt;font-weight:800;line-height:1.25;margin:4pt 0}
+  #rpPrint .wc-t{font-size:8pt}
+  #rpPrint svg{max-width:100%!important}
+}
+</style>
 </body>
 </html>
