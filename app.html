@@ -3771,7 +3771,30 @@ html body #gate.vg::before,html body #gate.vg::after{content:none!important;disp
 
 <!-- ─────────────── APP ─────────────── -->
 <canvas id="lcConfettiCanvas"></canvas>
+<style id="util-rails-css">
+/* ═══ INNER SIDE COLUMNS → module utility slots (between the illustrated frames and the centre cards) ═══ */
+#appRails{--ua:var(--m1,#3b82f6);--ub:var(--m2,#60a5fa)}
+#app[data-active-tab="parented"] #appRails{--ua:#f59e0b;--ub:#fb7185}
+.util-rail{position:fixed;top:78px;bottom:108px;z-index:0;display:none;align-items:center;justify-content:center;padding:0 14px;box-sizing:border-box;pointer-events:none}
+#appRails.on .util-rail.has-slot{display:flex}
+.util-rail-l{left:var(--urL,0px);width:var(--urW,0px)}
+.util-rail-r{right:var(--urR,0px);width:var(--urW,0px)}
+.util-card{pointer-events:auto;width:100%;max-width:220px;box-sizing:border-box;padding:18px 14px 16px;border-radius:18px;border:1.5px dashed color-mix(in srgb,var(--ua) 42%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--ua) 10%,rgba(6,10,24,.55)),rgba(6,10,24,.42));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 20px 40px -30px rgba(0,0,0,.8);color:rgba(255,255,255,.72);text-align:center;opacity:.78;transition:opacity .35s ease,border-color .5s ease,background .5s ease;animation:utilIn .45s cubic-bezier(.16,1,.3,1) both}
+.util-card:hover{opacity:.95}
+@keyframes utilIn{from{opacity:0;transform:translateY(8px)}to{opacity:.78;transform:none}}
+.util-ico{width:44px;height:44px;margin:0 auto 10px;border-radius:14px;display:grid;place-items:center;color:var(--ub);background:color-mix(in srgb,var(--ua) 16%,transparent);border:1px solid color-mix(in srgb,var(--ua) 32%,transparent);transition:color .5s ease,background .5s ease,border-color .5s ease}
+.util-ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.util-kicker{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--ub) 75%,#fff)}
+.util-title{margin:5px 0 12px;font-family:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14.5px;line-height:1.22;letter-spacing:-.01em;color:rgba(255,255,255,.86)}
+.util-skel{display:flex;flex-direction:column;gap:7px;align-items:center}
+.util-skel span{display:block;height:8px;border-radius:100px;background:color-mix(in srgb,var(--ua) 18%,rgba(255,255,255,.06))}
+.util-skel span:nth-child(1){width:88%}.util-skel span:nth-child(2){width:70%}.util-skel span:nth-child(3){width:78%}
+.util-skel-box{width:100%;height:46px;margin-top:10px;border-radius:12px;border:1px dashed color-mix(in srgb,var(--ua) 30%,transparent);background:color-mix(in srgb,var(--ua) 6%,transparent)}
+.util-soon{display:inline-block;margin-top:12px;padding:3px 10px;border-radius:100px;font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.12)}
+@media(prefers-reduced-motion:reduce){.util-card{animation:none}}
+</style>
 <div id="app">
+<div id="appRails" aria-hidden="true"><aside class="util-rail util-rail-l" id="utilRailL"></aside><aside class="util-rail util-rail-r" id="utilRailR"></aside></div>
  <div id="viewModeBar">
  <span class="vmb-label">VIEW MODE</span>
  <div class="vmb-opts">
@@ -19384,5 +19407,83 @@ nav.bottom-bar{border-radius:20px 20px 0 0!important}
 })();
 </script>
 
+<script id="util-rails-js">
+/* Module utility slots — the inner side columns render a different utility per active module.
+   Each slot is a registry entry; swap the placeholder for a real component by giving it a mount(el) function. */
+(function(){
+  var I={
+    brain:'<svg viewBox="0 0 24 24"><path d="M9.5 3a3 3 0 0 0-3 3 3 3 0 0 0-2 5.2A3 3 0 0 0 6 16.5 3 3 0 0 0 9.5 21 2.5 2.5 0 0 0 12 18.5v-13A2.5 2.5 0 0 0 9.5 3z"/><path d="M14.5 3a3 3 0 0 1 3 3 3 3 0 0 1 2 5.2 3 3 0 0 1-1.5 5.3 3 3 0 0 1-3.5 4.5 2.5 2.5 0 0 1-2.5-2.5"/></svg>',
+    cards:'<svg viewBox="0 0 24 24"><rect x="7" y="4" width="13" height="16" rx="2"/><path d="M4 7v11a2 2 0 0 0 2 2"/><path d="M13.5 9.6c.9-.9 2.3-.3 2.3.9 0 1.3-2.3 2.8-2.3 2.8s-2.3-1.5-2.3-2.8c0-1.2 1.4-1.8 2.3-.9z"/></svg>',
+    engine:'<svg viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>',
+    checklist:'<svg viewBox="0 0 24 24"><path d="M3 6.5l1.5 1.5L7 5.5M3 12.5 4.5 14 7 11.5M3 18.5 4.5 20 7 17.5"/><path d="M11 7h10M11 13h10M11 19h10"/></svg>',
+    timer:'<svg viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M9.5 2.5h5M12 2.5V6"/></svg>',
+    shuffle:'<svg viewBox="0 0 24 24"><path d="M3 7h3.5c2 0 3 1 4.2 2.8l2.6 4.4C14.5 16 15.5 17 17.5 17H21"/><path d="M3 17h3.5c1.3 0 2.2-.4 3-1.3M14.5 8.3c.8-.9 1.7-1.3 3-1.3H21"/><path d="M18.5 4.5 21 7l-2.5 2.5M18.5 14.5 21 17l-2.5 2.5"/></svg>',
+    wheel:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2"/><path d="M12 3.5V10M12 14v6.5M3.5 12H10M14 12h6.5"/></svg>',
+    qr:'<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="1"/><rect x="14.5" y="3.5" width="6" height="6" rx="1"/><rect x="3.5" y="14.5" width="6" height="6" rx="1"/><path d="M14.5 14.5h2v2h-2zM18.5 18.5h2v2h-2zM18.5 14.5h2M14.5 18.5v2"/></svg>'
+  };
+  var SLOTS={
+    regulated:{ left:{id:'brain-state-switch',   icon:'brain',     kicker:'RegulatED', title:'Neuro-Sequential Brain State Switch'},
+                right:{id:'co-reg-tips-deck',    icon:'cards',     kicker:'RegulatED', title:'Co-Regulation Tips Deck'} },
+    adapted:  { left:{id:'iep-accommodation',    icon:'engine',    kicker:'AdaptED',   title:'IEP Accommodation Engine'},
+                right:{id:'noise-material-prep', icon:'checklist', kicker:'AdaptED',   title:'Noise Predictor & Material Prep Checklist'} },
+    camped:   { left:{id:'time-killer-slider',   icon:'timer',     kicker:'CampED',    title:'Temporal ‘Time-Killer’ Slider'},
+                right:{id:'random-team-gen',     icon:'shuffle',   kicker:'CampED',    title:'Random Team Generator'} },
+    parented: { left:{id:'screen-detox-wheel',   icon:'wheel',     kicker:'ParentED',  title:'Screen-Time Detox Transition Wheel'},
+                right:{id:'mobile-sync-qr',      icon:'qr',        kicker:'ParentED',  title:'Mobile Sync QR Node'} }
+  };
+  window.UTILITY_SLOTS=SLOTS;
+  var MIN_W=170, CENTER_W=980;
+  var app,rails,L,R,cur=null;
+  function activeModule(){
+    if(!app) return null;
+    if(app.dataset.activeTab==='parented') return 'parented';
+    var c=['camped','teenaged','regulated','adapted'];
+    for(var i=0;i<c.length;i++){ if(app.classList.contains(c[i])) return c[i]; }
+    return 'adapted';
+  }
+  function placeholder(s){
+    return '<div class="util-card" data-slot="'+s.id+'">'+
+      '<div class="util-ico">'+(I[s.icon]||'')+'</div>'+
+      '<div class="util-kicker">'+s.kicker+'</div>'+
+      '<div class="util-title">'+s.title+'</div>'+
+      '<div class="util-skel"><span></span><span></span><span></span></div>'+
+      '<div class="util-skel-box"></div>'+
+      '<span class="util-soon">Coming soon</span></div>';
+  }
+  function fill(el,s){
+    el.innerHTML='';
+    el.classList.toggle('has-slot',!!s);
+    if(!s) return;
+    if(typeof s.mount==='function'){ s.mount(el); } else { el.innerHTML=placeholder(s); }
+  }
+  function renderSlots(){
+    var m=activeModule(); if(m===cur) return; cur=m;
+    var set=SLOTS[m]||null;
+    fill(L,set&&set.left); fill(R,set&&set.right);
+  }
+  function layout(){
+    if(!app||!rails) return;
+    var r=app.getBoundingClientRect(), vw=document.documentElement.clientWidth;
+    var gut=Math.floor((r.width-CENTER_W)/2);
+    var ok=r.width>0 && gut>=MIN_W && getComputedStyle(app).transform==='none';
+    rails.classList.toggle('on',ok);
+    if(!ok) return;
+    rails.style.setProperty('--urL',Math.max(0,Math.round(r.left))+'px');
+    rails.style.setProperty('--urR',Math.max(0,Math.round(vw-r.right))+'px');
+    rails.style.setProperty('--urW',gut+'px');
+  }
+  var q=false; function sched(){ if(q) return; q=true; requestAnimationFrame(function(){ q=false; layout(); renderSlots(); }); }
+  function init(){
+    app=document.getElementById('app'); rails=document.getElementById('appRails');
+    L=document.getElementById('utilRailL'); R=document.getElementById('utilRailR');
+    if(!app||!rails) return;
+    new MutationObserver(sched).observe(app,{attributes:true,attributeFilter:['class','data-active-tab','style']});
+    window.addEventListener('resize',sched,{passive:true});
+    if(window.ResizeObserver) new ResizeObserver(sched).observe(app);
+    sched();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
 </body>
 </html>
