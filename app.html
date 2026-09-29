@@ -20584,5 +20584,359 @@ body.rp-modal-open .fx-fab,body.rp-modal-open #utFab{display:none!important}
   #rpPrint svg{max-width:100%!important}
 }
 </style>
+<script id="res-pack-c-js">
+/* Templates & Tools · Part 3C — CampED resources */
+(function(){
+  var RP=window.RP;if(!RP)return;var esc=RP.esc,get=RP.get,set=RP.set;
+  function A(){try{return ALL_ACTIVITIES;}catch(e){return [];}}
+  function act(id,title){var L=A(),a=L.filter(function(x){return x.id===id;})[0];if(a&&(!title||a.title===title))return a;return L.filter(function(x){return x.brand==='c'&&x.title===title;})[0]||a||null;}
+  function actBtn(a,sub){return a?'<button type="button" class="ut-act" data-open-act="'+a.id+'"><span class="em">'+esc(a.em)+'</span><span class="tx"><b>'+esc(a.title)+'</b><span>'+esc(sub||a.desc)+'</span></span></button>':'';}
+  function wireActs(root){root.querySelectorAll('[data-open-act]').forEach(function(b){b.onclick=function(){try{openActivity(b.getAttribute('data-open-act'));}catch(e){}};});}
+  var BOX='<span class="box"></span>';
+
+  /* 11 ── Camp Ground Traffic Control Checklist ───────────────────────── */
+  var ZONES=[['Dining hall entrance & doors','Before each meal','Stagger release by cabin; one door in, one door out'],
+    ['Lunch / serving line','Meal service','Staff at head and tail; waiting chant'],
+    ['Washrooms & wash stations','Before meals · after swim','Wash before lining up, not inside the line'],
+    ['Waterfront gate & buddy board','Swim periods','Buddy check at the gate; single-file entry'],
+    ['Main path crossings / vehicle lane','Changeovers','Staff crossing guard; hold signal'],
+    ['Drop-off & pick-up loop','Opening & closing days','Cones, sign-in table away from the road'],
+    ['Canteen / tuck shop','Free time','Cabin rotation schedule'],
+    ['Program shed / equipment return','End of periods','Return bins by the door; 2-minute early warning'],
+    ['Campfire circle entry & exit','Evening program','Flashlights down; exit by cabin'],
+    ['Cabin row before lights-out','Evening','Staggered washroom times by cabin']];
+  var RULES=['Stagger dining release by cabin (every 2–3 min)','One-way flow in and out of the dining hall','A staff member at the head and tail of every line','Hand-washing happens before the line, not in it','Keep pinch points clear of bags and gear','A set waiting spot with a chant or game','Agreed “hold” signal (whistle or radio) at crossings','Head count at every transition'];
+  function tcState(){var s=get('rp_tc',null);if(!s||!s.zones)s={camp:'',date:'',zones:ZONES.map(function(z){return {n:z[0],t:z[1],r:'',s:'',m:'',on:true};}),rules:{},lunch:{campers:120,lines:2,sec:25,groups:6},notes:''};return s;}
+  function lunchCalc(l){var c=Math.max(1,l.campers|0),n=Math.max(1,l.lines|0),sec=Math.max(5,l.sec|0),g=Math.max(1,l.groups|0);
+    var total=Math.ceil(c/n)*sec/60,per=total/g;return {total:total,per:per,size:Math.ceil(c/g),worst:total};}
+  function fm(m){return m<1?Math.round(m*60)+' sec':(Math.round(m*10)/10)+' min';}
+  function tcDoc(s){var L=lunchCalc(s.lunch);
+    return '<p class="pm">Camp: <b>'+esc(s.camp||'________________________')+'</b> &nbsp; Date: <b>'+esc(s.date||'____________')+'</b> &nbsp; Checked by: ________________</p>'+
+      '<h2>Choke points &amp; high-friction paths</h2><table><tr><th style="width:5%">On</th><th style="width:25%">Zone</th><th style="width:15%">Peak time</th><th style="width:11%">Risk</th><th style="width:14%">Staff post</th><th>Control measure</th></tr>'+
+      s.zones.map(function(z){return '<tr><td>'+(z.on?'✓':BOX)+'</td><td>'+esc(z.n)+'</td><td>'+esc(z.t)+'</td><td>'+(z.r?'<b>'+esc(z.r)+'</b>':'L &nbsp;M &nbsp;H')+'</td><td>'+esc(z.s)+'</td><td>'+esc(z.m)+'</td></tr>';}).join('')+
+      '<tr><td>'+BOX+'</td><td></td><td></td><td>L &nbsp;M &nbsp;H</td><td></td><td></td></tr></table>'+
+      '<h2>Flow rules</h2><div class="cols">'+RULES.map(function(r,i){return '<p class="keep">'+(s.rules[i]?'☑':BOX)+' '+esc(r)+'</p>';}).join('')+'</div>'+
+      '<h2>Lunch-line plan</h2><p>'+s.lunch.campers+' campers · '+s.lunch.lines+' serving line(s) · ~'+s.lunch.sec+' sec per camper → full service ≈ <b>'+fm(L.total)+'</b>. Release <b>'+s.lunch.groups+' groups of ~'+L.size+'</b>, one every <b>'+fm(L.per)+'</b>.</p>'+
+      '<h2>Notes</h2>'+(s.notes?'<p>'+esc(s.notes)+'</p>':RP.lines(3));}
+  function tcView(body){var s=tcState(),L=lunchCalc(s.lunch);
+    body.innerHTML='<div class="rp-f"><label>Camp / site<input class="rp-in" data-tc="camp" value="'+esc(s.camp)+'"></label><label>Date<input class="rp-in" type="date" data-tc="date" value="'+esc(s.date)+'"></label></div>'+
+      '<h3 style="margin-top:16px">Choke points &amp; high-friction paths</h3><div class="rp-scroll"><table class="rp-table tc-t"><tr><th>On</th><th>Zone · peak time</th><th>Risk</th><th>Staff post</th><th>Control measure</th></tr>'+
+      s.zones.map(function(z,i){return '<tr><td><input type="checkbox" data-tz="on" data-i="'+i+'"'+(z.on?' checked':'')+' aria-label="Zone active"></td><td><b>'+esc(z.n)+'</b><br><span class="ut-muted">'+esc(z.t)+'</span></td>'+
+        '<td><div class="tc-risk">'+['L','M','H'].map(function(r){return '<button type="button" data-tr="'+r+'" data-i="'+i+'" class="'+(z.r===r?'on ':'')+'r'+r+'">'+r+'</button>';}).join('')+'</div></td>'+
+        '<td><input class="rp-in" data-tz="s" data-i="'+i+'" value="'+esc(z.s)+'" placeholder="Who / where"></td><td><input class="rp-in" data-tz="m" data-i="'+i+'" value="'+esc(z.m)+'" placeholder="'+esc(ZONES[i]?ZONES[i][2]:'')+'"></td></tr>';}).join('')+'</table></div>'+
+      '<h3>Flow rules</h3><div class="rp-chk">'+RULES.map(function(r,i){return '<label><input type="checkbox" data-rule="'+i+'"'+(s.rules[i]?' checked':'')+'>'+esc(r)+'</label>';}).join('')+'</div>'+
+      '<h3>Lunch-line calculator</h3><div class="rp-f">'+[['campers','Campers',1,600],['lines','Serving lines',1,8],['sec','Seconds per camper',5,120],['groups','Release groups',1,30]].map(function(f){return '<label>'+f[1]+'<input class="rp-in" type="number" min="'+f[2]+'" max="'+f[3]+'" data-lc="'+f[0]+'" value="'+s.lunch[f[0]]+'"></label>';}).join('')+'</div>'+
+      '<div class="rp-total" data-lc-out><div><b>'+fm(L.total)+'</b></div><div>to serve everyone. Release a group of <b>~'+L.size+'</b> every <b>'+fm(L.per)+'</b> — nobody waits much longer than one group’s turn, instead of up to '+fm(L.worst)+' if everyone lines up at once.</div></div>'+
+      '<h3>Notes</h3><textarea class="rp-ta" data-tc="notes">'+esc(s.notes)+'</textarea>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn pri" data-tc-print>🖨 Print 1-page checklist</button><button type="button" class="rp-btn" data-tc-blank>🖨 Print blank</button><button type="button" class="rp-btn" data-tc-reset>↺ Reset</button></div>';
+    var save=function(){set('rp_tc',s);};
+    body.querySelectorAll('[data-tc]').forEach(function(el){el.onchange=function(){s[el.getAttribute('data-tc')]=el.value;save();};});
+    body.querySelectorAll('[data-tz]').forEach(function(el){el.onchange=function(){var z=s.zones[+el.getAttribute('data-i')],k=el.getAttribute('data-tz');z[k]=k==='on'?el.checked:el.value;save();};});
+    body.querySelectorAll('[data-tr]').forEach(function(b){b.onclick=function(){var z=s.zones[+b.getAttribute('data-i')],r=b.getAttribute('data-tr');z.r=z.r===r?'':r;save();b.parentNode.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-tr')===z.r);});};});
+    body.querySelectorAll('[data-rule]').forEach(function(el){el.onchange=function(){s.rules[el.getAttribute('data-rule')]=el.checked;save();};});
+    body.querySelectorAll('[data-lc]').forEach(function(el){el.oninput=el.onchange=function(){s.lunch[el.getAttribute('data-lc')]=Math.max(+el.min,Math.min(+el.max,parseInt(el.value,10)||+el.min));save();var L=lunchCalc(s.lunch);
+      body.querySelector('[data-lc-out]').innerHTML='<div><b>'+fm(L.total)+'</b></div><div>to serve everyone. Release a group of <b>~'+L.size+'</b> every <b>'+fm(L.per)+'</b> — nobody waits much longer than one group’s turn, instead of up to '+fm(L.worst)+' if everyone lines up at once.</div>';};});
+    body.querySelector('[data-tc-print]').onclick=function(){RP.print('Camp Ground Traffic Control Checklist',tcDoc(s),{compact:true});};
+    body.querySelector('[data-tc-blank]').onclick=function(){var b=JSON.parse(JSON.stringify(s));b.camp='';b.date='';b.notes='';b.rules={};b.zones.forEach(function(z){z.r='';z.s='';z.m='';z.on=false;});RP.print('Camp Ground Traffic Control Checklist',tcDoc(b),{compact:true});};
+    body.querySelector('[data-tc-reset]').onclick=function(){try{localStorage.removeItem('rp_tc');}catch(e){}tcView(body);};}
+  RP.add('c',{id:'traffic',name:'Camp Ground Traffic Control Checklist',em:'🚦',kind:'Ops worksheet · 1-page print',
+    desc:'Map your choke points, lunch lines and high-friction paths. Rate each zone, post staff, tick your flow rules and work out a staggered lunch release — then print one clean page.',
+    actions:[{label:'✏️ Open worksheet',primary:true,run:function(){RP.open('c','🚦','Camp Ground Traffic Control Checklist',tcView);}},
+      {label:'🖨 Print blank',run:function(){var b=tcState();b=JSON.parse(JSON.stringify(b));b.camp='';b.date='';b.notes='';b.rules={};b.zones.forEach(function(z){z.r='';z.s='';z.m='';z.on=false;});RP.print('Camp Ground Traffic Control Checklist',tcDoc(b),{compact:true});}}]});
+
+  /* 12 ── High-Heat & UV Safety Operating Matrix ──────────────────────── */
+  var LV=[{k:1,nm:'Normal',c:'#22c55e',hx:'Below 30',uv:'0–2 Low',water:'Drink at every transition; bottles filled at each meal.',act:'Full program.',sun:'Hats encouraged; sunscreen for long outdoor blocks.',prog:'Normal schedule.'},
+    {k:2,nm:'Caution',c:'#eab308',hx:'30–39 · some discomfort',uv:'3–5 Moderate',water:'Water break every 20–30 min.',act:'Add rest breaks during running games.',sun:'Sunscreen SPF 30+ before going out; reapply every 2 hours and after swimming. Hats on.',prog:'Seated activities in the shade.'},
+    {k:3,nm:'High',c:'#f97316',hx:'40–45 · great discomfort, avoid exertion',uv:'6–10 High / Very high',water:'Water break every 15–20 min; cool water on the field.',act:'Lower intensity, shorten sports, no long midday hikes.',sun:'Shade is mandatory for rest, 11 am–3 pm. Hats, sunglasses, covered shoulders.',prog:'High-energy blocks move to morning and evening; set up cool-down stations.'},
+    {k:4,nm:'Extreme — cabin lockdown',c:'#ef4444',hx:'46+ · dangerous',uv:'11+ Extreme',water:'Constant access; staff prompt drinks every 15 min.',act:'Stop strenuous outdoor activity.',sun:'Indoors or full shade only.',prog:'Indoor / cabin program. Waterfront only if your director approves.'}];
+  function humidex(t,rh){var e=rh/100*6.112*Math.exp(17.67*t/(t+243.5));return t+0.5555*(e-10);}
+  function hxLevel(h){return h<30?1:h<40?2:h<46?3:4;}
+  function uvLevel(u){return u<3?1:u<6?2:u<11?3:4;}
+  function hxState(){return get('rp_hx',{t:28,rh:50,uv:6,unit:'C',log:[]});}
+  function hxRead(s){var tc=s.unit==='F'?(s.t-32)*5/9:s.t,h=humidex(tc,s.rh),a=hxLevel(h),b=uvLevel(s.uv);return {tc:tc,h:Math.round(h),hl:a,ul:b,lv:Math.max(a,b)};}
+  var SIGNS='<h2>Know the signs</h2><table><tr><th style="width:22%">Heat exhaustion</th><td>Heavy sweating, pale or clammy skin, headache, dizziness, nausea, cramps, unusual tiredness. <b>Move to shade or indoors, sip cool water, loosen clothing, cool with wet cloths, tell the health staff.</b></td></tr>'+
+    '<tr><th>Heat stroke — emergency</th><td>Very high body temperature, confusion or odd behaviour, fainting, hot skin (sweating may stop), seizures. <b>Call 911. Start cooling right away while you wait.</b></td></tr></table>';
+  function hxMatrix(print,cur){return '<table class="hx-m"><tr><th>Level</th><th>Humidex</th><th>UV index</th><th>Water</th><th>Activity</th><th>Sun &amp; shade</th><th>Program</th></tr>'+
+    LV.map(function(l){return '<tr class="'+(cur===l.k?'cur':'')+'" style="--lc:'+l.c+'"><td><b>'+l.k+' · '+esc(l.nm)+'</b>'+(print&&cur===l.k?' ◀ latest reading':'')+'</td><td>'+esc(l.hx)+'</td><td>'+esc(l.uv)+'</td><td>'+esc(l.water)+'</td><td>'+esc(l.act)+'</td><td>'+esc(l.sun)+'</td><td>'+esc(l.prog)+'</td></tr>';}).join('')+'</table>';}
+  var HXNOTE='Humidex bands follow Environment and Climate Change Canada; UV bands follow the WHO UV Index. This is a planning guide — always follow your organization’s heat policy, local heat warnings and medical direction.';
+  function hxDoc(s){var r=hxRead(s),rows=(s.log||[]).slice(0,8);
+    return '<p class="pm">Use the higher of the two levels (humidex or UV) to set the day’s operating level.</p>'+hxMatrix(true,s.log&&s.log.length?s.log[0].lv:0)+SIGNS+
+      '<h2>Readings log</h2><table><tr><th>Time</th><th>Temp</th><th>Humidity</th><th>Humidex</th><th>UV</th><th>Level</th><th>Initials</th></tr>'+
+      rows.map(function(x){return '<tr><td>'+esc(x.at)+'</td><td>'+esc(x.t)+'</td><td>'+x.rh+'%</td><td>'+x.h+'</td><td>'+x.uv+'</td><td>'+x.lv+'</td><td></td></tr>';}).join('')+
+      new Array(Math.max(0,6-rows.length)+1).join('<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>')+'</table><p class="pm" style="margin-top:6pt">'+HXNOTE+'</p>';}
+  function hxView(body){var s=hxState();
+    var draw=function(){var r=hxRead(s),l=LV[r.lv-1];
+      body.querySelector('[data-hx-out]').innerHTML='<div class="hx-read" style="--lc:'+l.c+'"><div><span>Humidex</span><b>'+r.h+'</b><i>level '+r.hl+'</i></div><div><span>UV index</span><b>'+s.uv+'</b><i>level '+r.ul+'</i></div><div class="lv"><span>Operating level</span><b>'+r.lv+' · '+esc(l.nm)+'</b></div></div>'+
+        '<div class="hx-do"><p><b>💧 Water:</b> '+esc(l.water)+'</p><p><b>🏃 Activity:</b> '+esc(l.act)+'</p><p><b>🧢 Sun &amp; shade:</b> '+esc(l.sun)+'</p><p><b>🗓 Program:</b> '+esc(l.prog)+'</p></div>';
+      body.querySelector('[data-hx-mx]').innerHTML=hxMatrix(false,r.lv);
+      body.querySelector('[data-hx-t] b').textContent=s.t+'°'+s.unit;body.querySelector('[data-hx-rh] b').textContent=s.rh+'%';body.querySelector('[data-hx-uv] b').textContent=s.uv;
+      var lg=body.querySelector('[data-hx-log]');lg.innerHTML=(s.log||[]).length?'<table class="rp-table"><tr><th>Time</th><th>Temp</th><th>RH</th><th>Humidex</th><th>UV</th><th>Level</th></tr>'+s.log.map(function(x){return '<tr><td>'+esc(x.at)+'</td><td>'+esc(x.t)+'</td><td>'+x.rh+'%</td><td>'+x.h+'</td><td>'+x.uv+'</td><td>'+x.lv+'</td></tr>';}).join('')+'</table>':'<p class="ut-muted">No readings logged yet today.</p>';};
+    var tmin=s.unit==='F'?50:10,tmax=s.unit==='F'?115:46;
+    body.innerHTML='<div class="hx-in"><label data-hx-t>Temperature <b></b><input type="range" min="'+tmin+'" max="'+tmax+'" step="1" value="'+s.t+'" data-k="t"></label>'+
+      '<div class="hx-unit"><button type="button" class="rp-btn'+(s.unit==='C'?' pri':'')+'" data-u="C">°C</button><button type="button" class="rp-btn'+(s.unit==='F'?' pri':'')+'" data-u="F">°F</button></div>'+
+      '<label data-hx-rh>Relative humidity <b></b><input type="range" min="10" max="100" step="1" value="'+s.rh+'" data-k="rh"></label>'+
+      '<label data-hx-uv>UV index <b></b><input type="range" min="0" max="12" step="1" value="'+s.uv+'" data-k="uv"></label></div>'+
+      '<div data-hx-out aria-live="polite"></div><div class="rp-bar"><button type="button" class="rp-btn pri" data-hx-logit>＋ Log this reading</button><button type="button" class="rp-btn" data-hx-print>🖨 Print matrix &amp; log</button><button type="button" class="rp-btn" data-hx-clear>Clear log</button></div>'+
+      '<h3 style="margin-top:18px">Operating matrix</h3><div class="rp-scroll" data-hx-mx></div><h3>Today’s readings</h3><div class="rp-scroll" data-hx-log></div>'+
+      '<div class="hx-signs">'+SIGNS.replace('<h2>','<h3>').replace('</h2>','</h3>').replace('<table>','<table class="rp-table">')+'</div><p class="ut-muted" style="margin-top:10px">'+esc(HXNOTE)+'</p>';
+    body.querySelectorAll('input[type=range]').forEach(function(el){el.oninput=function(){s[el.getAttribute('data-k')]=+el.value;set('rp_hx',s);draw();};});
+    body.querySelectorAll('[data-u]').forEach(function(b){b.onclick=function(){var u=b.getAttribute('data-u');if(u===s.unit)return;s.t=u==='F'?Math.round(s.t*9/5+32):Math.round((s.t-32)*5/9);s.unit=u;set('rp_hx',s);hxView(body);};});
+    body.querySelector('[data-hx-logit]').onclick=function(){var r=hxRead(s),d=new Date();s.log=[{at:d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}),t:s.t+'°'+s.unit,rh:s.rh,h:r.h,uv:s.uv,lv:r.lv}].concat(s.log||[]).slice(0,12);set('rp_hx',s);draw();};
+    body.querySelector('[data-hx-clear]').onclick=function(){s.log=[];set('rp_hx',s);draw();};
+    body.querySelector('[data-hx-print]').onclick=function(){RP.print('High-Heat & UV Safety Operating Matrix',hxDoc(s),{compact:true});};
+    draw();}
+  RP.add('c',{id:'heat',name:'High-Heat & UV Safety Operating Matrix',em:'🌡️',kind:'Calculator + matrix · 1-page print',
+    desc:'Enter temperature, humidity and UV to get the humidex and today’s operating level — water breaks, activity limits, mandatory shade and when to move to a cabin program. Log readings through the day.',
+    actions:[{label:'🌡 Check conditions',primary:true,run:function(){RP.open('c','🌡️','High-Heat & UV Safety Operating Matrix',hxView);}},
+      {label:'🖨 Print matrix',run:function(){RP.print('High-Heat & UV Safety Operating Matrix',hxDoc(hxState()),{compact:true});}}]});
+
+  /* 13 ── “Dead-Time” Call & Chant Lyrics Treasury ────────────────────── */
+  var CT={call:'Attention getter',line:'Line & wait',move:'Transition',cheer:'Cheer',song:'Traditional song'};
+  var CH=[
+    ['call','Campfire Hush',[['L','Campfire!'],['A','Crackle, crackle… shhh!']],'Everyone puts a finger to their lips on “shhh”, then eyes to the leader.'],
+    ['call','Tall Trees',[['L','Tall trees!'],['A','Deep roots!']],'Campers stand tall with arms up on “tall”, then plant their feet and freeze on “roots”.'],
+    ['call','Marshmallow Freeze',[['L','Marshmallow!'],['A','Squish!']],'Everyone makes a squished face and holds still until the leader smiles.'],
+    ['call','Canoe Call',[['L','Canoe, canoe!'],['A','Paddles up — we’re listening to you!']],'Hands go up like holding a paddle. Works well at the waterfront.'],
+    ['call','Trail Crew Check-in',[['L','Hey there, trail crew, how are you doin’?'],['A','Boots on, eyes up, ready for movin’!']],'Great before a hike or a long walk to the next program area.'],
+    ['call','Loon Call',[['L','(Makes a long “hoo-oo-oo” loon call)'],['A','(Echo it back softly, then silence)']],'The quieter the echo, the better. Challenge cabins to be the quietest loons.'],
+    ['line','Lunch Line Rumble',[['L','We’re waiting in the line'],['A','We’re waiting in the line'],['L','We’re doing just fine'],['A','We’re doing just fine'],['L','Our tummies go rumble'],['A','Our tummies go rumble'],['L','But we will not grumble'],['A','But we will not grumble'],['L','Soup, sandwich, apple, cheese'],['A','Soup, sandwich, apple, cheese'],['L','Pass the patience, please!'],['A','Pass the patience, please!']],'Echo chant: the group repeats each line. Swap in today’s menu.'],
+    ['line','Trail Mix',[['L','A little bit of raisins'],['A','A little bit of raisins'],['L','A little bit of seeds'],['A','A little bit of seeds'],['L','A shake, shake, shake'],['A','A shake, shake, shake'],['L','That’s all a hiker needs!'],['A','That’s all a hiker needs!']],'Shake hands like a bag of trail mix. Let a camper add the next ingredient.'],
+    ['line','Pass the Rhythm',[['L','Clap, clap, snap!'],['A','(Front of the line copies, then passes it back person by person)']],'The leader invents a new rhythm when it reaches the end. Keeps a long line quiet and busy.'],
+    ['line','Weather Report',[['L','Today’s forecast is…'],['A','(Leader names weather; group makes the sound: rain = finger taps, thunder = stomps, wind = whoosh, sunshine = silent jazz hands)']],'Build a storm and then fade it out to silence.'],
+    ['move','Line-up Countdown',[['L','Five!'],['A','Find your buddy!'],['L','Four!'],['A','Find your line!'],['L','Three!'],['A','Hands to yourself!'],['L','Two!'],['A','Voices off!'],['L','One!'],['A','(Silent thumbs up)']],'By “one” the group is ready to move.'],
+    ['move','Moving Like a…',[['L','We’re moving like a moose!'],['A','Big… slow… steps!'],['L','We’re moving like a mouse!'],['A','Tiny tiptoes!'],['L','We’re moving like a heron!'],['A','One leg… and freeze!']],'Use it to walk between program areas at a calm pace.'],
+    ['move','Pack It Up',[['L','Pick it up!'],['A','Put it back!'],['L','Zip the bag!'],['A','Hit the track!']],'Chant it while cleaning up an activity area.'],
+    ['cheer','Roar Cheer',[['L','We’re the (TEAM NAME), hear us roar!'],['A','Nobody’s ever cheered like this before!'],['A','ROAR!']],'Fill in any team or cabin name.'],
+    ['cheer','Pine Tree Cheer',[['A','Tall and green, strong and true —'],['A','(Cabin name), we’re cheering for YOU!']],'Arms up like a tree, sway side to side, then point at the cabin being cheered.'],
+    ['cheer','Firework Cheer',[['A','(Whistle rising) … BOOM!'],['A','(Wiggle fingers down) Ahhhhh!']],'Use it for a great effort or a birthday.'],
+    ['song','Row, Row, Row Your Boat',[['A','Row, row, row your boat,'],['A','Gently down the stream.'],['A','Merrily, merrily, merrily, merrily,'],['A','Life is but a dream.']],'Sing it as a round in 2–4 groups.'],
+    ['song','Are You Sleeping (Frère Jacques)',[['A','Are you sleeping, are you sleeping,'],['A','Brother John, Brother John?'],['A','Morning bells are ringing, morning bells are ringing.'],['A','Ding, dang, dong. Ding, dang, dong.']],'A round. Perfect for the wake-up routine.'],
+    ['song','BINGO',[['A','There was a farmer had a dog,'],['A','And Bingo was his name-o.'],['A','B-I-N-G-O, B-I-N-G-O, B-I-N-G-O,'],['A','And Bingo was his name-o.']],'Each verse, replace one more letter with a clap.'],
+    ['song','She’ll Be Coming ’Round the Mountain',[['A','She’ll be coming ’round the mountain when she comes,'],['A','She’ll be coming ’round the mountain when she comes,'],['A','She’ll be coming ’round the mountain, she’ll be coming ’round the mountain,'],['A','She’ll be coming ’round the mountain when she comes.']],'Add a sound and action for each new verse.'],
+    ['song','Old MacDonald Had a Farm',[['A','Old MacDonald had a farm, E-I-E-I-O.'],['A','And on that farm he had a cow, E-I-E-I-O.'],['A','With a moo-moo here and a moo-moo there,'],['A','Here a moo, there a moo, everywhere a moo-moo.'],['A','Old MacDonald had a farm, E-I-E-I-O.']],'Campers pick the next animal.'],
+    ['song','My Bonnie Lies Over the Ocean',[['A','My Bonnie lies over the ocean,'],['A','My Bonnie lies over the sea,'],['A','My Bonnie lies over the ocean,'],['A','Oh bring back my Bonnie to me.'],['A','Bring back, bring back, oh bring back my Bonnie to me, to me.']],'Stand up or sit down on every word that starts with B.'],
+    ['song','Home on the Range (chorus)',[['A','Home, home on the range,'],['A','Where the deer and the antelope play;'],['A','Where seldom is heard a discouraging word,'],['A','And the skies are not cloudy all day.']],'A slow one for the end of campfire.'],
+    ['song','Michael, Row the Boat Ashore',[['A','Michael, row the boat ashore, Hallelujah!'],['A','Michael, row the boat ashore, Hallelujah!'],['A','Sister, help to trim the sail, Hallelujah!'],['A','Sister, help to trim the sail, Hallelujah!']],'Call-and-response style: leader sings the line, everyone answers “Hallelujah!”']];
+  function chState(){return get('rp_ch',{f:'all',q:'',fav:[]});}
+  function chList(s){var q=(s.q||'').toLowerCase();return CH.map(function(c,i){return {c:c,i:i};}).filter(function(x){return (s.f==='all'||(s.f==='fav'?s.fav.indexOf(x.i)>-1:x.c[0]===s.f))&&(!q||(x.c[1]+' '+x.c[2].map(function(l){return l[1];}).join(' ')).toLowerCase().indexOf(q)>-1);});}
+  function chLines(c,print){return c[2].map(function(l){return '<div class="ch-l'+(l[0]==='L'?' ld':'')+'">'+(c[0]==='song'?'':'<i>'+(l[0]==='L'?'Leader':'All')+':</i> ')+esc(l[1])+'</div>';}).join('');}
+  function chDoc(items){return '<p class="pm">Original call-and-response chants by The Lazy Creator Company, plus traditional public-domain songs.</p><div class="cols">'+items.map(function(x){var c=x.c;return '<div class="keep" style="margin:0 0 8pt"><b>'+esc(c[1])+'</b> <span style="font-size:8pt">('+CT[c[0]]+')</span>'+chLines(c,true)+'<div style="font-size:8.5pt;font-style:italic">'+esc(c[3])+'</div></div>';}).join('')+'</div>';}
+  function vaultSongs(){return A().filter(function(a){return a.brand==='c'&&a.cat==='campsongs';});}
+  function chView(body){var s=chState();
+    var draw=function(){var L=chList(s);
+      body.querySelector('[data-ch-list]').innerHTML=L.length?L.map(function(x){var c=x.c,f=s.fav.indexOf(x.i)>-1;return '<div class="ch-card" data-ci="'+x.i+'"><div class="ch-h"><span class="ch-tag">'+CT[c[0]]+'</span><b>'+esc(c[1])+'</b><button type="button" class="ch-fav'+(f?' on':'')+'" data-fav="'+x.i+'" aria-label="'+(f?'Remove from':'Add to')+' favourites" aria-pressed="'+f+'">'+(f?'★':'☆')+'</button></div>'+chLines(c)+'<p class="ch-tip">'+esc(c[3])+'</p></div>';}).join(''):'<p class="ut-muted">Nothing matches — try another word or filter.</p>';
+      body.querySelectorAll('[data-fav]').forEach(function(b){b.onclick=function(){var i=+b.getAttribute('data-fav'),k=s.fav.indexOf(i);if(k>-1)s.fav.splice(k,1);else s.fav.push(i);set('rp_ch',s);draw();};});
+      body.querySelectorAll('[data-chf]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-chf')===s.f);});
+      body.querySelector('[data-ch-print]').textContent='🖨 Print '+(L.length===CH.length?'all':L.length)+' chant'+(L.length===1?'':'s');};
+    var songs=vaultSongs();
+    body.innerHTML='<div class="ch-top"><input class="rp-in" type="search" placeholder="Search chants and songs…" data-ch-q value="'+esc(s.q)+'"><button type="button" class="rp-btn pri" data-ch-rand>🎲 Random chant</button></div>'+
+      '<div class="ch-filt">'+[['all','All'],['call','Attention'],['line','Line & wait'],['move','Transitions'],['cheer','Cheers'],['song','Traditional'],['fav','★ Favourites']].map(function(f){return '<button type="button" data-chf="'+f[0]+'">'+f[1]+'</button>';}).join('')+'</div>'+
+      '<div data-ch-rout aria-live="polite"></div><div class="ch-grid" data-ch-list></div>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn pri" data-ch-print>🖨 Print</button></div>'+
+      '<p class="ut-muted" style="margin-top:10px">Chants are original to The Lazy Creator Company. Songs marked “Traditional song” are in the public domain.</p>'+
+      (songs.length?'<details class="ch-vault"><summary>🎵 Camp songs in the Vault ('+songs.length+')</summary><div class="ut-acts" style="margin-top:10px">'+songs.map(function(a){return actBtn(a);}).join('')+'</div></details>':'');
+    wireActs(body);
+    body.querySelector('[data-ch-q]').oninput=function(){s.q=this.value;set('rp_ch',s);draw();};
+    body.querySelectorAll('[data-chf]').forEach(function(b){b.onclick=function(){s.f=b.getAttribute('data-chf');set('rp_ch',s);draw();};});
+    body.querySelector('[data-ch-rand]').onclick=function(){var pool=CH.filter(function(c){return c[0]!=='song';}),c=pool[Math.floor(Math.random()*pool.length)];
+      body.querySelector('[data-ch-rout]').innerHTML='<div class="ch-card ch-pick"><div class="ch-h"><span class="ch-tag">🎲 Try this now</span><b>'+esc(c[1])+'</b></div>'+chLines(c)+'<p class="ch-tip">'+esc(c[3])+'</p></div>';};
+    body.querySelector('[data-ch-print]').onclick=function(){RP.print('Dead-Time Call & Chant Treasury',chDoc(chList(s)),{compact:true});};
+    draw();}
+  RP.add('c',{id:'chants',name:'“Dead-Time” Call & Chant Lyrics Treasury',em:'📣',kind:'Searchable library · pocket print',
+    desc:'Original attention-getters, line chants, transition calls and cheers for the gaps between activities, plus classic public-domain camp songs. Search, star favourites, roll a random chant and print a pocket copy.',
+    actions:[{label:'📣 Open treasury',primary:true,run:function(){RP.open('c','📣','“Dead-Time” Call & Chant Lyrics Treasury',chView);}},
+      {label:'🖨 Print all',run:function(){RP.print('Dead-Time Call & Chant Treasury',chDoc(CH.map(function(c,i){return {c:c,i:i};})),{compact:true});}}]});
+
+  /* 14 ── Team & Patrol Identity Kit ──────────────────────────────────── */
+  var TCOL=[['Red','#ef4444'],['Blue','#3b82f6'],['Green','#22c55e'],['Gold','#eab308'],['Purple','#a855f7'],['Orange','#f97316'],['Silver','#94a3b8'],['Teal','#14b8a6']];
+  var ADJ=['Mighty','Midnight','Thunder','Golden','Wild','Silver'],NOUN=['Loons','Moose','Pines','Comets','Canoes','Otters'];
+  function tmDefault(n){var t=[];for(var i=0;i<n;i++)t.push({name:ADJ[i%6]+' '+NOUN[(i*2+1)%6],motto:'',color:TCOL[i%8][1],m:[]});return t;}
+  function tmState(){var s=get('rp_team',null);if(!s||!s.teams)s={teams:tmDefault(4),events:['Opening cheer','Relay race','Scavenger hunt','Trivia','Cabin cleanup','Spirit points'],sc:{}};return s;}
+  function tmTotals(s){return s.teams.map(function(t,j){var n=0;s.events.forEach(function(e,i){n+=+(s.sc[i+'_'+j]||0);});return n;});}
+  function tmBoard(s,blank){var tot=tmTotals(s);return '<table><tr><th style="width:24%">Event</th>'+s.teams.map(function(t){return '<th>'+esc(t.name)+'</th>';}).join('')+'</tr>'+
+    s.events.map(function(e,i){return '<tr><td>'+esc(e)+'</td>'+s.teams.map(function(t,j){var v=s.sc[i+'_'+j];return '<td style="height:22pt;text-align:center">'+(blank||!v?'':v)+'</td>';}).join('')+'</tr>';}).join('')+
+    '<tr><td>&nbsp;</td>'+s.teams.map(function(){return '<td style="height:22pt"></td>';}).join('')+'</tr>'+
+    '<tr><th>TOTAL</th>'+s.teams.map(function(t,j){return '<th style="text-align:center;font-size:13pt">'+(blank?'':tot[j])+'</th>';}).join('')+'</tr></table>';}
+  function tmMatrix(){return '<p class="pm">Roll two dice. The first die picks the row, the second picks the column. Or choose your favourite and make it your own.</p><table><tr><th>🎲</th>'+NOUN.map(function(n,i){return '<th style="text-align:center">'+(i+1)+'</th>';}).join('')+'</tr>'+
+    ADJ.map(function(a,i){return '<tr><th style="text-align:center">'+(i+1)+'</th>'+NOUN.map(function(n){return '<td style="height:30pt;text-align:center;vertical-align:middle;font-size:11pt">'+a+' '+n+'</td>';}).join('')+'</tr>';}).join('')+'</table>'+
+    '<h2>Our team</h2><p>Team name: ______________________________ &nbsp; Colour: ______________</p><p>Motto / cheer:</p>'+RP.lines(2)+'<p>Team symbol (draw it):</p><div style="border:1pt solid #000;height:150pt"></div>';}
+  function tmSigns(s){return s.teams.map(function(t,j){return (j?'<div class="pb"></div>':'')+'<div class="tm-sign" style="border:3pt solid #000;padding:70pt 24pt;text-align:center;margin-top:10pt"><div style="font-size:12pt;letter-spacing:.2em;text-transform:uppercase">Team '+(j+1)+'</div><div style="font-size:64pt;font-weight:900;line-height:1.05;margin:18pt 0">'+esc(t.name)+'</div>'+
+    (t.motto?'<div style="font-size:18pt;font-style:italic">“'+esc(t.motto)+'”</div>':'<div style="font-size:12pt">Motto: ____________________________________</div>')+'</div>'+
+    '<h2>Roster</h2>'+(t.m&&t.m.length?'<div class="cols">'+t.m.map(function(x,i){return '<p>'+(i+1)+'. '+esc(x)+'</p>';}).join('')+'</div>':RP.lines(10));}).join('');}
+  function tmView(body){var s=tmState(),tg=get('ut_tg',null);
+    var tot=tmTotals(s),max=Math.max.apply(null,tot.concat([0]));
+    body.innerHTML='<h3>Teams</h3><div class="tm-n"><label class="ut-muted">Number of teams</label>'+[2,3,4,5,6,7,8].map(function(n){return '<button type="button" data-tn="'+n+'" class="'+(s.teams.length===n?'on':'')+'">'+n+'</button>';}).join('')+
+      (tg&&tg.result&&tg.result.length?'<button type="button" class="rp-btn" data-tm-import style="flex:0 0 auto">⇩ Import from Team Generator ('+tg.result.length+' teams)</button>':'')+'</div>'+
+      '<div class="tm-grid">'+s.teams.map(function(t,j){return '<div class="tm-card" style="--tc:'+t.color+'"><div class="tm-top"><input class="rp-in tm-name" data-tf="name" data-j="'+j+'" value="'+esc(t.name)+'" aria-label="Team '+(j+1)+' name"><button type="button" class="tm-roll" data-roll="'+j+'" title="Roll a new name" aria-label="Roll a new name">🎲</button></div>'+
+        '<input class="rp-in" data-tf="motto" data-j="'+j+'" value="'+esc(t.motto)+'" placeholder="Motto or cheer">'+
+        '<div class="tm-cols">'+TCOL.map(function(c){return '<button type="button" data-tc2="'+c[1]+'" data-j="'+j+'" style="background:'+c[1]+'" class="'+(t.color===c[1]?'on':'')+'" aria-label="'+c[0]+'"></button>';}).join('')+'</div>'+
+        '<div class="ut-muted">'+(t.m&&t.m.length?t.m.length+' members':'No roster yet')+'</div></div>';}).join('')+'</div>'+
+      '<h3 style="margin-top:18px">Scoreboard</h3><div class="rp-scroll"><table class="rp-table tm-sb"><tr><th>Event</th>'+s.teams.map(function(t){return '<th style="--tc:'+t.color+'"><span class="dot"></span>'+esc(t.name)+'</th>';}).join('')+'<th></th></tr>'+
+      s.events.map(function(e,i){return '<tr><td><input class="rp-in" data-ev="'+i+'" value="'+esc(e)+'" aria-label="Event name"></td>'+s.teams.map(function(t,j){return '<td><input class="rp-in tm-pt" type="number" data-sc="'+i+'_'+j+'" value="'+(s.sc[i+'_'+j]||'')+'" aria-label="'+esc(t.name)+' points for '+esc(e)+'"></td>';}).join('')+'<td><button type="button" class="tm-x" data-evx="'+i+'" aria-label="Remove event">✕</button></td></tr>';}).join('')+
+      '<tr class="tot"><th>Total</th>'+s.teams.map(function(t,j){return '<th data-tot="'+j+'" class="'+(tot[j]===max&&max>0?'lead':'')+'">'+tot[j]+(tot[j]===max&&max>0?' 👑':'')+'</th>';}).join('')+'<th></th></tr></table></div>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn" data-ev-add>＋ Add event</button><button type="button" class="rp-btn" data-sc-clear>Clear scores</button></div>'+
+      '<h3>Print</h3><div class="rp-bar" style="margin-top:0"><button type="button" class="rp-btn pri" data-pr="board">🖨 Scoreboard</button><button type="button" class="rp-btn" data-pr="blank">🖨 Blank scoreboard</button><button type="button" class="rp-btn" data-pr="signs">🖨 Team signs ('+s.teams.length+')</button><button type="button" class="rp-btn" data-pr="matrix">🖨 Naming matrix</button></div>';
+    var save=function(){set('rp_team',s);};
+    body.querySelectorAll('[data-tn]').forEach(function(b){b.onclick=function(){var n=+b.getAttribute('data-tn'),d=tmDefault(n);s.teams=s.teams.slice(0,n).concat(d.slice(s.teams.length));save();tmView(body);};});
+    var im=body.querySelector('[data-tm-import]');if(im)im.onclick=function(){s.teams=tg.result.slice(0,8).map(function(t){return {name:t.name,motto:'',color:t.color,m:t.m.slice()};});s.sc={};save();tmView(body);};
+    body.querySelectorAll('[data-tf]').forEach(function(el){el.onchange=function(){s.teams[+el.getAttribute('data-j')][el.getAttribute('data-tf')]=el.value.trim()||s.teams[+el.getAttribute('data-j')][el.getAttribute('data-tf')];save();if(el.getAttribute('data-tf')==='name')tmView(body);};});
+    body.querySelectorAll('[data-roll]').forEach(function(b){b.onclick=function(){var j=+b.getAttribute('data-roll');s.teams[j].name=ADJ[Math.floor(Math.random()*6)]+' '+NOUN[Math.floor(Math.random()*6)];save();tmView(body);};});
+    body.querySelectorAll('[data-tc2]').forEach(function(b){b.onclick=function(){s.teams[+b.getAttribute('data-j')].color=b.getAttribute('data-tc2');save();tmView(body);};});
+    body.querySelectorAll('[data-ev]').forEach(function(el){el.onchange=function(){s.events[+el.getAttribute('data-ev')]=el.value.trim()||'Event';save();};});
+    body.querySelectorAll('[data-evx]').forEach(function(b){b.onclick=function(){var i=+b.getAttribute('data-evx'),n={};s.events.splice(i,1);Object.keys(s.sc).forEach(function(k){var p=k.split('_'),e=+p[0];if(e<i)n[k]=s.sc[k];else if(e>i)n[(e-1)+'_'+p[1]]=s.sc[k];});s.sc=n;save();tmView(body);};});
+    body.querySelector('[data-ev-add]').onclick=function(){s.events.push('New event');save();tmView(body);};
+    body.querySelector('[data-sc-clear]').onclick=function(){s.sc={};save();tmView(body);};
+    body.querySelectorAll('[data-sc]').forEach(function(el){el.oninput=function(){var v=el.value===''?'':(parseInt(el.value,10)||0);if(v==='')delete s.sc[el.getAttribute('data-sc')];else s.sc[el.getAttribute('data-sc')]=v;save();
+      var t=tmTotals(s),m=Math.max.apply(null,t.concat([0]));body.querySelectorAll('[data-tot]').forEach(function(th){var j=+th.getAttribute('data-tot');th.textContent=t[j]+(t[j]===m&&m>0?' 👑':'');th.classList.toggle('lead',t[j]===m&&m>0);});};});
+    body.querySelectorAll('[data-pr]').forEach(function(b){b.onclick=function(){var k=b.getAttribute('data-pr');
+      if(k==='board'||k==='blank')RP.print('Team Scoreboard',tmBoard(s,k==='blank'),{compact:true});else if(k==='signs')RP.print('Team Signs',tmSigns(s));else RP.print('Team Naming Matrix',tmMatrix(),{compact:true});};});}
+  RP.add('c',{id:'teams',name:'Team & Patrol Identity Kit',em:'🚩',kind:'Scoreboard + printables',
+    desc:'Name your teams with a dice naming matrix, pick colours and mottos, import rosters from the Random Team Generator, keep a live scoreboard and print team signs, a scoreboard sheet or the naming matrix.',
+    actions:[{label:'🚩 Open kit',primary:true,run:function(){RP.open('c','🚩','Team & Patrol Identity Kit',tmView);}},
+      {label:'🖨 Naming matrix',run:function(){RP.print('Team Naming Matrix',tmMatrix(),{compact:true});}}]});
+
+  /* 15 ── First-Week Social Integration Blueprint ─────────────────────── */
+  var FW=[[0,'c564','Camp Name Tags Day 1','Arrival & name tags','Greet every camper by name at the door and pair them with a cabin buddy before bags hit the bunk.'],
+    [30,'c1102','Cabin Buddy Introductions','Meet your buddy','Buddies introduce each other to the cabin — nobody has to talk about themselves first.'],
+    [60,'c682','Cabin Rules','Cabin agreements','Build the cabin rules together so every camper has a say on day one.'],
+    [90,'c01','Two Truths and a Lie','First icebreaker','Counselors go first with silly lies to set a playful, low-pressure tone.'],
+    [150,'c750','Buddy System','Buddy tour of camp','Walk the key spots in buddy pairs: washrooms, dining hall, health centre, waterfront.'],
+    [210,'c965','Cabin Table Talk','First dinner','Seat quieter campers next to a counselor; give each table one fun question.'],
+    [270,'c549','Welcome to New Campers','Welcome ceremony','Name the first-timers out loud and celebrate them.'],
+    [300,'c56','Opening Campfire','Opening campfire','Songs everyone can join; sit with your cabin.'],
+    [360,'c995','Homesickness Check-ins','Quiet check-ins','A short 1:1 with each camper before bed. Name the feeling, then name tomorrow’s first fun thing.'],
+    [390,'c685','Cabin Lights Out Ritual','Lights-out ritual','Same calm routine every night — predictability helps first-nighters settle.'],
+    [1080,'c979','Wake-Up Routine','Morning wake-up','Upbeat, predictable wake-up; check in with anyone who had a rough night.'],
+    [1140,'c34','Table Trivia','Breakfast','Table trivia mixes campers who haven’t talked yet.'],
+    [1200,'c02','Human Bingo','Mixer','Human Bingo gets campers talking across cabins.'],
+    [1260,'c656','Team Cheer Development','Cabin identity','Create a cabin cheer — shared identity beats homesickness.'],
+    [1380,'c270','Compliment Circle','Compliment circle','Every camper gives and receives one specific compliment.'],
+    [1440,'c692','Cabin Reflection','24-hour check','Short reflection: best moment so far, one worry, one thing to try tomorrow. Flag anyone who needs extra support.']];
+  var HS=[['Signs to watch','Quiet or withdrawn at meals, not eating, stomach aches or headaches at bedtime, asking often to call home, staying glued to one counselor.'],
+    ['What helps','Normalize it (“lots of campers miss home”), keep them busy with a job or role, pair them with a buddy, and point to the next fun thing on the schedule.'],
+    ['When to escalate','If it lasts or gets worse, or the camper is not eating or sleeping, tell your supervisor and follow your camp’s homesickness and parent-contact policy.']];
+  function fwState(){var s=get('rp_fw',null);if(!s)s={arr:'14:00',done:{},watch:[]};return s;}
+  function fwTime(arr,off){var p=String(arr||'14:00').split(':'),m=(+p[0]*60+(+p[1]||0)+off),d=Math.floor(m/1440);m=((m%1440)+1440)%1440;var h=Math.floor(m/60),mm=m%60,ap=h>=12?'PM':'AM',h12=h%12||12;return (d?'Day 2 · ':'Day 1 · ')+h12+':'+(mm<10?'0':'')+mm+' '+ap;}
+  function fwDoc(s){return '<p class="pm">Arrival time: <b>'+esc(fwTime(s.arr,0).replace('Day 1 · ',''))+'</b>. The first 24 hours set the tone — the goal is that every camper knows at least one buddy, one counselor and one song before their first night.</p>'+
+    '<table><tr><th style="width:4%">✓</th><th style="width:17%">Time</th><th style="width:19%">Block</th><th style="width:20%">Vault activity</th><th>Counselor move</th></tr>'+
+    FW.map(function(b,i){var a=act(b[1],b[2]);return '<tr><td>'+(s.done[i]?'✓':BOX)+'</td><td>'+esc(fwTime(s.arr,b[0]))+'</td><td>'+esc(b[3])+'</td><td>'+esc(a?a.title:b[2])+'</td><td>'+esc(b[4])+'</td></tr>';}).join('')+'</table>'+
+    '<h2>Homesickness</h2><table>'+HS.map(function(h){return '<tr><th style="width:18%">'+h[0]+'</th><td>'+esc(h[1])+'</td></tr>';}).join('')+'</table>'+
+    '<h2>Camper watch list</h2><table><tr><th style="width:18%">Camper (initials)</th><th>Night 1 check-in</th><th>Breakfast</th><th>24-hour check</th><th style="width:30%">Notes / follow-up</th></tr>'+
+    (s.watch||[]).map(function(w){return '<tr><td>'+esc(w.n)+'</td><td>'+(w.c1?'✓':'')+'</td><td>'+(w.c2?'✓':'')+'</td><td>'+(w.c3?'✓':'')+'</td><td>'+esc(w.note||'')+'</td></tr>';}).join('')+
+    new Array(Math.max(0,5-(s.watch||[]).length)+1).join('<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>')+'</table>';}
+  function fwView(body){var s=fwState();
+    var n=FW.filter(function(b,i){return s.done[i];}).length;
+    body.innerHTML='<div class="fw-top"><label class="ut-muted">Campers arrive at <input class="rp-in" type="time" data-fw-arr value="'+esc(s.arr)+'" style="width:auto;display:inline-block;margin-left:6px"></label><div class="fw-prog"><div class="tk-bar"><i style="width:'+Math.round(n/FW.length*100)+'%"></i></div><span>'+n+' of '+FW.length+' blocks done</span></div></div>'+
+      '<ol class="fw-tl">'+FW.map(function(b,i){var a=act(b[1],b[2]);return '<li class="'+(s.done[i]?'done':'')+(b[0]===1080?' d2':'')+'"><label class="fw-ck"><input type="checkbox" data-fwd="'+i+'"'+(s.done[i]?' checked':'')+' aria-label="Mark '+esc(b[3])+' done"></label><div class="fw-b"><div class="fw-t">'+esc(fwTime(s.arr,b[0]))+'</div><b>'+esc(b[3])+'</b><p>'+esc(b[4])+'</p>'+actBtn(a,'Open in the Vault')+'</div></li>';}).join('')+'</ol>'+
+      '<h3>Homesickness</h3>'+HS.map(function(h){return '<p><b>'+h[0]+':</b> '+esc(h[1])+'</p>';}).join('')+
+      '<h3>Camper watch list</h3><p class="ut-muted" style="margin-top:0">Use initials only. Tick each check-in as you do it.</p><div class="rp-scroll"><table class="rp-table fw-w"><tr><th>Initials</th><th>Night 1</th><th>Breakfast</th><th>24-hour</th><th>Notes</th><th></th></tr>'+
+      (s.watch||[]).map(function(w,i){return '<tr><td><input class="rp-in" data-ww="n" data-i="'+i+'" value="'+esc(w.n)+'" maxlength="6" aria-label="Initials"></td>'+['c1','c2','c3'].map(function(k){return '<td style="text-align:center"><input type="checkbox" data-ww="'+k+'" data-i="'+i+'"'+(w[k]?' checked':'')+' aria-label="Check-in done"></td>';}).join('')+'<td><input class="rp-in" data-ww="note" data-i="'+i+'" value="'+esc(w.note||'')+'" aria-label="Notes"></td><td><button type="button" class="tm-x" data-wx="'+i+'" aria-label="Remove">✕</button></td></tr>';}).join('')+'</table></div>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn" data-w-add>＋ Add camper</button><button type="button" class="rp-btn pri" data-fw-print>🖨 Print blueprint</button><button type="button" class="rp-btn" data-fw-reset>↺ Reset checklist</button></div>';
+    wireActs(body);var save=function(){set('rp_fw',s);};
+    body.querySelector('[data-fw-arr]').onchange=function(){s.arr=this.value||'14:00';save();fwView(body);};
+    body.querySelectorAll('[data-fwd]').forEach(function(el){el.onchange=function(){s.done[el.getAttribute('data-fwd')]=el.checked;save();fwView(body);};});
+    body.querySelectorAll('[data-ww]').forEach(function(el){el.onchange=function(){var w=s.watch[+el.getAttribute('data-i')],k=el.getAttribute('data-ww');w[k]=el.type==='checkbox'?el.checked:el.value;save();};});
+    body.querySelectorAll('[data-wx]').forEach(function(b){b.onclick=function(){s.watch.splice(+b.getAttribute('data-wx'),1);save();fwView(body);};});
+    body.querySelector('[data-w-add]').onclick=function(){s.watch=(s.watch||[]);if(s.watch.length<30)s.watch.push({n:'',c1:false,c2:false,c3:false,note:''});save();fwView(body);var ins=body.querySelectorAll('[data-ww="n"]');if(ins.length)ins[ins.length-1].focus();};
+    body.querySelector('[data-fw-print]').onclick=function(){RP.print('First-Week Social Integration Blueprint',fwDoc(s),{compact:true});};
+    body.querySelector('[data-fw-reset]').onclick=function(){s.done={};save();fwView(body);};}
+  RP.add('c',{id:'firstweek',name:'First-Week Social Integration Blueprint',em:'🤝',kind:'24-hour routine · checklist + print',
+    desc:'A structured first 24 hours to head off homesickness: timed icebreakers and rituals from arrival to the next afternoon, each linked to a Vault activity, plus homesickness guidance and a check-in watch list.',
+    actions:[{label:'🤝 Open blueprint',primary:true,run:function(){RP.open('c','🤝','First-Week Social Integration Blueprint',fwView);}},
+      {label:'🖨 Print',run:function(){RP.print('First-Week Social Integration Blueprint',fwDoc(fwState()),{compact:true});}}]});
+})();
+</script>
+<style id="res-pack-c-css">
+.tc-t td{vertical-align:middle}
+.tc-t .rp-in{min-width:130px}
+.tc-risk{display:inline-flex;gap:4px}
+.tc-risk button{width:30px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);font:800 12px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.tc-risk button.on.rL{background:#22c55e;border-color:#86efac;color:#052e16}
+.tc-risk button.on.rM{background:#eab308;border-color:#fde047;color:#2a1f02}
+.tc-risk button.on.rH{background:#ef4444;border-color:#fca5a5;color:#fff}
+.hx-in{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 14px;align-items:end}
+.hx-in label{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+.hx-in label b{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;letter-spacing:0;color:#fff;text-transform:none}
+.hx-in label[data-hx-rh],.hx-in label[data-hx-uv]{grid-column:1/-1}
+.hx-in input[type=range]{width:100%;accent-color:var(--rk2)}
+.hx-unit{display:flex;gap:6px}.hx-unit .rp-btn{flex:0 0 auto;padding:8px 14px}
+.hx-read{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:10px;margin-top:16px}
+.hx-read>div{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:2px}
+.hx-read span{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.hx-read b{font-family:'Bricolage Grotesque',sans-serif;font-size:30px;color:#fff;line-height:1.1}
+.hx-read i{font-style:normal;font-size:11.5px;color:rgba(255,255,255,.65)}
+.hx-read .lv{background:linear-gradient(155deg,color-mix(in srgb,var(--lc) 45%,#0b1020),color-mix(in srgb,var(--lc) 18%,#0b1020));border-color:var(--lc)}
+.hx-read .lv b{font-size:22px}
+@media(max-width:560px){.hx-read{grid-template-columns:1fr 1fr}.hx-read .lv{grid-column:1/-1}}
+.hx-do{margin-top:10px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.hx-do p{margin:4px 0!important}
+.hx-m{width:100%;min-width:640px;border-collapse:collapse;font-size:12px}
+.hx-m th,.hx-m td{border:1px solid rgba(255,255,255,.12);padding:7px 8px;text-align:left;vertical-align:top;color:rgba(255,255,255,.85)}
+.hx-m th{background:color-mix(in srgb,var(--rk1) 45%,transparent);color:#fff;font-size:11px}
+.hx-m tr td:first-child{border-left:5px solid var(--lc);color:#fff;white-space:nowrap}
+.hx-m tr.cur td{background:color-mix(in srgb,var(--lc) 22%,transparent);color:#fff}
+.hx-signs{margin-top:8px}
+.ch-top{display:flex;gap:8px}.ch-top .rp-in{flex:1}.ch-top .rp-btn{flex:0 0 auto}
+.ch-filt{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.ch-filt button{padding:7px 12px;border-radius:100px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);font:800 11.5px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.ch-filt button.on{background:linear-gradient(155deg,var(--rk1),var(--rk2));border-color:var(--rkr);color:#fff}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.ch-card{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.ch-pick{margin-bottom:12px;border-color:var(--rkr);background:color-mix(in srgb,var(--rk1) 35%,transparent)}
+.ch-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.ch-h b{flex:1;font-family:'Bricolage Grotesque',sans-serif;font-size:15px;color:#fff}
+.ch-tag{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:color-mix(in srgb,var(--rk2) 28%,transparent);color:var(--rkr)}
+.ch-fav{background:none;border:0;color:#facc15;font-size:18px;cursor:pointer;padding:0 2px}
+.ch-l{font-size:13px;line-height:1.5;color:rgba(255,255,255,.88)}
+.ch-l i{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rkr)}
+.ch-l.ld{color:#fff;font-weight:700}
+.ch-tip{margin:8px 0 0!important;font-size:12px!important;color:rgba(255,255,255,.62)!important;font-style:italic}
+.ch-vault{margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.ch-vault summary{cursor:pointer;font-weight:800;color:#fff}
+.tm-n{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tm-n [data-tn]{width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:#fff;font:800 13px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.tm-n [data-tn].on{background:var(--rk2);border-color:var(--rkr);color:#04140e}
+.tm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:12px}
+.tm-card{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:16px;background:linear-gradient(160deg,color-mix(in srgb,var(--tc) 28%,#0b1020),#0b1020 80%);border:1.5px solid color-mix(in srgb,var(--tc) 70%,transparent)}
+.tm-top{display:flex;gap:6px}
+.tm-name{font-weight:800!important}
+.tm-roll{flex:0 0 38px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);font-size:17px;cursor:pointer}
+.tm-cols{display:flex;flex-wrap:wrap;gap:5px}
+.tm-cols button{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.25);cursor:pointer;padding:0}
+.tm-cols button.on{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+.tm-sb{min-width:520px}
+.tm-sb th .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--tc);margin-right:6px}
+.tm-sb .rp-in{padding:6px 8px}
+.tm-pt{width:64px!important;text-align:center}
+.tm-sb .tot th{font-family:'Bricolage Grotesque',sans-serif;font-size:15px}
+.tm-sb .tot th.lead{color:#facc15}
+.tm-x{width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:rgba(255,255,255,.7);cursor:pointer}
+.fw-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.fw-prog{display:flex;align-items:center;gap:10px;min-width:220px;flex:1;max-width:360px}
+.fw-prog .tk-bar{flex:1}
+#rpModal .tk-bar i{background:linear-gradient(90deg,var(--rk1),var(--rk2))}
+.fw-prog span{font-size:11.5px;color:rgba(255,255,255,.7);white-space:nowrap}
+.fw-tl{list-style:none;margin:16px 0 0;padding:0 0 0 6px;border-left:2px solid color-mix(in srgb,var(--rkr) 40%,transparent)}
+.fw-tl li{display:flex;gap:10px;padding:0 0 14px 12px;position:relative}
+.fw-tl li:before{content:'';position:absolute;left:-8px;top:6px;width:12px;height:12px;border-radius:50%;background:#0b1020;border:2px solid var(--rkr)}
+.fw-tl li.done:before{background:var(--rk2)}
+.fw-tl li.d2{margin-top:10px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.2)}
+.fw-tl li.d2:before{top:20px}
+.fw-ck input{width:18px;height:18px;accent-color:var(--rk2);margin-top:2px}
+.fw-b{flex:1;min-width:0}
+.fw-t{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--rkr)}
+.fw-b b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:15px;color:#fff;margin:2px 0}
+.fw-b p{margin:0 0 8px!important;font-size:12.5px!important}
+.fw-tl li.done .fw-b b{text-decoration:line-through;opacity:.7}
+.fw-w{min-width:520px}.fw-w .rp-in{padding:6px 8px}
+@media print{
+  #rpPrint .hx-m{min-width:0}
+  #rpPrint .hx-m tr td:first-child{border-left:0.8pt solid #000!important}
+  #rpPrint .hx-m tr.cur td{font-weight:800}
+  #rpPrint .ch-l{font-size:9pt;line-height:1.35}
+  #rpPrint .ch-l.ld{font-weight:700}
+  #rpPrint .ch-l i{font-style:italic;font-size:8pt}
+}
+</style>
 </body>
 </html>
