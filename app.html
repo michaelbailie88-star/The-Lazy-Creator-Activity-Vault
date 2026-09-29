@@ -20066,5 +20066,377 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   REG('time-killer-slider',tkTool);REG('random-team-gen',tgTool);REG('screen-detox-wheel',dwTool);REG('mobile-sync-qr',qrTool);
 })();
 </script>
+<style id="res-pack-css">
+/* ═══ Templates & Tools — module-grouped resource workspace ═══ */
+.rp-wrap{grid-column:1/-1;width:min(948px,calc(100vw - 48px));max-width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;padding:4px 0 110px}
+@media(max-width:820px){.rp-wrap{width:auto;min-width:0}}
+.rp-wrap *{min-width:0}
+.rp-tab{white-space:normal;text-align:center;line-height:1.2}
+.rp-wrap[data-mod="a"]{--rk0:#081033;--rk1:#1a2a7a;--rk2:#4d6bff;--rkr:#b4c3ff}
+.rp-wrap[data-mod="r"]{--rk0:#031c28;--rk1:#0a5a74;--rk2:#3fdcf5;--rkr:#bff4fc}
+.rp-wrap[data-mod="c"]{--rk0:#03241a;--rk1:#0a6a45;--rk2:#2fe0a0;--rkr:#b4f5d8}
+.rp-wrap[data-mod="t"]{--rk0:#1c0838;--rk1:#4d1d91;--rk2:#a66bff;--rkr:#dccbff}
+.rp-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rp-head h2{margin:0;font-family:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;color:#fff}
+.rp-head p{margin:4px 0 0;font-size:12.5px;color:rgba(255,255,255,.65)}
+.rp-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media(max-width:620px){.rp-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.rp-tab{--tk0:#081033;--tk1:#1a2a7a;--tk2:#4d6bff;--tkr:#b4c3ff;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 10px;border-radius:14px;border:1.5px solid rgba(255,255,255,.12);background:rgba(10,14,28,.6);color:rgba(255,255,255,.75);font:800 13px 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;transition:transform .15s,filter .2s}
+.rp-tab:hover{transform:translateY(-2px)}
+.rp-tab[data-m="r"]{--tk0:#031c28;--tk1:#0a5a74;--tk2:#3fdcf5;--tkr:#bff4fc}
+.rp-tab[data-m="c"]{--tk0:#03241a;--tk1:#0a6a45;--tk2:#2fe0a0;--tkr:#b4f5d8}
+.rp-tab[data-m="t"]{--tk0:#1c0838;--tk1:#4d1d91;--tk2:#a66bff;--tkr:#dccbff}
+.rp-tab.on{color:#fff;border-color:var(--tkr);background:linear-gradient(155deg,var(--tk0),var(--tk1) 28%,var(--tk2) 50%,var(--tk1) 72%,var(--tk0));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 10px 24px -14px var(--tk2)}
+.rp-tab small{font-size:10px;font-weight:800;padding:1px 7px;border-radius:100px;background:rgba(0,0,0,.25)}
+.rp-sec{border-radius:22px;padding:18px;background:linear-gradient(180deg,color-mix(in srgb,var(--rk1) 38%,rgba(8,12,26,.85)),rgba(8,12,26,.82) 160px);border:1px solid color-mix(in srgb,var(--rkr) 30%,transparent)}
+.rp-sec-h{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.rp-sec-h .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:linear-gradient(155deg,var(--rk1),var(--rk2));box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.rp-sec-h b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:19px;color:#fff}
+.rp-sec-h span{font-size:12px;color:rgba(255,255,255,.62)}
+.rp-sub{margin:18px 0 10px;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--rkr)}
+.rp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(270px,100%),1fr));gap:12px}
+.rp-card{position:relative;display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:18px;overflow:hidden;isolation:isolate;border:1.5px solid transparent;
+  background:linear-gradient(160deg,color-mix(in srgb,var(--rk1) 55%,#0b1020),#0b1020 70%) padding-box,linear-gradient(135deg,color-mix(in srgb,var(--rkr) 70%,transparent),rgba(255,255,255,.06) 45%,color-mix(in srgb,var(--rkr) 50%,transparent)) border-box;box-shadow:0 18px 36px -24px rgba(0,0,0,.9);transition:transform .2s,box-shadow .2s}
+.rp-card:hover{transform:translateY(-3px);box-shadow:0 22px 40px -22px var(--rk2)}
+.rp-card .t{display:flex;gap:12px;align-items:flex-start}
+.rp-card .em{flex:0 0 46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:linear-gradient(155deg,var(--rk0),var(--rk1) 35%,var(--rk2) 60%,var(--rk1));border:1px solid color-mix(in srgb,var(--rkr) 60%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.rp-card .nm{font-family:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15.5px;line-height:1.25;color:#fff}
+.rp-card .kd{margin-top:3px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--rkr)}
+.rp-card p{margin:0;font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.78)}
+.rp-acts{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+.rp-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;border-radius:12px;font:800 11.5px 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.03em;cursor:pointer;text-decoration:none;border:1.5px solid color-mix(in srgb,var(--rkr) 45%,transparent);background:rgba(255,255,255,.06);color:#fff;transition:filter .2s,transform .15s}
+.rp-btn:hover{transform:translateY(-1px);filter:brightness(1.12)}
+.rp-btn.pri{border-color:var(--rkr);background:linear-gradient(155deg,var(--rk1),var(--rk2) 55%,var(--rk1));box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.rp-soon{opacity:.55}
+/* modal engine */
+#rpModal{position:fixed;inset:0;z-index:180;display:none;align-items:flex-start;justify-content:center;padding:max(24px,4vh) 16px 24px;background:rgba(3,6,16,.72);overflow-y:auto;-webkit-overflow-scrolling:touch}
+#rpModal.on{display:flex}
+#rpModal .rpm{width:min(860px,100%);border-radius:22px;overflow:hidden;background:#0b1020;border:1.5px solid color-mix(in srgb,var(--rkr) 60%,transparent);box-shadow:0 40px 90px -30px rgba(0,0,0,.95);color:#e8eef8;font-family:'Plus Jakarta Sans',system-ui,sans-serif;animation:utPop .25s cubic-bezier(.16,1,.3,1)}
+#rpModal .rpm-h{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(155deg,var(--rk0),var(--rk1) 30%,var(--rk2) 55%,var(--rk1) 78%,var(--rk0));box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+#rpModal .rpm-h .em{font-size:22px}
+#rpModal .rpm-h b{flex:1;font-family:'Bricolage Grotesque',sans-serif;font-size:17px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+#rpModal .rpm-h button{flex:0 0 auto}
+#rpModal .rpm-b{padding:18px 18px 22px}
+#rpModal .rpm-x{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.25);color:#fff;font-size:16px;cursor:pointer}
+#rpModal h3{margin:18px 0 8px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rkr)}
+#rpModal h3:first-child{margin-top:0}
+#rpModal p,#rpModal li{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.85)}
+.rp-f{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:10px}
+.rp-f label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.rp-in,.rp-ta,.rp-sel{width:100%;box-sizing:border-box;padding:9px 11px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:rgba(8,12,26,.9);color:#fff;font:500 13.5px 'Plus Jakarta Sans',system-ui,sans-serif;text-transform:none;letter-spacing:0}
+.rp-ta{min-height:64px;resize:vertical}
+.rp-in:focus,.rp-ta:focus,.rp-sel:focus{outline:none;border-color:var(--rkr);box-shadow:0 0 0 3px color-mix(in srgb,var(--rk2) 30%,transparent)}
+.rp-chk{display:flex;flex-wrap:wrap;gap:6px}
+.rp-chk label{display:inline-flex;flex-direction:row;align-items:center;gap:6px;padding:6px 10px;border-radius:100px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);font-size:12px;letter-spacing:0;text-transform:none;color:rgba(255,255,255,.85);cursor:pointer}
+.rp-chk input{accent-color:var(--rk2)}
+.rp-bar{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.rp-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.rp-table th,.rp-table td{border:1px solid rgba(255,255,255,.12);padding:7px 8px;text-align:left;vertical-align:top}
+.rp-table th{background:color-mix(in srgb,var(--rk1) 45%,transparent);color:#fff;font-size:11px;letter-spacing:.04em}
+.rp-score{display:inline-flex;gap:4px}
+.rp-score button{min-width:30px;padding:4px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);font:800 11px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.rp-score button.on{background:var(--rk2);border-color:var(--rkr);color:#0b1020}
+.rp-total{display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.rp-total b{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;color:#fff}
+.rp-doc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px}
+.rp-doc h2{margin:16px 0 6px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rkr)}
+.rp-doc h2:first-child{margin-top:0}
+.rp-doc table{width:100%;border-collapse:collapse;font-size:12.5px}
+.rp-doc th,.rp-doc td{border:1px solid rgba(255,255,255,.12);padding:6px 8px;text-align:left;vertical-align:top;color:rgba(255,255,255,.88)}
+.rp-doc th{background:color-mix(in srgb,var(--rk1) 40%,transparent);color:#fff;font-weight:800;white-space:nowrap}
+.rp-doc ul,.rp-doc ol{margin:4px 0;padding-left:20px}
+.rp-doc .lines div{height:22px;border-bottom:1px dashed rgba(255,255,255,.18)}
+.rp-doc .box{display:inline-block;width:12px;height:12px;border:1px solid rgba(255,255,255,.5);border-radius:3px;margin-right:6px;vertical-align:middle}
+.rp-bins{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:10px}
+.rp-bin{padding:12px 13px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.rp-bin b{display:flex;justify-content:space-between;gap:8px;color:#fff;font-size:13.5px}
+.rp-bin b span{font-size:11px;padding:1px 8px;border-radius:100px;background:color-mix(in srgb,var(--rk2) 30%,transparent);color:#fff}
+.rp-bin p{margin:6px 0 0!important;font-size:12px!important;color:rgba(255,255,255,.7)!important}
+.rp-ms td.c{text-align:center;cursor:pointer;user-select:none;font-weight:800}
+.rp-ms td.c[data-v="2"]{background:color-mix(in srgb,#22c55e 30%,transparent);color:#fff}
+.rp-ms td.c[data-v="1"]{background:color-mix(in srgb,#f59e0b 28%,transparent);color:#fff}
+.rp-ms th.v{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;font-size:10.5px;padding:8px 4px;height:150px}
+.rp-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* print engine: white canvas, black ink, nothing else on the page */
+#rpPrint{display:none}
+@media print{
+  body.rp-printing>*:not(#rpPrint){display:none!important}
+  html.rp-printing,body.rp-printing{background:#fff!important;background-image:none!important}
+  #rpPrint.compact h1{font-size:15pt}
+  #rpPrint.compact h2{font-size:10.5pt;margin:7pt 0 3pt}
+  #rpPrint.compact th,#rpPrint.compact td{padding:2pt 4pt;font-size:8.5pt}
+  #rpPrint.compact p,#rpPrint.compact li{margin:1.5pt 0;font-size:9pt}
+  #rpPrint.compact .pm{margin:0 0 4pt;font-size:8.5pt}
+  #rpPrint.compact .lines div{height:15pt}
+  #rpPrint.compact ul{margin:2pt 0;padding-left:14pt}
+  body.rp-printing #rpPrint{display:block!important;color:#000!important;background:#fff!important;font:11pt/1.45 -apple-system,'Segoe UI',Arial,sans-serif}
+  #rpPrint *{background:transparent!important;color:#000!important;box-shadow:none!important;text-shadow:none!important;filter:none!important}
+  #rpPrint h1{font-size:18pt;margin:0 0 2pt}
+  #rpPrint h2{font-size:12.5pt;margin:12pt 0 4pt;border-bottom:1.2pt solid #000;padding-bottom:2pt}
+  #rpPrint .pm{font-size:9pt;margin:0 0 8pt}
+  #rpPrint table{width:100%;border-collapse:collapse;margin:4pt 0}
+  #rpPrint th,#rpPrint td{border:0.8pt solid #000;padding:4pt 5pt;text-align:left;vertical-align:top;font-size:9.5pt}
+  #rpPrint th{background:#eee!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #rpPrint .box{display:inline-block;width:10pt;height:10pt;border:0.8pt solid #000;vertical-align:middle;margin-right:4pt}
+  #rpPrint .line{border-bottom:0.8pt solid #000;min-height:16pt;margin:2pt 0 6pt}
+  #rpPrint .lines div{border-bottom:0.8pt solid #000;height:18pt}
+  #rpPrint .pb{break-before:page;page-break-before:always}
+  #rpPrint .cols{column-count:2;column-gap:18pt}
+  #rpPrint .keep{break-inside:avoid;page-break-inside:avoid}
+  #rpPrint .ft{margin-top:10pt;font-size:8pt;color:#333!important}
+  @page{margin:12mm}
+}
+</style>
+<script id="res-pack-engine-js">
+/* Templates & Tools workspace — module-grouped sections, modal engine and ink-saving print engine.
+   Resource packs register with RP.add('a'|'r'|'c'|'t', {id,name,em,kind,desc,actions:[{label,primary,run}]}). */
+(function(){
+  var MODS=[{k:'a',name:'AdaptED',em:'📘',sub:'Classroom & early childhood'},{k:'r',name:'RegulatED',em:'🧘',sub:'Social-emotional learning'},{k:'c',name:'CampED',em:'⛺',sub:'Recreation & summer camps'},{k:'t',name:'TeenagED',em:'🎒',sub:'Life skills & mentorship'}];
+  var LEGACY={signlanguage:'a',visuals:'a',scaffolding:'a',detailed:'a','play-to-learn':'a','regulated-tools':'r'};
+  var PACK={a:[],r:[],c:[],t:[]},cur=null;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function get(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
+  function set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  var RP=window.RP={esc:esc,get:get,set:set,add:function(m,r){if(PACK[m]){PACK[m]=PACK[m].filter(function(x){return x.id!==r.id;});PACK[m].push(r);}},mods:MODS};
+
+  /* ── page ─────────────────────────────────────────────────────────────── */
+  function brandKey(){try{return S.brand||'a';}catch(e){return 'a';}}
+  function legacyCard(r){
+    var act=r.isVisuals?'<a class="rp-btn pri" href="'+r.file+'" target="_blank" rel="noopener">🗣️ Open board</a><a class="rp-btn" href="'+r.file+'" target="_blank" rel="noopener">🖨 Print</a>'
+      :r.isInteractive?'<a class="rp-btn pri" href="'+r.file+'" target="_blank" rel="noopener">✨ Open tools</a><a class="rp-btn" href="'+r.file+'" target="_blank" rel="noopener">🖨 Print all</a>'
+      :'<a class="rp-btn pri" href="'+r.file+'" target="_blank" rel="noopener">👁 View / Download</a><a class="rp-btn" href="'+r.file+'" data-print="1" target="_blank" rel="noopener">🖨 Print</a>';
+    return '<div class="rp-card"><div class="t"><div class="em">'+r.em+'</div><div><div class="nm">'+esc(r.name)+'</div><div class="kd">'+esc(r.author||'')+' · '+r.pages+'p</div></div></div><p>'+esc(r.desc)+'</p><div class="rp-acts">'+act+'</div></div>';
+  }
+  function packCard(r,m,i){
+    return '<div class="rp-card"><div class="t"><div class="em">'+r.em+'</div><div><div class="nm">'+esc(r.name)+'</div><div class="kd">'+esc(r.kind)+'</div></div></div><p>'+esc(r.desc)+'</p><div class="rp-acts">'+
+      r.actions.map(function(a,j){return '<button type="button" class="rp-btn'+(a.primary?' pri':'')+'" data-rp="'+m+':'+i+':'+j+'">'+esc(a.label)+'</button>';}).join('')+'</div></div>';
+  }
+  window.renderResources=function(){
+    var grid=document.getElementById('grid');if(!grid)return;
+    if(!cur)cur=brandKey();
+    var m=MODS.filter(function(x){return x.k===cur;})[0]||MODS[0];
+    var legacy=[];try{legacy=RESOURCES.filter(function(r){return (LEGACY[r.id]||(r.brand||'a'))===m.k;});}catch(e){}
+    var pack=PACK[m.k]||[];
+    var html='<div class="rp-wrap" data-mod="'+m.k+'">'+
+      '<div class="rp-head"><div><h2>📁 Templates &amp; Tools</h2><p>Printable and interactive resources by Tatianna Bailie, grouped by module.</p></div></div>'+
+      '<div class="rp-tabs" role="tablist">'+MODS.map(function(x){var n=(PACK[x.k]||[]).length+(function(){try{return RESOURCES.filter(function(r){return (LEGACY[r.id]||(r.brand||'a'))===x.k;}).length;}catch(e){return 0;}})();
+        return '<button type="button" role="tab" aria-selected="'+(x.k===m.k)+'" class="rp-tab'+(x.k===m.k?' on':'')+'" data-m="'+x.k+'"><span>'+x.em+'</span>'+x.name+' <small>'+n+'</small></button>';}).join('')+'</div>'+
+      '<section class="rp-sec" aria-label="'+m.name+' resources"><div class="rp-sec-h"><div class="ic">'+m.em+'</div><div><b>'+m.name+'</b><span>'+m.sub+'</span></div></div>'+
+      (pack.length?'<div class="rp-sub">Premium tools</div><div class="rp-grid">'+pack.map(function(r,i){return packCard(r,m.k,i);}).join('')+'</div>':'<p class="ut-muted" style="margin:0">New '+m.name+' tools are on the way in the next update.</p>')+
+      (legacy.length?'<div class="rp-sub">Printables &amp; boards</div><div class="rp-grid">'+legacy.map(legacyCard).join('')+'</div>':'')+
+      '</section></div>';
+    grid.innerHTML=html;
+    grid.querySelectorAll('.rp-tab').forEach(function(b){b.onclick=function(){cur=b.getAttribute('data-m');window.renderResources();};});
+    grid.querySelectorAll('[data-rp]').forEach(function(b){b.onclick=function(){var p=b.getAttribute('data-rp').split(':'),r=PACK[p[0]][+p[1]];try{r.actions[+p[2]].run(r,p[0]);}catch(e){console.error('[resources]',e);}};});
+  };
+
+  /* ── modal ────────────────────────────────────────────────────────────── */
+  var modal,box,body;
+  function ensure(){if(modal)return;modal=document.createElement('div');modal.id='rpModal';modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');
+    modal.innerHTML='<div class="rpm"><div class="rpm-h"><span class="em" data-e></span><b data-t></b><button type="button" class="rpm-x" aria-label="Close">✕</button></div><div class="rpm-b" data-b></div></div>';
+    document.body.appendChild(modal);box=modal.querySelector('.rpm');body=modal.querySelector('[data-b]');
+    modal.querySelector('.rpm-x').onclick=RP.close;modal.addEventListener('click',function(e){if(e.target===modal)RP.close();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('on')&&!document.querySelector('.modal-bg.show'))RP.close();});}
+  var VARS={a:['#081033','#1a2a7a','#4d6bff','#b4c3ff'],r:['#031c28','#0a5a74','#3fdcf5','#bff4fc'],c:['#03241a','#0a6a45','#2fe0a0','#b4f5d8'],t:['#1c0838','#4d1d91','#a66bff','#dccbff']};
+  RP.open=function(m,em,title,render){ensure();var v=VARS[m]||VARS.a;['--rk0','--rk1','--rk2','--rkr'].forEach(function(k,i){modal.style.setProperty(k,v[i]);});
+    modal.querySelector('[data-e]').textContent=em;modal.querySelector('[data-t]').textContent=title;body.innerHTML='';render(body);modal.classList.add('on');modal.scrollTop=0;document.body.style.overflow='hidden';
+    try{modal.querySelector('.rpm-x').focus({preventScroll:true});}catch(e){}};
+  RP.close=function(){if(!modal)return;modal.classList.remove('on');document.body.style.overflow='';};
+
+  /* ── print: in-page, white canvas, black ink ──────────────────────────── */
+  RP.print=function(title,html,opt){opt=opt||{};var root=document.getElementById('rpPrint');if(!root){root=document.createElement('div');root.id='rpPrint';document.body.appendChild(root);}
+    root.className=opt.compact?'compact':'';root.innerHTML='<h1>'+esc(title)+'</h1>'+html+'<div class="ft">The Lazy Creator Company · The Activity Vault · by Tatianna Bailie</div>';
+    var prevTitle=document.title;document.title=title;document.body.classList.add('rp-printing');document.documentElement.classList.add('rp-printing');
+    var done=function(){document.body.classList.remove('rp-printing');document.documentElement.classList.remove('rp-printing');document.title=prevTitle;window.removeEventListener('afterprint',done);};
+    window.addEventListener('afterprint',done);setTimeout(function(){try{window.print();}catch(e){}setTimeout(done,1500);},60);};
+  RP.lines=function(n){var s='<div class="lines">';for(var i=0;i<n;i++)s+='<div></div>';return s+'</div>';};
+  RP.copy=function(t,btn){var ok=function(){if(btn){var o=btn.textContent;btn.textContent='Copied ✓';setTimeout(function(){btn.textContent=o;},1400);}};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,function(){});};
+})();
+</script>
+<script id="res-pack-a-js">
+/* Templates & Tools · Part 3A — AdaptED resources */
+(function(){
+  var RP=window.RP;if(!RP)return;var esc=RP.esc,get=RP.get,set=RP.set;
+  function A(){try{return ALL_ACTIVITIES;}catch(e){return [];}}
+  var GEN=/^(none|none needed|no materials( needed)?|nothing|none required|patience|time|trust|voice|imagination|awareness|practice|skill|self-awareness|routine|open space|space|group|partner|a quiet space|quiet space|indoor space|outdoor space|outdoor access|large space|body|your body|hands|discussion|conversation|questions?|list|chairs?|table|floor space|open floor space|room)\b/i;
+  function mats(a){return (a.materials||[]).map(function(x){return String(x).trim();}).filter(function(x){return x&&!GEN.test(x)&&!/^optional/i.test(x);});}
+
+  /* 1 ── Classroom Layout Sensory Auditor ─────────────────────────────── */
+  var AUD=[
+    ['Traffic flow',['Clear walkways between all areas — no squeezing past furniture','Doors and exits are never blocked','Busy paths do not cut through quiet or calm areas','Cubbies and coat area sit away from work tables','Children can reach every area without crossing an active play space']],
+    ['Acoustics',['Soft surfaces (rugs, curtains, pin boards) absorb sound','Loud areas (blocks, music) are separated from quiet areas','Chair and table legs are dampened','Background noise (fans, heating, hallway) is under control','Noise-reducing headphones are available to children']],
+    ['Lighting',['Natural light is used, with glare controlled','Flickering or humming lights are fixed or replaced with softer lamps','Lighting can be dimmed or zoned','Whiteboards and screens are free of glare','The calm area has warm, low lighting']],
+    ['Calming zones',['A calm corner is set apart but visible to adults','Soft seating or cushions are available','Sensory tools are stocked (fidgets, weighted item, visuals)','Breathing cards or visual cues are posted','Children have been taught how and when to use it']]
+  ];
+  function audState(){return get('rp_aud',{room:'',date:'',s:{},n:{}});}
+  function audTotal(s){var t=0,m=0;AUD.forEach(function(d,i){d[1].forEach(function(_,j){m+=2;t+=(s.s[i+'_'+j]|0);});});return [t,m];}
+  function audBand(t,m){var p=t/m;return p>=.85?'Strong sensory-friendly room — keep it up.':p>=.55?'Solid base — pick 2–3 items marked 0 or 1 to fix next.':'Priority room — start with Calming zones and Acoustics.';}
+  function audPrint(filled){var s=filled?audState():{room:'',date:'',s:{},n:{}},tt=audTotal(s);
+    var h='<p class="pm">Room: <b>'+(esc(s.room)||'______________________')+'</b> &nbsp; Date: <b>'+(esc(s.date)||'____________')+'</b> &nbsp; Auditor: ______________________</p><p class="pm">Score each item: <b>0</b> = not yet · <b>1</b> = partly · <b>2</b> = yes</p>';
+    AUD.forEach(function(d,i){h+='<h2>'+d[0]+'</h2><table><tr><th style="width:62%">Check</th><th>0</th><th>1</th><th>2</th><th style="width:22%">Notes</th></tr>'+d[1].map(function(q,j){var v=s.s[i+'_'+j];return '<tr><td>'+esc(q)+'</td>'+[0,1,2].map(function(x){return '<td style="text-align:center">'+(filled&&v===x?'●':'<span class="box"></span>')+'</td>';}).join('')+'<td>'+(filled?esc(s.n[i+'_'+j]||''):'')+'</td></tr>';}).join('')+'</table>';});
+    h+='<h2>Total</h2><p><b>'+(filled?tt[0]:'____')+'</b> / '+tt[1]+' &nbsp; — 34–40 strong · 22–33 solid base · 0–21 priority</p><h2>Top 3 changes</h2>'+RP.lines(3);
+    RP.print('Classroom Layout Sensory Auditor',h,{compact:true});}
+  function audView(body){var s=audState(),tt=audTotal(s);
+    var h='<div class="rp-f"><label>Room<input class="rp-in" data-k="room" value="'+esc(s.room)+'" placeholder="e.g. Preschool Room B"></label><label>Date<input class="rp-in" type="date" data-k="date" value="'+esc(s.date)+'"></label></div><p class="ut-muted" style="margin-top:10px">Tap 0 (not yet), 1 (partly) or 2 (yes) for each item.</p>';
+    AUD.forEach(function(d,i){h+='<h3>'+d[0]+'</h3><table class="rp-table"><tbody>'+d[1].map(function(q,j){var k=i+'_'+j,v=s.s[k];return '<tr><td style="width:55%">'+esc(q)+'</td><td><span class="rp-score">'+[0,1,2].map(function(x){return '<button type="button" data-sc="'+k+':'+x+'" class="'+(v===x?'on':'')+'">'+x+'</button>';}).join('')+'</span></td><td><input class="rp-in" data-n="'+k+'" value="'+esc(s.n[k]||'')+'" placeholder="Note"></td></tr>';}).join('')+'</tbody></table>';});
+    h+='<div class="rp-total"><b data-tot>'+tt[0]+'</b><span>/ '+tt[1]+'</span><span class="ut-muted" data-band>'+audBand(tt[0],tt[1])+'</span></div><div class="rp-bar"><button type="button" class="rp-btn pri" data-p1>🖨 Print filled audit</button><button type="button" class="rp-btn" data-p0>🖨 Print blank</button><button type="button" class="rp-btn" data-clr>Clear scores</button></div>';
+    body.innerHTML=h;
+    body.querySelectorAll('[data-k]').forEach(function(i){i.onchange=function(){var t=audState();t[i.getAttribute('data-k')]=i.value;set('rp_aud',t);};});
+    body.querySelectorAll('[data-n]').forEach(function(i){i.onchange=function(){var t=audState();t.n[i.getAttribute('data-n')]=i.value;set('rp_aud',t);};});
+    body.querySelectorAll('[data-sc]').forEach(function(b){b.onclick=function(){var p=b.getAttribute('data-sc').split(':'),t=audState();t.s[p[0]]=+p[1];set('rp_aud',t);
+      b.parentNode.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});var tt=audTotal(t);body.querySelector('[data-tot]').textContent=tt[0];body.querySelector('[data-band]').textContent=audBand(tt[0],tt[1]);};});
+    body.querySelector('[data-p1]').onclick=function(){audPrint(true);};body.querySelector('[data-p0]').onclick=function(){audPrint(false);};
+    body.querySelector('[data-clr]').onclick=function(){var t=audState();t.s={};t.n={};set('rp_aud',t);audView(body);};}
+  RP.add('a',{id:'sensory-auditor',name:'Classroom Layout Sensory Auditor',em:'🔎',kind:'Interactive audit · 1-page print',
+    desc:'Score your room on traffic flow, acoustics, lighting and calming zones. Get a total, a verdict and a one-page printout — filled or blank.',
+    actions:[{label:'👁 View / Score',primary:true,run:function(){RP.open('a','🔎','Classroom Layout Sensory Auditor',audView);}},{label:'🖨 Print',run:function(){audPrint(false);}}]});
+
+  /* 2 ── Universal Lesson Plan Scaffolder ─────────────────────────────── */
+  var AGES=['Infant (0–12 mo)','Toddler (1–2.5 yrs)','Preschool (2.5–4 yrs)','Pre-K / Kindergarten (4–6 yrs)','School-age (6–12 yrs)'];
+  var PREP=['Zero prep','Under 5 min','5–15 min','15–30 min','30+ min'];
+  var DOM=[['se','Social-emotional','Sharing, turn-taking, self-regulation and empathy'],['lang','Language & communication','Vocabulary, listening and expressive language'],['cog','Cognitive','Problem-solving, early math and cause-and-effect'],['fine','Physical — fine motor','Hand strength, grasp and hand-eye coordination'],['gross','Physical — gross motor','Balance, coordination and body awareness'],['cre','Creative & expressive','Imagination, art, music and pretend play']];
+  var CATDOM={movement:['gross'],yoga:['gross','se'],finemotor:['fine'],art:['cre','fine'],music:['cre','lang'],songs:['lang','cre'],literacy:['lang'],phonics:['lang'],spelling:['lang'],storytime:['lang','cre'],math:['cog'],science:['cog'],steam:['cog','cre'],coding:['cog'],social:['se','lang'],pretend:['cre','se'],puppets:['lang','cre'],sensory:['cog','fine'],blocks:['cog','fine'],cooking:['fine','cog']};
+  function lpState(){return get('rp_lp',{name:'',age:2,prep:0,dur:'20 min',group:'Small group (4–6)',mats:'',goal:'',dom:['se','lang'],act:''});}
+  function lpSafety(s){var n=['Keep active supervision and required adult-to-child ratios throughout.','Check the allergy list before using any food, soap, paint or natural materials.','Clear the space of trip hazards and set clear boundaries before starting.'];
+    if(s.age<=2)n.push('Under 3s: no objects small enough to fit through a toilet-paper-roll tube — choking hazard. Use non-toxic materials only.');
+    if(s.prep>=2)n.push('Set up materials before children arrive so no child waits unsupervised.');
+    if(/paint|glue|water|dough|sand|rice|bean|messy/i.test(s.mats))n.push('Messy materials: cover surfaces, provide smocks and a hand-washing step at the end.');
+    if(s.dom.indexOf('gross')>=0)n.push('Movement: allow enough space between children and remove hard-edged furniture from the play zone.');return n;}
+  function lpDoc(s){var d=DOM.filter(function(x){return s.dom.indexOf(x[0])>=0;});
+    return '<h2>Overview</h2><table><tr><th>Activity</th><td>'+esc(s.name||'—')+'</td><th>Age group</th><td>'+AGES[s.age]+'</td></tr><tr><th>Prep time</th><td>'+PREP[s.prep]+'</td><th>Duration</th><td>'+esc(s.dur)+'</td></tr><tr><th>Group size</th><td>'+esc(s.group)+'</td><th>Date</th><td></td></tr></table>'+
+      '<h2>Learning goal</h2><p>'+(esc(s.goal)||'Children will explore and practise the skills below through play.')+'</p>'+
+      '<h2>Developmental domains</h2><ul>'+d.map(function(x){return '<li><b>'+x[1]+'</b> — '+x[2]+'</li>';}).join('')+'</ul>'+
+      '<h2>Materials</h2><p>'+(esc(s.mats)||'None needed')+'</p>'+
+      '<h2>Sequence</h2><table><tr><th style="width:22%">Hook (2–3 min)</th><td>Introduce with a question, object or song.</td></tr><tr><th>Explore</th><td>Children try the activity; adults observe and model.</td></tr><tr><th>Extend</th><td>Add a challenge or new material for children who are ready.</td></tr><tr><th>Wrap-up</th><td>Talk about what they did, noticed or made.</td></tr></table>'+
+      '<h2>Scaffold &amp; extend</h2><table><tr><th style="width:22%">Simplify</th><td>Fewer steps, model first, hand-over-hand if welcomed, fewer materials.</td></tr><tr><th>Extend</th><td>Add a rule, a partner role, a recording step or a “what if…?” question.</td></tr></table>'+
+      '<h2>Safety notes</h2><ul>'+lpSafety(s).map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'+
+      '<h2>Observations</h2>'+RP.lines(3);}
+  function lpView(body){var s=lpState();var list=A().filter(function(a){return a.brand==='a';});
+    body.innerHTML='<h3>Start from a vault activity (optional)</h3><input class="rp-in" list="rpLpList" data-lp-find placeholder="Type to search AdaptED activities…" value="'+esc(s.act)+'"><datalist id="rpLpList">'+list.slice(0,2023).map(function(a){return '<option value="'+esc(a.title)+'">';}).join('')+'</datalist>'+
+      '<h3>Plan details</h3><div class="rp-f"><label>Activity name *<input class="rp-in" data-lp="name" value="'+esc(s.name)+'"></label>'+
+      '<label>Age group<select class="rp-sel" data-lp="age">'+AGES.map(function(a,i){return '<option value="'+i+'"'+(s.age===i?' selected':'')+'>'+a+'</option>';}).join('')+'</select></label>'+
+      '<label>Prep time<select class="rp-sel" data-lp="prep">'+PREP.map(function(a,i){return '<option value="'+i+'"'+(s.prep===i?' selected':'')+'>'+a+'</option>';}).join('')+'</select></label>'+
+      '<label>Duration<input class="rp-in" data-lp="dur" value="'+esc(s.dur)+'"></label><label>Group size<input class="rp-in" data-lp="group" value="'+esc(s.group)+'"></label></div>'+
+      '<div class="rp-f" style="margin-top:10px;grid-template-columns:1fr"><label>Materials<input class="rp-in" data-lp="mats" value="'+esc(s.mats)+'" placeholder="Comma-separated"></label><label>Learning goal<textarea class="rp-ta" data-lp="goal">'+esc(s.goal)+'</textarea></label></div>'+
+      '<h3>Developmental domains</h3><div class="rp-chk">'+DOM.map(function(d){return '<label><input type="checkbox" data-dom="'+d[0]+'"'+(s.dom.indexOf(d[0])>=0?' checked':'')+'>'+d[1]+'</label>';}).join('')+'</div>'+
+      '<h3>Preview</h3><div class="rp-doc" data-lp-prev>'+lpDoc(s)+'</div><div class="rp-bar"><button type="button" class="rp-btn pri" data-lp-print>🖨 Print lesson plan</button><button type="button" class="rp-btn" data-lp-reset>Start over</button></div>';
+    var upd=function(){body.querySelector('[data-lp-prev]').innerHTML=lpDoc(lpState());};
+    body.querySelectorAll('[data-lp]').forEach(function(i){i.oninput=i.onchange=function(){var t=lpState(),k=i.getAttribute('data-lp');t[k]=(k==='age'||k==='prep')?+i.value:i.value;set('rp_lp',t);upd();};});
+    body.querySelectorAll('[data-dom]').forEach(function(c){c.onchange=function(){var t=lpState(),k=c.getAttribute('data-dom'),x=t.dom.indexOf(k);if(c.checked&&x<0)t.dom.push(k);if(!c.checked&&x>=0)t.dom.splice(x,1);set('rp_lp',t);upd();};});
+    body.querySelector('[data-lp-find]').onchange=function(){var v=this.value.trim().toLowerCase(),a=list.filter(function(x){return x.title.toLowerCase()===v;})[0];if(!a)return;
+      var ages=String(a.age).split('-').map(Number),ai=ages[0]<1?0:ages[0]<2.5?1:ages[0]<4?2:ages[0]<6?3:4,m=mats(a);
+      set('rp_lp',{name:a.title,age:ai,prep:m.length===0?0:m.length<=2?1:2,dur:'20 min',group:a.group==='solo'?'Individual':a.group==='large'?'Whole group':'Small group (4–6)',mats:m.join(', '),goal:a.goal||'',dom:(CATDOM[a.cat]||['se','cog']).slice(),act:a.title});lpView(body);};
+    body.querySelector('[data-lp-print]').onclick=function(){var t=lpState();RP.print('Lesson Plan — '+(t.name||'Untitled'),lpDoc(t),{compact:true});};
+    body.querySelector('[data-lp-reset]').onclick=function(){try{localStorage.removeItem('rp_lp');}catch(e){}lpView(body);};}
+  RP.add('a',{id:'lesson-scaffolder',name:'Universal Lesson Plan Scaffolder',em:'🧱',kind:'Fillable form · print-ready plan',
+    desc:'Type an activity, age and prep time (or pull one from the vault). It builds a professional lesson plan with developmental domains, scaffolds and age-specific safety notes.',
+    actions:[{label:'👁 Open scaffolder',primary:true,run:function(){RP.open('a','🧱','Universal Lesson Plan Scaffolder',lpView);}},{label:'🖨 Print',run:function(){var t=lpState();RP.print('Lesson Plan — '+(t.name||'Untitled'),lpDoc(t),{compact:true});}}]});
+
+  /* 3 ── Supply Closet Minimalist Guide ───────────────────────────────── */
+  var BINS=[
+    ['📄','Paper & Card','Printer paper, card stock, construction paper, paper plates, envelopes, sticky notes.',/\b(paper|card(stock|board)?|construction|newspaper|envelope|index card|sticky note|post-it|notebook|journal|poster|chart paper|paper plate|plates?|coffee filters?)\b/i],
+    ['🖍️','Draw & Write','Markers, crayons, pencils, chalk, a small whiteboard and dry-erase markers.',/\b(markers?|crayons?|pencils?|pens?|chalk|whiteboards?|dry[- ]erase|highlighters?|clipboards?)\b/i],
+    ['✂️','Cut & Stick','Child scissors, glue sticks, masking tape, stickers, yarn and string.',/\b(scissors?|glue|tape|stickers?|staplers?|string|yarn|twine|hole punch|velcro|art supplies)\b/i],
+    ['🎨','Paint & Mess','Washable paint, brushes, sponges, cups, trays, smocks and an old towel.',/\b(paint|brush(es)?|smocks?|sponges?|water|cups?|bowls?|trays?|buckets?|towels?|food colou?ring|shaving cream)\b/i],
+    ['🧩','Loose Parts','Beads, buttons, pom-poms, pipe cleaners, blocks, dice, craft sticks, a deck of cards, a timer.',/\b(beads?|buttons?|pom[- ]?poms?|pipe cleaners?|blocks?|lego|dice|die|counters?|clothespins?|popsicle|craft sticks?|cotton balls?|straws?|coins?|tokens?|marbles?|timers?|cards?|deck)\b/i],
+    ['🫘','Sensory Bin','Dry rice or beans, play dough, scoops, funnels and a lidded tub.',/\b(rice|beans?|sand|play[- ]?dough|playdough|clay|slime|scoops?|funnels?|salt|flour|oats|pasta|ice)\b/i],
+    ['⚽','Movement Gear','Soft balls, cones, hoops, scarves, bean bags and a skipping rope.',/\b(balls?|cones?|hoops?|scarf|scarves|bean ?bags?|ropes?|mats?|parachute|frisbees?|balloons?|whistle)\b/i],
+    ['♻️','Recyclables','Clean bottles, jars, boxes, tubes, egg cartons, lids and containers.',/\b(bottles?|jars?|box(es)?|tubes?|egg cartons?|containers?|cans?|bags?|lids?|foil|plastic|cartons?|toilet rolls?)\b/i],
+    ['🍂','Nature Kit','Leaves, sticks, smooth stones, pinecones, seeds, shells and a magnifier.',/\b(leaf|leaves|sticks?|rocks?|stones?|pinecones?|seeds?|flowers?|soil|dirt|shells?|twigs?|acorns?|feathers?|plants?|pots?|magnif)\b/i],
+    ['🎭','Music & Pretend','Shakers, a drum, puppets, dress-up pieces, picture books and a mirror.',/\b(instruments?|shakers?|drums?|bells?|music|songs?|speakers?|puppets?|costumes?|dress[- ]up|dolls?|stuffed animals?|toys?|books?|mirrors?|pictures?|photos?|flashcards?|visuals?)\b/i]
+  ];
+  function binCalc(){var all=[];try{all=A().concat(A_UNBOXED);}catch(e){all=A();}var cov=0,none=0,per=BINS.map(function(){return [];});
+    all.forEach(function(a){var m=mats(a);if(!m.length){cov++;none++;return;}var ok=true;m.forEach(function(x){var i=-1;for(var k=0;k<BINS.length;k++){if(BINS[k][3].test(x)){i=k;break;}}if(i<0)ok=false;else if(per[i].indexOf(a)<0)per[i].push(a);});if(ok)cov++;});
+    return {total:all.length,cov:cov,none:none,per:per};}
+  function binDoc(c,forPrint){var f=function(n){return n.toLocaleString();};
+    var h='<p><b>'+f(c.cov)+' of '+f(c.total)+'</b> vault activities need nothing beyond these ten bins — '+f(c.none)+' of them need no materials at all. Label each bin, keep it on one shelf, and you can run most of the vault with zero shopping trips.</p>';
+    h+=(forPrint?'':'<div class="rp-bins">')+BINS.map(function(b,i){var ex=c.per[i].slice(0,3).map(function(a){return a.title;}).join(' · ');
+      return forPrint?'<div class="keep"><h2>'+b[0]+' Bin '+(i+1)+' — '+b[1]+' <span style="font-weight:400">('+f(c.per[i].length)+' activities use it)</span></h2><p>'+esc(b[2])+'</p><p class="pm">Try: '+esc(ex)+'</p></div>'
+        :'<div class="rp-bin"><b>'+b[0]+' '+(i+1)+'. '+b[1]+'<span>'+f(c.per[i].length)+'</span></b><p>'+esc(b[2])+'</p><p><i>Try: '+esc(ex)+'</i></p></div>';}).join('')+(forPrint?'':'</div>');
+    h+='<'+(forPrint?'h2':'h3')+'>Set it up in 5 steps</'+(forPrint?'h2':'h3')+'><ol><li>Get 10 identical lidded bins (shoebox size or larger).</li><li>Label the front with the bin name and a picture so children can help tidy.</li><li>Shelve them in the order above — paper to pretend.</li><li>Keep a restock list taped inside the Paper & Card lid.</li><li>Do a 5-minute restock every Friday.</li></ol>';
+    h+='<'+(forPrint?'h2':'h3')+'>Restock rhythm</'+(forPrint?'h2':'h3')+'><ul><li><b>Weekly:</b> paper, glue sticks, tape, play dough.</li><li><b>Monthly:</b> paint, markers, crayons, recyclables.</li><li><b>Each season:</b> nature kit, movement gear check, sensory bin refresh.</li></ul>';return h;}
+  RP.add('a',{id:'supply-closet',name:'Supply Closet Minimalist Guide',em:'🗃️',kind:'Typeset guide · live vault count',
+    desc:'A master blueprint for running the vault from just 10 cheap household bins — what goes in each, how many activities each one powers, and a simple restock rhythm.',
+    actions:[{label:'👁 View / Download',primary:true,run:function(){var c=binCalc();RP.open('a','🗃️','Supply Closet Minimalist Guide',function(b){b.innerHTML=binDoc(c,false)+'<div class="rp-bar"><button type="button" class="rp-btn pri" data-pp>🖨 Print guide</button></div>';b.querySelector('[data-pp]').onclick=function(){RP.print('Supply Closet Minimalist Guide',binDoc(c,true));};});}},
+      {label:'🖨 Print',run:function(){RP.print('Supply Closet Minimalist Guide',binDoc(binCalc(),true));}}]});
+  RP._binCalc=binCalc;
+
+  /* 4 ── Substitute Teacher Emergency Protocol Packet ─────────────────── */
+  var CUES=['Clap pattern — children clap it back','"1, 2, 3, eyes on me" → "1, 2, eyes on you"','Lights off for 3 seconds','Chime or rain stick','Hand up — children raise a hand and go quiet','Whisper voice until the room matches'];
+  var SF=[['teacher','Classroom teacher'],['room','Room / class'],['ages','Age group & # of children'],['office','Office / help extension'],['date','Date']];
+  function subState(){return get('rp_sub',{f:{},sched:[['',''],['',''],['',''],['',''],['',''],['',''],['','']],cues:[0,1],custom:'',bound:'Walk inside. Kind hands and feet. Use the washroom pass. Stay where an adult can see you.',supp:'',kids:'',allergy:'',fire:'',lock:'',aid:'',dismiss:'',games:null});}
+  function lowPrep(seed){var pool=A().filter(function(a){return a.brand==='a'&&mats(a).length===0;});var out=[],s=seed||5;var p=pool.slice();while(out.length<10&&p.length){s=(s*9301+49297)%233280;out.push(p.splice(Math.floor(s/233280*p.length),1)[0]);}return out;}
+  function subDoc(s){var v=function(x){return x?esc(x):'&nbsp;';},g=(s.games||[]).map(function(id){return A().filter(function(a){return a.id===id;})[0];}).filter(Boolean);if(!g.length)g=lowPrep(5);
+    return '<table>'+SF.map(function(f){return '<tr><th style="width:32%">'+f[1]+'</th><td>'+v(s.f[f[0]])+'</td></tr>';}).join('')+'</table>'+
+      '<h2>Daily schedule</h2><table><tr><th style="width:22%">Time</th><th>What happens</th></tr>'+s.sched.map(function(r){return '<tr><td>'+v(r[0])+'</td><td>'+v(r[1])+'</td></tr>';}).join('')+'</table>'+
+      '<h2>Classroom boundaries</h2><p>'+v(s.bound)+'</p>'+
+      '<h2>Quiet cues this class knows</h2><ul>'+CUES.map(function(c,i){return '<li><span class="box">'+(s.cues.indexOf(i)>=0?'✓':'')+'</span>'+esc(c)+'</li>';}).join('')+(s.custom?'<li><span class="box">✓</span>'+esc(s.custom)+'</li>':'')+'</ul>'+
+      '<h2>Behaviour supports that work here</h2><p>'+v(s.supp)+'</p>'+
+      '<h2>Children who may need extra support</h2><p class="pm">First names or initials only — full medical details stay in the office binder.</p><p>'+v(s.kids)+'</p>'+
+      '<h2>Emergency information</h2><table><tr><th style="width:32%">Allergy / medical list is kept</th><td>'+v(s.allergy)+'</td></tr><tr><th>Fire exit route & meeting spot</th><td>'+v(s.fire)+'</td></tr><tr><th>Lockdown procedure is posted</th><td>'+v(s.lock)+'</td></tr><tr><th>First-aid kit location</th><td>'+v(s.aid)+'</td></tr><tr><th>Dismissal / pick-up</th><td>'+v(s.dismiss)+'</td></tr></table>'+
+      '<div class="pb"></div><h2>Emergency low-prep games (no materials)</h2><table><tr><th style="width:30%">Game</th><th>How it works</th></tr>'+g.map(function(a){return '<tr class="keep"><td><b>'+esc(a.title)+'</b></td><td>'+esc(a.desc)+'</td></tr>';}).join('')+'</table>'+
+      '<h2>Notes for the classroom teacher</h2>'+RP.lines(6);}
+  function subView(body){var s=subState();if(!s.games){s.games=lowPrep(5).map(function(a){return a.id;});set('rp_sub',s);}
+    var inp=function(k,val,ph){return '<input class="rp-in" data-sf="'+k+'" value="'+esc(val||'')+'" placeholder="'+esc(ph||'')+'">';};
+    body.innerHTML='<p class="ut-muted">Fill it in once — it saves on this device. Print when you need a sub.</p><h3>Class details</h3><div class="rp-f">'+SF.map(function(f){return '<label>'+f[1]+inp('f.'+f[0],s.f[f[0]])+'</label>';}).join('')+'</div>'+
+      '<h3>Daily schedule</h3><table class="rp-table"><tbody>'+s.sched.map(function(r,i){return '<tr><td style="width:26%">'+inp('t.'+i,r[0],'8:30')+'</td><td>'+inp('a.'+i,r[1],'Arrival & free play')+'</td></tr>';}).join('')+'</tbody></table>'+
+      '<h3>Classroom boundaries</h3><textarea class="rp-ta" data-sf="bound">'+esc(s.bound)+'</textarea>'+
+      '<h3>Quiet cues</h3><div class="rp-chk">'+CUES.map(function(c,i){return '<label><input type="checkbox" data-cue="'+i+'"'+(s.cues.indexOf(i)>=0?' checked':'')+'>'+esc(c)+'</label>';}).join('')+'</div><div style="margin-top:8px">'+inp('custom',s.custom,'Another cue this class uses')+'</div>'+
+      '<h3>Behaviour supports</h3><textarea class="rp-ta" data-sf="supp" placeholder="e.g. Offer two choices. Use the calm corner. Praise the behaviour you want to see.">'+esc(s.supp)+'</textarea>'+
+      '<h3>Children who may need extra support</h3><textarea class="rp-ta" data-sf="kids" placeholder="First names or initials only — e.g. J.: needs a warning before transitions.">'+esc(s.kids)+'</textarea>'+
+      '<h3>Emergency information</h3><div class="rp-f"><label>Allergy / medical list kept at'+inp('allergy',s.allergy)+'</label><label>Fire exit & meeting spot'+inp('fire',s.fire)+'</label><label>Lockdown procedure posted at'+inp('lock',s.lock)+'</label><label>First-aid kit'+inp('aid',s.aid)+'</label><label>Dismissal / pick-up'+inp('dismiss',s.dismiss)+'</label></div>'+
+      '<h3>Emergency low-prep games</h3><div class="ut-acts">'+s.games.map(function(id){var a=A().filter(function(x){return x.id===id;})[0];return a?'<button type="button" class="ut-act" data-open-act="'+a.id+'"><span class="em">'+esc(a.em)+'</span><span class="tx"><b>'+esc(a.title)+'</b><span>'+esc(a.desc)+'</span></span></button>':'';}).join('')+'</div>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn pri" data-sp>🖨 Print 2-page packet</button><button type="button" class="rp-btn" data-sg>↻ Different games</button></div>';
+    body.querySelectorAll('[data-sf]').forEach(function(i){i.onchange=function(){var t=subState(),k=i.getAttribute('data-sf'),p=k.split('.');
+      if(p[0]==='f')t.f[p[1]]=i.value;else if(p[0]==='t')t.sched[+p[1]][0]=i.value;else if(p[0]==='a')t.sched[+p[1]][1]=i.value;else t[k]=i.value;set('rp_sub',t);};});
+    body.querySelectorAll('[data-cue]').forEach(function(c){c.onchange=function(){var t=subState(),k=+c.getAttribute('data-cue'),x=t.cues.indexOf(k);if(c.checked&&x<0)t.cues.push(k);if(!c.checked&&x>=0)t.cues.splice(x,1);set('rp_sub',t);};});
+    body.querySelectorAll('[data-open-act]').forEach(function(b){b.onclick=function(){try{openActivity(b.getAttribute('data-open-act'));}catch(e){}};});
+    body.querySelector('[data-sg]').onclick=function(){var t=subState();t.games=lowPrep(Math.floor(Math.random()*9999)+1).map(function(a){return a.id;});set('rp_sub',t);subView(body);};
+    body.querySelector('[data-sp]').onclick=function(){body.querySelectorAll('[data-sf]').forEach(function(i){if(i.onchange)i.onchange();});RP.print('Substitute Teacher Emergency Protocol',subDoc(subState()),{compact:true});};}
+  RP.add('a',{id:'sub-packet',name:'Substitute Teacher “Emergency Protocol” Packet',em:'🆘',kind:'Fillable · 2-page print',
+    desc:'A clean two-page sub brief: schedule, boundaries, quiet cues, behaviour supports, emergency info and ten no-materials games from the vault. Fill once, print any time.',
+    actions:[{label:'👁 Fill in',primary:true,run:function(){RP.open('a','🆘','Substitute Teacher Emergency Protocol',subView);}},{label:'🖨 Print',run:function(){RP.print('Substitute Teacher Emergency Protocol',subDoc(subState()),{compact:true});}}]});
+
+  /* 5 ── Early Childhood Milestone Intake Screening Grid ──────────────── */
+  var MS={
+    '2–3 yrs':{'Fine motor':['Turns book pages one at a time','Copies a circle after being shown','Uses a spoon with little spilling','Twists lids and turns knobs','Threads large beads'],
+      'Gross motor':['Runs without falling often','Kicks a ball forward','Climbs on and off play equipment','Jumps with both feet','Walks up stairs with support'],
+      'Sensory processing':['Explores messy play (paint, sand, dough)','Settles after a loud noise with adult help','Tolerates being close to other children','Accepts hand-washing and clothing changes','Tries touching new textures']},
+    '3–4 yrs':{'Fine motor':['Holds a crayon with fingers, not a fist','Snips paper with scissors','Draws a person with 2–3 body parts','Unbuttons some buttons','Pours from a small jug with some help'],
+      'Gross motor':['Catches a large ball most of the time','Pedals a tricycle','Stands on one foot briefly','Climbs stairs alternating feet','Hops forward'],
+      'Sensory processing':['Joins group activities at typical noise levels','Takes part in messy play without distress','Moves between activities with a warning','Responds to name in a busy room','Wears typical clothing without major upset']},
+    '4–5 yrs':{'Fine motor':['Writes some letters of their name','Buttons some buttons','Copies a cross or square','Cuts along a line with scissors','Uses a fork and spoon well'],
+      'Gross motor':['Hops on one foot','Skips or gallops','Catches a bounced ball','Balances on one foot for about 5 seconds','Climbs play equipment confidently'],
+      'Sensory processing':['Stays regulated through a short group time','Copes with the noise of a busy room','Tries new textures in play','Recovers from upsets within a few minutes with support','Moves around others without often bumping or crashing']}
+  };
+  function msState(){return get('rp_ms',{band:'3–4 yrs',kids:['','','','','',''],v:{}});}
+  function msCols(b){var o=[];Object.keys(MS[b]).forEach(function(d){MS[b][d].forEach(function(q,i){o.push([d,q,d+'|'+i]);});});return o;}
+  var SYM=['','~','✓'];
+  function msPrint(s){var cols=msCols(s.band),doms=Object.keys(MS[s.band]);
+    var h='<p class="pm">Age band: <b>'+s.band+'</b> &nbsp; Educator: ____________________ &nbsp; Date: ____________ &nbsp; Key: <b>✓</b> observed · <b>~</b> emerging · blank = not yet seen</p>';
+    doms.forEach(function(d){var cs=cols.filter(function(c){return c[0]===d;});
+      h+='<h2>'+d+'</h2><table><tr><th style="width:18%">Child</th>'+cs.map(function(c){return '<th style="font-size:8pt">'+esc(c[1])+'</th>';}).join('')+'</tr>'+s.kids.map(function(k,ri){return '<tr><td>'+(esc(k)||'&nbsp;')+'</td>'+cs.map(function(c){return '<td style="text-align:center">'+SYM[s.v[ri+'#'+c[2]]|0]+'</td>';}).join('')+'</tr>';}).join('')+'</table>';});
+    h+='<p class="pm">An observation checklist, not a diagnostic screen. Share concerns with families and refer to a validated tool (such as the ASQ-3) or a health professional.</p>';
+    RP.print('Milestone Intake Screening Grid',h,{compact:true});}
+  function msView(body){var s=msState(),cols=msCols(s.band),doms=Object.keys(MS[s.band]);
+    var h='<div class="rp-f"><label>Age band<select class="rp-sel" data-band>'+Object.keys(MS).map(function(b){return '<option'+(b===s.band?' selected':'')+'>'+b+'</option>';}).join('')+'</select></label></div>'+
+      '<p class="ut-muted" style="margin-top:8px">Type names down the side, then tap a box: once = <b>~</b> emerging, twice = <b>✓</b> observed, three times = clear.</p>'+
+      '<div class="rp-scroll"><table class="rp-table rp-ms"><thead><tr><th>Child</th>'+doms.map(function(d){return '<th colspan="'+MS[s.band][d].length+'" style="text-align:center">'+d+'</th>';}).join('')+'</tr><tr><th></th>'+cols.map(function(c){return '<th class="v">'+esc(c[1])+'</th>';}).join('')+'</tr></thead><tbody>'+
+      s.kids.map(function(k,ri){return '<tr><td style="min-width:130px"><input class="rp-in" data-kid="'+ri+'" value="'+esc(k)+'" placeholder="Child '+(ri+1)+'"></td>'+cols.map(function(c){var v=s.v[ri+'#'+c[2]]|0;return '<td class="c" data-cell="'+ri+'#'+c[2]+'" data-v="'+v+'">'+SYM[v]+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn" data-addkid>+ Add child</button><button type="button" class="rp-btn pri" data-msp>🖨 Print grid</button><button type="button" class="rp-btn" data-msc>Clear marks</button></div>'+
+      '<p class="ut-muted" style="margin-top:12px">An observation checklist, not a diagnostic screen. Share concerns with families and refer to a validated tool (such as the ASQ-3) or a health professional.</p>';
+    body.innerHTML=h;
+    body.querySelector('[data-band]').onchange=function(){var t=msState();t.band=this.value;set('rp_ms',t);msView(body);};
+    body.querySelectorAll('[data-kid]').forEach(function(i){i.onchange=function(){var t=msState();t.kids[+i.getAttribute('data-kid')]=i.value;set('rp_ms',t);};});
+    body.querySelectorAll('[data-cell]').forEach(function(td){td.onclick=function(){var t=msState(),k=td.getAttribute('data-cell'),v=((t.v[k]|0)+1)%3;if(v)t.v[k]=v;else delete t.v[k];set('rp_ms',t);td.setAttribute('data-v',v);td.textContent=SYM[v];};});
+    body.querySelector('[data-addkid]').onclick=function(){var t=msState();if(t.kids.length<30){t.kids.push('');set('rp_ms',t);msView(body);}};
+    body.querySelector('[data-msp]').onclick=function(){msPrint(msState());};
+    body.querySelector('[data-msc]').onclick=function(){var t=msState();t.v={};set('rp_ms',t);msView(body);};}
+  RP.add('a',{id:'milestone-grid',name:'Early Childhood Milestone Intake Screening Grid',em:'📊',kind:'Tracking matrix · print',
+    desc:'A tap-to-mark tracking chart for fine motor, gross motor and sensory processing baselines across three age bands. Add your children, mark what you see, and print the grid.',
+    actions:[{label:'👁 Open grid',primary:true,run:function(){RP.open('a','📊','Milestone Intake Screening Grid',msView);}},{label:'🖨 Print',run:function(){msPrint(msState());}}]});
+})();
+</script>
 </body>
 </html>
