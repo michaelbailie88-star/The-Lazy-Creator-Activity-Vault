@@ -20938,5 +20938,277 @@ body.rp-modal-open .fx-fab,body.rp-modal-open #utFab{display:none!important}
   #rpPrint .ch-l i{font-style:italic;font-size:8pt}
 }
 </style>
+<script id="res-pack-t-js">
+/* Templates & Tools · Part 3D — TeenagED resources */
+(function(){
+  var RP=window.RP;if(!RP)return;var esc=RP.esc,get=RP.get,set=RP.set;
+  function A(){try{return ALL_ACTIVITIES;}catch(e){return [];}}
+  function actBtn(a,sub){return a?'<button type="button" class="ut-act" data-open-act="'+a.id+'"><span class="em">'+esc(a.em)+'</span><span class="tx"><b>'+esc(a.title)+'</b><span>'+esc(sub||a.desc)+'</span></span></button>':'';}
+  function wireActs(root){root.querySelectorAll('[data-open-act]').forEach(function(b){b.onclick=function(){try{openActivity(b.getAttribute('data-open-act'));}catch(e){}};});}
+  function money(n){n=Math.round(n);return (n<0?'−$':'$')+Math.abs(n).toLocaleString('en-CA');}
+  var BOX='<span class="box"></span>';
+
+  /* 16 ── Independent Living Skills Audit ─────────────────────────────── */
+  var LS=[{k:'kitchen',em:'🍳',nm:'Kitchen & food',cat:'cooking-teen',it:['Plan a week of simple meals','Make a grocery list and shop to a budget','Cook 3 full meals from scratch','Use a knife and stove safely','Store leftovers and check expiry dates','Clean the kitchen after cooking']},
+    {k:'money',em:'💳',nm:'Money',cat:'money-teen',it:['Use a bank account and debit card','Track spending for a month','Build a simple monthly budget','Understand a pay stub (gross vs. net)','Pay a bill on time','Spot a scam or too-good-to-be-true offer']},
+    {k:'home',em:'🧺',nm:'Home & laundry',cat:'chores',it:['Do a full load of laundry start to finish','Clean a bathroom','Keep a weekly cleaning routine','Take out garbage, recycling and compost on the right day','Fix small things (plunge a toilet, reset a breaker)','Know what’s in a basic tool kit']},
+    {k:'health',em:'🩺',nm:'Health & self-care',cat:'hygiene',it:['Book my own doctor or dentist appointment','Know my allergies, medications and health card','Refill a prescription at the pharmacy','Keep a sleep routine','Know who to talk to when I’m not okay','Keep up daily hygiene without reminders']},
+    {k:'move',em:'🚌',nm:'Getting around',cat:'transit',it:['Plan a trip with a transit app or schedule','Pay a fare and transfer','Read a map without my phone','Know what to do if I miss my stop','Get somewhere on time by planning backwards','Ride a bike or walk safely in traffic']},
+    {k:'work',em:'💼',nm:'Work & school',cat:'time-teen',it:['Write a resume','Fill out a job application','Handle an interview','Use a planner or calendar for deadlines','Email a teacher or boss professionally','Call in sick or late the right way']},
+    {k:'talk',em:'📞',nm:'Communication',cat:'communication',it:['Make a phone call to book or ask something','Introduce myself to an adult with confidence','Ask for help when I’m stuck','Say no politely','Handle a disagreement calmly','Apologize and fix a mistake']},
+    {k:'safe',em:'🛟',nm:'Safety',cat:'emergency',it:['Know when and how to call 911','Handle basic first aid','Know my home fire escape plan','Protect my accounts with strong passwords','Keep my location and personal info private online','Carry my emergency contacts']}];
+  var LVL=[[0,'Rookie','🌱'],[20,'Apprentice','🔧'],[45,'Capable','⚡'],[70,'Independent','🏠'],[90,'Launch-ready','🚀']];
+  function lsState(){return get('rp_ls',{name:'',v:{}});}
+  function lsScore(s){var tot=0,max=0,cats={};LS.forEach(function(c){var p=0;c.it.forEach(function(x,i){p+=+(s.v[c.k+'_'+i]||0);});cats[c.k]=p;tot+=p;max+=c.it.length*2;});return {tot:tot,max:max,pct:Math.round(tot/max*100),cats:cats};}
+  function lsLevel(pct){var l=LVL[0];LVL.forEach(function(x){if(pct>=x[0])l=x;});return l;}
+  var ST=['Not yet','Learning','Got it'];
+  function lsDoc(s,blank){var sc=lsScore(s),lv=lsLevel(sc.pct);
+    return '<p class="pm">Name: <b>'+esc(s.name||'________________________')+'</b> &nbsp; Date: ____________ &nbsp; '+(blank?'Score: ______ / '+sc.max:'Score: <b>'+sc.tot+' / '+sc.max+' ('+sc.pct+'%) · '+lv[1]+'</b>')+'</p>'+
+      '<div class="cols">'+LS.map(function(c){return '<div class="keep"><h2>'+c.nm+'</h2><table><tr><th>Skill</th><th style="width:13%">Not yet</th><th style="width:13%">Learning</th><th style="width:13%">Got it</th></tr>'+
+        c.it.map(function(x,i){var v=blank?-1:+(s.v[c.k+'_'+i]||0);return '<tr><td>'+esc(x)+'</td>'+[0,1,2].map(function(n){return '<td style="text-align:center">'+(v===n&&(n>0||s.v[c.k+'_'+i]!==undefined)?'✓':BOX)+'</td>';}).join('')+'</tr>';}).join('')+'</table></div>';}).join('')+'</div>'+
+      '<p class="pm" style="margin-top:6pt">Scoring: Learning = 1 point, Got it = 2 points. Levels: Rookie 0% · Apprentice 20% · Capable 45% · Independent 70% · Launch-ready 90%.</p>';}
+  function lsView(body){var s=lsState();
+    var draw=function(){var sc=lsScore(s),lv=lsLevel(sc.pct),nx=LVL.filter(function(x){return x[0]>sc.pct;})[0];
+      body.querySelector('[data-ls-hud]').innerHTML='<div class="ls-lv"><span class="e">'+lv[2]+'</span><div><small>Level</small><b>'+lv[1]+'</b></div></div><div class="ls-xp"><div class="ls-bar"><i style="width:'+sc.pct+'%"></i></div><span>'+sc.tot+' / '+sc.max+' XP · '+sc.pct+'%'+(nx?' — '+(Math.ceil(nx[0]*sc.max/100)-sc.tot)+' XP to '+nx[1]:' — maxed out!')+'</span></div>';
+      LS.forEach(function(c){var p=sc.cats[c.k],m=c.it.length*2,el=body.querySelector('[data-lsc="'+c.k+'"]');el.querySelector('.ls-cbar i').style.width=Math.round(p/m*100)+'%';el.querySelector('.ls-cp').textContent=p+'/'+m+(p===m?' 🏅':'');el.classList.toggle('full',p===m);});};
+    var acts=function(cat){return A().filter(function(a){return a.brand==='t'&&a.cat===cat;}).slice(0,3);};
+    body.innerHTML='<div class="rp-f"><label>Name<input class="rp-in" data-ls-name value="'+esc(s.name)+'" placeholder="Your name"></label></div><div class="ls-hud" data-ls-hud aria-live="polite"></div>'+
+      LS.map(function(c){return '<details class="ls-cat" data-lsc="'+c.k+'"><summary><span class="e">'+c.em+'</span><b>'+c.nm+'</b><span class="ls-cbar"><i></i></span><span class="ls-cp"></span></summary><div class="ls-items">'+
+        c.it.map(function(x,i){var v=+(s.v[c.k+'_'+i]||0);return '<div class="ls-it"><span>'+esc(x)+'</span><div class="ls-seg" role="group" aria-label="'+esc(x)+'">'+ST.map(function(t,n){return '<button type="button" data-ls="'+c.k+'_'+i+'" data-n="'+n+'" class="s'+n+(v===n?' on':'')+'" aria-pressed="'+(v===n)+'">'+t+'</button>';}).join('')+'</div></div>';}).join('')+
+        '<div class="ls-prac"><small>Practise in the Vault</small><div class="ut-acts">'+acts(c.cat).map(function(a){return actBtn(a);}).join('')+'</div></div></div></details>';}).join('')+
+      '<div class="rp-bar"><button type="button" class="rp-btn pri" data-ls-print>🖨 Print my audit</button><button type="button" class="rp-btn" data-ls-blank>🖨 Print blank</button><button type="button" class="rp-btn" data-ls-reset>↺ Reset</button></div>';
+    wireActs(body);
+    body.querySelector('[data-ls-name]').onchange=function(){s.name=this.value;set('rp_ls',s);};
+    body.querySelectorAll('[data-ls]').forEach(function(b){b.onclick=function(){var k=b.getAttribute('data-ls');s.v[k]=+b.getAttribute('data-n');set('rp_ls',s);b.parentNode.querySelectorAll('button').forEach(function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});draw();};});
+    body.querySelector('[data-ls-print]').onclick=function(){RP.print('Independent Living Skills Audit',lsDoc(s),{compact:true});};
+    body.querySelector('[data-ls-blank]').onclick=function(){RP.print('Independent Living Skills Audit',lsDoc({name:'',v:{}},true),{compact:true});};
+    body.querySelector('[data-ls-reset]').onclick=function(){s={name:s.name,v:{}};set('rp_ls',s);lsView(body);};
+    draw();}
+  RP.add('t',{id:'living',name:'Independent Living Skills Audit',em:'🏠',kind:'Gamified checklist · XP + levels',
+    desc:'48 real-world skills across 8 areas. Rate each one Not yet, Learning or Got it to earn XP, level up from Rookie to Launch-ready, earn area badges and jump straight to Vault activities to practise.',
+    actions:[{label:'🎮 Start audit',primary:true,run:function(){RP.open('t','🏠','Independent Living Skills Audit',lsView);}},
+      {label:'🖨 Print blank',run:function(){RP.print('Independent Living Skills Audit',lsDoc({name:'',v:{}},true),{compact:true});}}]});
+
+  /* 17 ── Financial Literacy Sandbox ──────────────────────────────────── */
+  var FX=[['rent','🏠','Rent'],['food','🛒','Groceries & food'],['phone','📱','Phone & internet'],['move','🚌','Transit / gas'],['fun','🎉','Fun & eating out'],['save','🐷','Savings']];
+  var PRE={home:{nm:'Living at home',rent:300,food:150,phone:50,move:80,fun:150,save:200},share:{nm:'Shared apartment',rent:900,food:400,phone:60,move:130,fun:120,save:100},solo:{nm:'Own studio',rent:1600,food:450,phone:70,move:130,fun:100,save:100}};
+  function fnState(){return get('rp_fin',{wage:17.6,hrs:25,ded:20,rent:900,food:400,phone:60,move:130,fun:120,save:100});}
+  function fnCalc(s){var gross=s.wage*s.hrs*52/12,net=gross*(1-s.ded/100),hourNet=s.wage*(1-s.ded/100),exp=0,rows=FX.map(function(f){var v=+s[f[0]]||0;exp+=v;return {k:f[0],em:f[1],nm:f[2],v:v,h:hourNet>0?v/hourNet:0};});
+    return {gross:gross,net:net,hourNet:hourNet,exp:exp,left:net-exp,rows:rows,hrsNeeded:hourNet>0?exp/hourNet*12/52:0};}
+  function fnDoc(s){var c=fnCalc(s);return '<p class="pm">Wage <b>$'+(+s.wage).toFixed(2)+'/hr</b> · <b>'+s.hrs+' hrs/week</b> · estimated deductions <b>'+s.ded+'%</b></p>'+
+    '<table><tr><th>Monthly</th><th style="width:22%">Amount</th><th style="width:28%">Hours of work to pay it</th></tr><tr><td>Gross pay (before deductions)</td><td>'+money(c.gross)+'</td><td></td></tr><tr><td>Take-home pay (estimate)</td><td><b>'+money(c.net)+'</b></td><td></td></tr>'+
+    c.rows.map(function(r){return '<tr><td>'+r.nm+'</td><td>'+money(r.v)+'</td><td>'+r.h.toFixed(1)+' hrs</td></tr>';}).join('')+
+    '<tr><th>Total spending</th><th>'+money(c.exp)+'</th><th>'+(c.exp/c.hourNet||0).toFixed(1)+' hrs</th></tr><tr><th>Left over</th><th>'+money(c.left)+'</th><th></th></tr></table>'+
+    '<p>To cover this budget you would need about <b>'+c.hrsNeeded.toFixed(1)+' hours of work per week</b> at this wage.</p><h2>Reflect</h2><p>What surprised you? What would you change first?</p>'+RP.lines(4)+
+    '<p class="pm">Deductions (income tax, CPP, EI) are a rough estimate — real amounts depend on your income and province. Check a real pay stub or the Government of Canada payroll calculator.</p>';}
+  function fnView(body){var s=fnState();
+    var draw=function(){var c=fnCalc(s),mx=Math.max(c.net,c.exp,1);
+      body.querySelector('[data-fn-out]').innerHTML='<div class="fn-kpi"><div><small>Take-home / month</small><b>'+money(c.net)+'</b><i>'+money(c.gross)+' before deductions</i></div><div><small>Spending / month</small><b>'+money(c.exp)+'</b><i>'+c.hrsNeeded.toFixed(1)+' work hrs/week needed</i></div><div class="'+(c.left<0?'neg':'pos')+'"><small>'+(c.left<0?'Short by':'Left over')+'</small><b>'+money(Math.abs(c.left))+'</b><i>'+(c.left<0?'Cut costs or add hours':'Nice — that’s breathing room')+'</i></div></div>'+
+        '<div class="fn-bars"><div class="fn-row"><span>Take-home</span><div class="fn-track"><i class="inc" style="width:'+(c.net/mx*100)+'%"></i></div></div><div class="fn-row"><span>Spending</span><div class="fn-track">'+c.rows.map(function(r,i){return '<i class="x'+i+'" style="width:'+(r.v/mx*100)+'%" title="'+esc(r.nm)+'"></i>';}).join('')+'</div></div></div>'+
+        '<div class="fn-legend">'+c.rows.map(function(r,i){return '<span><i class="x'+i+'"></i>'+r.em+' '+esc(r.nm)+' <b>'+r.h.toFixed(1)+' hrs</b></span>';}).join('')+'</div>'+
+        '<p class="fn-rent">🏠 Rent alone costs <b>'+c.rows[0].h.toFixed(1)+' hours</b> of work every month — about '+(c.rows[0].h/(52/12)).toFixed(1)+' hours of every week.</p>';};
+    var num=function(k,lb,min,max,step,pre,suf){return '<label>'+lb+'<span class="fn-in">'+(pre?'<i>'+pre+'</i>':'')+'<input class="rp-in" type="number" min="'+min+'" max="'+max+'" step="'+step+'" data-fn="'+k+'" value="'+s[k]+'">'+(suf?'<i>'+suf+'</i>':'')+'</span></label>';};
+    body.innerHTML='<h3>Your job</h3><div class="rp-f">'+num('wage','Hourly wage',0,200,0.05,'$','')+num('hrs','Hours per week',0,80,1,'','hrs')+num('ded','Deductions (tax, CPP, EI)',0,60,1,'','%')+'</div>'+
+      '<h3>Try a living situation</h3><div class="fn-pre">'+Object.keys(PRE).map(function(k){return '<button type="button" class="rp-btn" data-pre="'+k+'">'+PRE[k].nm+'</button>';}).join('')+'</div>'+
+      '<h3>Monthly costs</h3><div class="rp-f">'+FX.map(function(f){return num(f[0],f[1]+' '+f[2],0,10000,10,'$','');}).join('')+'</div>'+
+      '<div data-fn-out aria-live="polite"></div><p class="ut-muted">Example numbers only — look up real prices where you live. Deductions are an estimate; your pay stub shows the real amount.</p>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn pri" data-fn-print>🖨 Print my budget</button><button type="button" class="rp-btn" data-fn-copy>Copy summary</button></div>';
+    body.querySelectorAll('[data-fn]').forEach(function(el){el.oninput=function(){var v=parseFloat(el.value);s[el.getAttribute('data-fn')]=isNaN(v)?0:Math.max(+el.min,Math.min(+el.max,v));set('rp_fin',s);draw();};});
+    body.querySelectorAll('[data-pre]').forEach(function(b){b.onclick=function(){var p=PRE[b.getAttribute('data-pre')];FX.forEach(function(f){s[f[0]]=p[f[0]];body.querySelector('[data-fn="'+f[0]+'"]').value=p[f[0]];});set('rp_fin',s);draw();};});
+    body.querySelector('[data-fn-print]').onclick=function(){RP.print('Financial Literacy Sandbox — My Budget',fnDoc(s),{compact:true});};
+    body.querySelector('[data-fn-copy]').onclick=function(){var c=fnCalc(s);RP.copy('My budget: $'+(+s.wage).toFixed(2)+'/hr × '+s.hrs+' hrs/week → take-home ≈ '+money(c.net)+'/month. Spending '+money(c.exp)+'. '+(c.left<0?'Short by ':'Left over ')+money(Math.abs(c.left))+'. Rent = '+c.rows[0].h.toFixed(1)+' work hours/month.',this);};
+    draw();}
+  RP.add('t',{id:'finance',name:'Financial Literacy Sandbox',em:'💸',kind:'Interactive calculator · print',
+    desc:'Enter a wage and hours, then rent, food and other costs. See take-home pay after estimated deductions, what’s left over, and exactly how many hours of work each bill really costs.',
+    actions:[{label:'💸 Open sandbox',primary:true,run:function(){RP.open('t','💸','Financial Literacy Sandbox',fnView);}},
+      {label:'🖨 Print example',run:function(){RP.print('Financial Literacy Sandbox — My Budget',fnDoc(fnState()),{compact:true});}}]});
+
+  /* 18 ── Public Transit Navigation Worksheet ─────────────────────────── */
+  var TRF=[['from','Starting point','Home, school…'],['to','Destination','Address or place name'],['arrive','I need to arrive by','','time'],['route','Route / line number',''],['dir','Direction (last stop on the sign)',''],['board','Stop I get on at',''],['transfer','Transfer (route + stop), if any',''],['exit','Stop I get off at',''],['fare','Fare & how I pay',''],['ride','Total travel time (minutes)','','number'],['buffer','Extra buffer (minutes)','','number'],['backup','Backup plan if I miss it',''],['call','Who I call if I’m stuck','']];
+  var TCK=['I checked the schedule for the day I’m travelling (weekends can differ)','I know how to pay my fare','I know how to request my stop','I know which side of the street to wait on','My phone is charged','Someone knows where I’m going and when I’ll arrive'];
+  function trState(){return get('rp_tr',{from:'',to:'',arrive:'09:00',route:'',dir:'',board:'',transfer:'',exit:'',fare:'',ride:35,buffer:10,backup:'',call:'',ck:{}});}
+  function leaveBy(s){var p=String(s.arrive||'').split(':');if(p.length<2)return '';var m=+p[0]*60+(+p[1])-(+s.ride||0)-(+s.buffer||0)-5;m=((m%1440)+1440)%1440;var h=Math.floor(m/60),mm=m%60;return (h%12||12)+':'+(mm<10?'0':'')+mm+' '+(h>=12?'PM':'AM');}
+  function fmt12(t){var p=String(t||'').split(':');if(p.length<2)return '';var h=+p[0];return (h%12||12)+':'+p[1]+' '+(h>=12?'PM':'AM');}
+  function trDoc(s,blank){var v=function(k){return blank?'':esc(k==='arrive'?fmt12(s[k]):s[k]);};
+    return '<p class="pm">Name: ________________________ &nbsp; Date of trip: ____________</p><h2>My trip</h2><table>'+TRF.map(function(f){return '<tr><th style="width:36%">'+esc(f[1])+'</th><td style="height:17pt">'+v(f[0])+'</td></tr>';}).join('')+'</table>'+
+      '<h2>Plan it backwards</h2><table><tr><th>Arrive by</th><th>− Travel time</th><th>− Buffer</th><th>− 5 min to walk to the stop</th><th>= Leave home by</th></tr><tr><td style="height:20pt">'+v('arrive')+'</td><td>'+(blank?'':s.ride+' min')+'</td><td>'+(blank?'':s.buffer+' min')+'</td><td>5 min</td><td><b>'+(blank?'':leaveBy(s))+'</b></td></tr></table>'+
+      '<h2>Before I go</h2>'+TCK.map(function(c,i){return '<p>'+(!blank&&s.ck[i]?'☑':BOX)+' '+esc(c)+'</p>';}).join('')+
+      '<h2>Draw my route</h2><div style="border:1pt solid #000;height:110pt"></div>';}
+  function trView(body){var s=trState();
+    body.innerHTML='<div class="rp-f">'+TRF.map(function(f){return '<label>'+esc(f[1])+'<input class="rp-in" data-trf="'+f[0]+'" type="'+(f[3]||'text')+'"'+(f[3]==='number'?' min="0" max="600"':'')+' value="'+esc(s[f[0]])+'" placeholder="'+esc(f[2])+'"></label>';}).join('')+'</div>'+
+      '<div class="rp-total tr-leave"><div><b data-tr-leave>'+leaveBy(s)+'</b></div><div>Leave by this time to arrive at <b data-tr-arr>'+fmt12(s.arrive)+'</b> (travel time + buffer + 5 minutes to walk to the stop).</div></div>'+
+      '<h3>Before I go</h3><div class="rp-chk">'+TCK.map(function(c,i){return '<label><input type="checkbox" data-trc="'+i+'"'+(s.ck[i]?' checked':'')+'>'+esc(c)+'</label>';}).join('')+'</div>'+
+      '<h3>Practise in the Vault</h3><div class="ut-acts">'+A().filter(function(a){return a.brand==='t'&&a.cat==='transit';}).slice(0,2).map(function(a){return actBtn(a);}).join('')+'</div>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn pri" data-tr-print>🖨 Print my trip</button><button type="button" class="rp-btn" data-tr-blank>🖨 Print blank</button><button type="button" class="rp-btn" data-tr-reset>↺ Clear</button></div>';
+    wireActs(body);
+    var upd=function(){body.querySelector('[data-tr-leave]').textContent=leaveBy(s);body.querySelector('[data-tr-arr]').textContent=fmt12(s.arrive);};
+    body.querySelectorAll('[data-trf]').forEach(function(el){el.oninput=el.onchange=function(){var k=el.getAttribute('data-trf');s[k]=el.type==='number'?Math.max(0,Math.min(600,parseInt(el.value,10)||0)):el.value;set('rp_tr',s);upd();};});
+    body.querySelectorAll('[data-trc]').forEach(function(el){el.onchange=function(){s.ck[el.getAttribute('data-trc')]=el.checked;set('rp_tr',s);};});
+    body.querySelector('[data-tr-print]').onclick=function(){RP.print('Public Transit Navigation Worksheet',trDoc(s),{compact:true});};
+    body.querySelector('[data-tr-blank]').onclick=function(){RP.print('Public Transit Navigation Worksheet',trDoc(s,true),{compact:true});};
+    body.querySelector('[data-tr-reset]').onclick=function(){try{localStorage.removeItem('rp_tr');}catch(e){}trView(body);};}
+  RP.add('t',{id:'transit',name:'Public Transit Navigation Worksheet',em:'🚏',kind:'Trip planner · 1-page print',
+    desc:'Plan a real trip step by step: route, direction, boarding and exit stops, transfers, fare and a backup plan. The plan-it-backwards calculator works out what time to leave the house.',
+    actions:[{label:'🚏 Plan a trip',primary:true,run:function(){RP.open('t','🚏','Public Transit Navigation Worksheet',trView);}},
+      {label:'🖨 Print blank',run:function(){RP.print('Public Transit Navigation Worksheet',trDoc(trState(),true),{compact:true});}}]});
+
+  /* 19 ── Workplace Conflict Script-Book ──────────────────────────────── */
+  var CS=[['credit','🏆','A coworker takes credit for your work','Stay calm and stick to facts. Speak to them privately first.','“Hey, in the meeting it sounded like the schedule was all your idea. I put a lot of work into it — next time can we make sure we both get mentioned?”','If it keeps happening, keep notes (dates, what you did) and share your work with your manager directly.','Call them out in front of everyone or get into it on group chat.'],
+    ['sched','📅','You’re scheduled when you said you weren’t available','Check your availability form or messages first so you have the facts.','“Hi, I noticed I’m on Saturday. I’d put in that I’m not available Saturdays because of (reason). Is there a way we can switch it, or can I help find someone to cover?”','Offer a swap with a coworker and get your manager to approve it in writing.','Just not show up. A no-show can cost you the job.'],
+    ['customer','😤','A customer is yelling at you','Keep your voice low and slow. You don’t have to take it personally.','“I can hear you’re frustrated. I want to help. Let me see what I can do.” … “I’m not able to do that, but here’s what I can do.”','If they keep yelling or get abusive: “I’m going to get my manager to help you.” Then walk away and get them.','Argue back, match their volume or make promises you can’t keep.'],
+    ['unsafe','⚠️','You’re asked to do something that feels unsafe','Stop before you start. Your safety comes first.','“I’m not comfortable doing that — I haven’t been trained on it and I don’t think it’s safe. Can you show me how, or can someone who’s trained do it?”','In Canada, workers have the right to refuse unsafe work. Tell your supervisor why, and if it isn’t fixed, contact your province’s workplace health and safety office.','Do it anyway because you’re new and don’t want to seem difficult.'],
+    ['share','🧹','A coworker isn’t doing their share','Assume they might not know. Talk to them before going to the boss.','“Hey, closing has been taking me way longer lately. Can we split it — you take the front, I’ll take the back?”','If nothing changes, tell your manager what’s not getting done — keep it about the work, not their personality.','Complain about them to other coworkers.'],
+    ['mistake','🙈','You made a mistake at work','Own it fast. Fixing it quickly matters more than looking perfect.','“I messed up the order for table 6 — I’ve already told the kitchen and they’re remaking it. It won’t happen again; I’ll double-check the ticket before I send it.”','Ask your manager: “Is there anything else I should do to fix this?”','Hide it, blame someone else or make excuses.'],
+    ['timeoff','🗓️','You need time off','Ask early — as far ahead as you can.','“Hi, I’d like to request (date) off for (reason). I’m letting you know now so there’s time to plan. I can help find cover if that works.”','If it’s refused, ask what would make it possible — a swap, a shorter shift or a different day.','Call in sick on a day you were refused.'],
+    ['pay','💵','Your pay looks wrong','Check your pay stub against your own record of hours first.','“Hi, I think my last pay was missing some hours — I worked 22 and was paid for 18. Here are my dates. Could you check it for me?”','Put it in writing (email or message). If it isn’t fixed, contact your province’s employment standards office.','Just let it go. You earned that money.'],
+    ['comment','🛑','Someone makes a comment that makes you uncomfortable','You don’t have to laugh it off. Your feelings about it are valid.','“That’s not okay with me. Please don’t say that.”','Tell a supervisor, HR or another manager you trust. Most workplaces must have a harassment policy — ask to see it. Write down what happened and when.','Keep it to yourself because you think it’s “not a big deal.”'],
+    ['feedback','💬','You disagree with feedback from your boss','Listen all the way through first. Take a breath before you answer.','“Thanks for telling me. Can you help me understand what you’d like me to do differently?” … “Here’s what I was thinking when I did it — does that change anything?”','If you still disagree, ask for a follow-up chat once you’ve both had time to think.','Get defensive, roll your eyes or argue on the spot.'],
+    ['late','⏰','You’re going to be late for a shift','Tell them before your shift starts, not after.','“Hi, it’s (name). My bus broke down and I’ll be about 20 minutes late. I’m on my way and I’ll come straight in.”','Call if you can — a text is okay only if that’s how your workplace does it.','Show up late with no message.'],
+    ['quit','👋','You want to quit','Leave on good terms — you may need a reference later.','“I wanted to let you know I’m resigning. My last day will be (date, usually two weeks from now). Thank you for the chance to work here.”','Put it in a short written note or email too. Keep working hard until your last day.','Quit by just not showing up (“ghosting”).']];
+  var CSP=['Stay calm','Say this','If it doesn’t work','Avoid'];
+  function csState(){return get('rp_cs',{q:'',prac:false,fav:[]});}
+  function csDoc(list){return '<p class="pm">Scripts for tough moments at work. Change the words to sound like you.</p><div class="cols">'+list.map(function(c){return '<div class="keep" style="margin-bottom:8pt"><b>'+c[1]+' '+esc(c[2])+'</b>'+[3,4,5,6].map(function(i,j){return '<p><i>'+CSP[j]+':</i> '+esc(c[i])+'</p>';}).join('')+'</div>';}).join('')+'</div>';}
+  function csView(body){var s=csState();
+    var list=function(){var q=(s.q||'').toLowerCase();return CS.filter(function(c){return (!q||c.join(' ').toLowerCase().indexOf(q)>-1)&&(!s.onlyFav||s.fav.indexOf(c[0])>-1);});};
+    var draw=function(){var L=list();body.querySelector('[data-cs-list]').innerHTML=L.length?L.map(function(c){var f=s.fav.indexOf(c[0])>-1;return '<details class="cs-it" data-cs="'+c[0]+'"><summary><span class="e">'+c[1]+'</span><b>'+esc(c[2])+'</b><button type="button" class="ch-fav'+(f?' on':'')+'" data-csf="'+c[0]+'" aria-label="'+(f?'Remove from':'Add to')+' saved scripts" aria-pressed="'+f+'">'+(f?'★':'☆')+'</button></summary><div class="cs-b">'+
+        '<p class="cs-calm"><b>'+CSP[0]+':</b> '+esc(c[3])+'</p><div class="cs-say'+(s.prac?' hide':'')+'"><small>'+CSP[1]+'</small><p>'+esc(c[4])+'</p>'+(s.prac?'<button type="button" class="rp-btn" data-reveal>👀 Reveal script</button>':'')+'</div>'+
+        '<p><b>'+CSP[2]+':</b> '+esc(c[5])+'</p><p class="cs-no"><b>'+CSP[3]+':</b> '+esc(c[6])+'</p><div class="rp-bar" style="margin-top:8px"><button type="button" class="rp-btn" data-cs-copy="'+c[0]+'">Copy script</button></div></div></details>';}).join(''):'<p class="ut-muted">No scripts match.</p>';
+      body.querySelectorAll('[data-csf]').forEach(function(b){b.onclick=function(e){e.preventDefault();var k=b.getAttribute('data-csf'),i=s.fav.indexOf(k);if(i>-1)s.fav.splice(i,1);else s.fav.push(k);set('rp_cs',s);draw();};});
+      body.querySelectorAll('[data-reveal]').forEach(function(b){b.onclick=function(){b.parentNode.classList.remove('hide');b.remove();};});
+      body.querySelectorAll('[data-cs-copy]').forEach(function(b){b.onclick=function(){var c=CS.filter(function(x){return x[0]===b.getAttribute('data-cs-copy');})[0];RP.copy(c[4].replace(/[“”]/g,'"'),b);};});
+      body.querySelector('[data-cs-print]').textContent='🖨 Print '+(L.length===CS.length?'all':L.length)+' script'+(L.length===1?'':'s');};
+    body.innerHTML='<div class="ch-top"><input class="rp-in" type="search" placeholder="Search: boss, pay, customer…" data-cs-q value="'+esc(s.q)+'"></div>'+
+      '<div class="ch-filt"><button type="button" data-cs-prac class="'+(s.prac?'on':'')+'">🎭 Practice mode</button><button type="button" data-cs-fav class="'+(s.onlyFav?'on':'')+'">★ Saved only</button><button type="button" data-cs-open>Expand all</button></div>'+
+      '<p class="ut-muted" data-cs-hint>'+(s.prac?'Practice mode hides each script. Read the situation, say what you’d say out loud, then reveal to compare.':'Tap a situation to open its script.')+'</p><div class="cs-list" data-cs-list></div>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn pri" data-cs-print>🖨 Print</button></div>';
+    body.querySelector('[data-cs-q]').oninput=function(){s.q=this.value;set('rp_cs',s);draw();};
+    body.querySelector('[data-cs-prac]').onclick=function(){s.prac=!s.prac;set('rp_cs',s);csView(body);};
+    body.querySelector('[data-cs-fav]').onclick=function(){s.onlyFav=!s.onlyFav;set('rp_cs',s);this.classList.toggle('on',!!s.onlyFav);draw();};
+    body.querySelector('[data-cs-open]').onclick=function(){var ds=body.querySelectorAll('.cs-it'),open=[].some.call(ds,function(d){return !d.open;});ds.forEach(function(d){d.open=open;});this.textContent=open?'Collapse all':'Expand all';};
+    body.querySelector('[data-cs-print]').onclick=function(){RP.print('Workplace Conflict Script-Book',csDoc(list()),{compact:true});};
+    draw();}
+  RP.add('t',{id:'scripts',name:'Workplace Conflict Script-Book',em:'🗣️',kind:'Accordion scripts · practice mode',
+    desc:'12 real situations teens face at a first job — schedule mix-ups, pay problems, unsafe tasks, angry customers, quitting well. Each has a calm-down cue, a word-for-word script, a next step and what to avoid.',
+    actions:[{label:'🗣 Open scripts',primary:true,run:function(){RP.open('t','🗣️','Workplace Conflict Script-Book',csView);}},
+      {label:'🖨 Print all',run:function(){RP.print('Workplace Conflict Script-Book',csDoc(CS),{compact:true});}}]});
+
+  /* 20 ── Personal Health & Emergency Wallet Card ─────────────────────── */
+  var WF=[['name','Full name'],['dob','Date of birth'],['c1n','Emergency contact 1 — name'],['c1r','Relationship'],['c1p','Phone'],['c2n','Emergency contact 2 — name'],['c2r','Relationship'],['c2p','Phone'],['allergy','Allergies'],['cond','Medical conditions'],['meds','Medications'],['doc','Doctor / clinic & phone'],['pharm','Pharmacy & phone'],['note','Anything helpers should know (communication, how to help me)']];
+  function wcState(){return get('rp_wc',{});}
+  function wcCard(s){var v=function(k){return esc(s[k]||'');},ln=function(k){return s[k]?esc(s[k]):'<span class="wl"></span>';};
+    var front='<div class="wcp wcf"><div class="wch">EMERGENCY INFO</div><div class="wcn">'+(s.name?esc(s.name):'<span class="wl"></span>')+'</div><div class="wcs">In an emergency, call:</div>'+
+      '<div class="wcr"><b>1.</b> '+ln('c1n')+(s.c1r?' ('+v('c1r')+')':'')+'<br>'+ln('c1p')+'</div><div class="wcr"><b>2.</b> '+ln('c2n')+(s.c2r?' ('+v('c2r')+')':'')+'<br>'+ln('c2p')+'</div><div class="wcfold">Medical info on the back ▾</div></div>';
+    var back='<div class="wcp wcb"><div class="wcr"><b>DOB:</b> '+ln('dob')+'</div><div class="wcr"><b>Allergies:</b> '+ln('allergy')+'</div><div class="wcr"><b>Conditions:</b> '+ln('cond')+'</div><div class="wcr"><b>Medications:</b> '+ln('meds')+'</div><div class="wcr"><b>Doctor:</b> '+ln('doc')+'</div><div class="wcr"><b>Pharmacy:</b> '+ln('pharm')+'</div>'+(s.note?'<div class="wcr"><b>Note:</b> '+v('note')+'</div>':'')+'</div>';
+    return '<div class="wc2">'+front+'<div class="wcline" aria-hidden="true"></div>'+back+'</div>';}
+  function wcDoc(s){var one='<div class="wc-cut">'+wcCard(s)+'</div>';return '<p class="pm">Cut along the solid line. Fold on the dashed line so the printing faces out, then tape or laminate. Two copies: one for your wallet, one for your backpack or phone case.</p><div class="wc-sheet">'+one+one+'</div>';}
+  function wcView(body){var s=wcState();
+    body.innerHTML='<p class="ut-muted" style="margin-top:0">Your info stays on this device only — nothing is uploaded. Leave any line blank to fill in by hand.</p><div class="rp-f">'+WF.map(function(f){return '<label>'+esc(f[1])+'<input class="rp-in" data-wc="'+f[0]+'" value="'+esc(s[f[0]]||'')+'" maxlength="'+(f[0]==='note'?110:60)+'"></label>';}).join('')+'</div>'+
+      '<h3 style="margin-top:16px">Preview</h3><div class="wc-prev" data-wc-prev></div>'+
+      '<div class="rp-bar"><button type="button" class="rp-btn pri" data-wc-print>🖨 Print my card</button><button type="button" class="rp-btn" data-wc-blank>🖨 Print blank</button><button type="button" class="rp-btn" data-wc-clear>🗑 Clear my info</button></div>';
+    var draw=function(){body.querySelector('[data-wc-prev]').innerHTML=wcCard(s);};
+    body.querySelectorAll('[data-wc]').forEach(function(el){el.oninput=function(){s[el.getAttribute('data-wc')]=el.value;set('rp_wc',s);draw();};});
+    body.querySelector('[data-wc-print]').onclick=function(){RP.print('Personal Health & Emergency Card',wcDoc(s));};
+    body.querySelector('[data-wc-blank]').onclick=function(){RP.print('Personal Health & Emergency Card',wcDoc({}));};
+    body.querySelector('[data-wc-clear]').onclick=function(){try{localStorage.removeItem('rp_wc');}catch(e){}wcView(body);};
+    draw();}
+  RP.add('t',{id:'wallet',name:'Personal Health & Emergency Wallet Card',em:'🪪',kind:'Fold-down card · print',
+    desc:'Fill in emergency contacts, allergies, conditions, medications and your doctor, then print a fold-down wallet card: contacts on the front, medical info on the back. Info stays on this device.',
+    actions:[{label:'🪪 Make my card',primary:true,run:function(){RP.open('t','🪪','Personal Health & Emergency Wallet Card',wcView);}},
+      {label:'🖨 Print blank',run:function(){RP.print('Personal Health & Emergency Card',wcDoc({}));}}]});
+})();
+</script>
+<style id="res-pack-t-css">
+.ls-hud{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0;padding:14px;border-radius:18px;background:linear-gradient(155deg,color-mix(in srgb,var(--rk1) 55%,#0b1020),#0b1020);border:1px solid color-mix(in srgb,var(--rkr) 40%,transparent)}
+.ls-lv{display:flex;align-items:center;gap:10px}
+.ls-lv .e{font-size:34px}
+.ls-lv small{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rkr)}
+.ls-lv b{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;color:#fff}
+.ls-xp{flex:1;min-width:200px}
+.ls-xp span{display:block;margin-top:6px;font-size:12px;color:rgba(255,255,255,.75)}
+.ls-bar{height:14px;border-radius:100px;background:rgba(255,255,255,.1);overflow:hidden}
+.ls-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--rk1),var(--rk2),var(--rkr));transition:width .4s cubic-bezier(.16,1,.3,1)}
+.ls-cat{margin-bottom:8px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.ls-cat.full{border-color:var(--rkr)}
+.ls-cat summary{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;list-style:none}
+.ls-cat summary::-webkit-details-marker{display:none}
+.ls-cat summary .e{font-size:20px}
+.ls-cat summary b{flex:0 1 auto;min-width:0;color:#fff;font-size:14px}
+.ls-cbar{flex:1;min-width:40px;height:6px;border-radius:100px;background:rgba(255,255,255,.1);overflow:hidden}
+.ls-cbar i{display:block;height:100%;background:var(--rk2);border-radius:inherit;transition:width .3s}
+.ls-cp{font-size:11.5px;font-weight:800;color:var(--rkr);white-space:nowrap}
+.ls-items{padding:0 14px 14px}
+.ls-it{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06)}
+.ls-it>span{font-size:13px;color:rgba(255,255,255,.88)}
+.ls-seg{display:inline-flex;flex:0 0 auto;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.16)}
+.ls-seg button{padding:6px 9px;border:0;background:rgba(255,255,255,.03);color:rgba(255,255,255,.7);font:800 11px 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap}
+.ls-seg button+button{border-left:1px solid rgba(255,255,255,.12)}
+.ls-seg button.on.s0{background:rgba(148,163,184,.35);color:#fff}
+.ls-seg button.on.s1{background:#eab308;color:#221a02}
+.ls-seg button.on.s2{background:#22c55e;color:#052e16}
+@media(max-width:560px){.ls-it{flex-direction:column;align-items:flex-start}.ls-seg{width:100%}.ls-seg button{flex:1}}
+.ls-prac{margin-top:10px}
+.ls-prac small{display:block;margin-bottom:6px;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rkr)}
+.fn-in{display:flex;align-items:center;gap:6px}
+.fn-in i{font-style:normal;font-size:13px;font-weight:700;color:rgba(255,255,255,.7);text-transform:none}
+.fn-pre{display:flex;flex-wrap:wrap;gap:8px}.fn-pre .rp-btn{flex:1 1 150px}
+.fn-kpi{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+@media(max-width:560px){.fn-kpi{grid-template-columns:1fr}}
+.fn-kpi>div{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.fn-kpi small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.fn-kpi b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:28px;color:#fff;margin:2px 0}
+.fn-kpi i{font-style:normal;font-size:11.5px;color:rgba(255,255,255,.65)}
+.fn-kpi .pos{border-color:#22c55e;background:rgba(34,197,94,.12)}
+.fn-kpi .neg{border-color:#ef4444;background:rgba(239,68,68,.14)}
+.fn-bars{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.fn-row{display:grid;grid-template-columns:80px minmax(0,1fr);align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.75)}
+.fn-track{display:flex;height:18px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden}
+.fn-track i{display:block;height:100%}
+.fn-track i.inc{background:linear-gradient(90deg,var(--rk1),var(--rk2))}
+.fn-bars .x0,.fn-legend .x0{background:#f472b6}.fn-bars .x1,.fn-legend .x1{background:#fb923c}.fn-bars .x2,.fn-legend .x2{background:#facc15}.fn-bars .x3,.fn-legend .x3{background:#34d399}.fn-bars .x4,.fn-legend .x4{background:#60a5fa}.fn-bars .x5,.fn-legend .x5{background:#c084fc}
+.fn-track i+i{box-shadow:inset 1px 0 0 #0b1020}
+.fn-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12px;color:rgba(255,255,255,.8)}
+.fn-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.fn-legend b{color:#fff;margin-left:4px}
+.fn-rent{margin:12px 0 4px!important;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--rk1) 35%,transparent);border:1px solid color-mix(in srgb,var(--rkr) 40%,transparent)}
+.tr-leave b{font-size:30px}
+.cs-list{display:flex;flex-direction:column;gap:8px}
+.cs-it{border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.cs-it[open]{border-color:color-mix(in srgb,var(--rkr) 60%,transparent)}
+.cs-it summary{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;list-style:none}
+.cs-it summary::-webkit-details-marker{display:none}
+.cs-it summary .e{font-size:20px}
+.cs-it summary b{flex:1;color:#fff;font-size:14px}
+.cs-b{padding:0 14px 14px}
+.cs-b p{margin:6px 0!important}
+.cs-calm{color:var(--rkr)!important}
+.cs-say{margin:10px 0;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--rk1) 45%,transparent);border-left:4px solid var(--rk2)}
+.cs-say small{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rkr)}
+.cs-say p{font-family:'Bricolage Grotesque',sans-serif;font-size:16px!important;color:#fff!important;line-height:1.45!important}
+.cs-say.hide p{color:transparent!important;user-select:none;border-radius:6px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.16) 0 16px,transparent 16px 23px)}
+.cs-say .rp-btn{margin-top:6px}
+.cs-no{color:rgba(255,160,160,.9)!important}
+.wc-prev{display:flex;justify-content:center;overflow-x:auto}
+.wc2{width:3.5in;max-width:100%;border:1.5px solid rgba(255,255,255,.5);border-radius:10px;background:#fff;color:#111;font:11px/1.35 -apple-system,'Segoe UI',Arial,sans-serif;overflow:hidden}
+.wcp{height:2in;box-sizing:border-box;padding:10px 12px;overflow:hidden}
+.wcline{border-top:1.5px dashed #555}
+.wch{font-size:9px;font-weight:800;letter-spacing:.16em;color:#b91c1c}
+.wcn{font-size:15px;font-weight:800;margin:3px 0 4px;min-height:18px}
+.wcs{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#444}
+.wcr{margin-top:4px;word-break:break-word}
+.wcfold{margin-top:6px;font-size:8.5px;color:#666}
+.wl{display:inline-block;min-width:1.6in;border-bottom:1px solid #999;height:10px;vertical-align:bottom}
+@media print{
+  #rpPrint .wc-sheet{display:flex;flex-direction:column;gap:22pt;align-items:flex-start;margin-top:10pt}
+  #rpPrint .wc-cut{border:1pt solid #000;display:inline-block}
+  #rpPrint .wc2{width:3.5in;border:0;border-radius:0;font-size:8.5pt;line-height:1.3}
+  #rpPrint .wcp{height:2in;padding:8pt 10pt}
+  #rpPrint .wcb{transform:rotate(180deg)}
+  #rpPrint .wcline{border-top:1pt dashed #000!important}
+  #rpPrint .wch{font-size:7.5pt;letter-spacing:.14em}
+  #rpPrint .wcn{font-size:12pt}
+  #rpPrint .wcs,#rpPrint .wcfold{font-size:7pt}
+  #rpPrint .wl{border-bottom:0.6pt solid #000;min-width:1.7in;height:9pt}
+}
+</style>
 </body>
 </html>
