@@ -18955,6 +18955,26 @@ nav.bottom-bar{border-radius:20px 20px 0 0!important}
   .fxo-orb,.fxo-ring{opacity:0 !important}
   .card:hover,div.card:hover,div.pick-card:hover,.mood-bar-opt:hover,button.more-card:hover,.res-card:hover{transform:none !important}
 }
+/* title bar: half height, same design (hierarchy, fonts, colours, art, centring kept) */
+.hdr{min-height:59px!important;padding-top:4px!important;padding-bottom:4px!important}
+.hdr .brand{font-size:24px!important}
+.hdr .brand .b2{margin:0 4px!important}
+.hdr .brand-sub{font-size:12px!important;margin-top:2px!important}
+.hdr .brand-wrap .brand-sub:last-child{font-size:9px!important;margin-top:2px!important}
+@media(max-width:560px){
+  .hdr{flex-wrap:nowrap!important;row-gap:0!important}
+  .hdr .brand-wrap{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;order:0!important;flex:none!important}
+  .hdr .brand{font-size:22px!important}
+  .hdr .brand-sub{font-size:10px!important;margin-top:2px!important}
+  .hdr .brand-wrap .brand-sub:last-child{font-size:8px!important;margin-top:2px!important}
+}
+@media(max-width:420px){
+  .hdr{gap:4px!important;padding-right:10px!important}
+  .hdr .brand{font-size:20px!important}
+  .hdr .brand-sub{font-size:9px!important}
+  .hdr .tier-badge{font-size:8px!important;padding:3px 7px!important}
+  .hdr .hdr-btn{padding:3px 6px!important;font-size:9px!important}
+}
 /* title banner: same faded per-module artwork as the cards (AdaptED art on AdaptED, CampED art on CampED, …) */
 .hdr::before{content:'';position:absolute;inset:0;background-image:var(--cardart,none);background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.16;border-radius:inherit;pointer-events:none;z-index:-1}
 /* ═══ SMOOTH SCROLL — metallic module background on its own fixed layer (no repaint while scrolling), clipped to the #app column ═══ */
